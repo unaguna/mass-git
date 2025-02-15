@@ -1,3 +1,4 @@
+import os
 import sys
 from argparse import ArgumentParser
 
@@ -15,7 +16,8 @@ def main():
     parser_clone.set_defaults()
 
     args = parser.parse_args(sys.argv[1:])
-    params = Params(args)
+    env = {**os.environ}
+    params = Params(args, env)
 
     if args.subcmd == "clone":
         clone_cmd(params)
