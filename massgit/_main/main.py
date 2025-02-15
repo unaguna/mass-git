@@ -10,8 +10,8 @@ from .status import status_cmd
 
 
 def main():
-    parser = ArgumentParser()
-    subparsers = parser.add_subparsers(dest="subcmd")
+    parser = ArgumentParser(prog="massgit")
+    subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
     subparsers.add_parser("clone", help="Clone repositories into new directories")
     subparsers.add_parser(
