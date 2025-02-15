@@ -41,6 +41,30 @@ def checkout(
     return res
 
 
+def diff(
+    repo: Repo,
+    args: t.Sequence[str] = tuple(),
+    *,
+    is_shortstat: bool,
+    git: str = "git",
+    basedir: t.Optional[str] = None,
+    encoding: str = sys.getdefaultencoding(),
+) -> subprocess.CompletedProcess[str]:
+    cmd = [git, "diff"]
+    if is_shortstat:
+        cmd.append("--shortstat")
+    if len(args) > 0:
+        cmd.append(*args)
+    res = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        encoding=encoding,
+        cwd=os.path.join(basedir or "", repo_dirname(repo)),
+    )
+    return res
+
+
 def start(cmd: t.Sequence[str]):
     with subprocess.Popen(cmd) as proc:
         pass

@@ -6,16 +6,19 @@ from ._env_name import EnvKey
 
 class Params:
     _args: argparse.Namespace
+    _sub_args: t.Optional[argparse.Namespace]
     _remaining_args: t.Sequence[str]
     _env: t.Dict[str, str]
 
     def __init__(
         self,
         args: argparse.Namespace,
+        sub_args: t.Optional[argparse.Namespace],
         remaining_args: t.Sequence[str],
         env: t.Dict[str, str],
     ):
         self._args = args
+        self._sub_args = sub_args
         self._remaining_args = remaining_args
         self._env = env
 
@@ -32,3 +35,7 @@ class Params:
     @property
     def basedir(self) -> t.Optional[str]:
         return None
+
+    @property
+    def is_shortstat(self) -> bool:
+        return getattr(self._args, "shortstat", False)

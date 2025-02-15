@@ -1,10 +1,11 @@
 import os
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, BooleanOptionalAction
 
 from ._params import Params
 from .checkout import checkout_cmd
 from .clone import clone_cmd
+from .diff import diff_cmd
 
 
 def main():
@@ -16,15 +17,24 @@ def main():
         "checkout",
         help="Switch branches or restore working tree files",
     )
+    parser_diff = subparsers.add_parser(
+        "diff",
+        help="Show changes between commits, commit and working tree, etc",
+    )
+    parser_diff.add_argument("--shortstat", action="store_true")
 
     main_args, remaining_args = parser.parse_known_args(sys.argv[1:])
     env = {**os.environ}
 
     if main_args.subcmd == "clone":
-        params = Params(main_args, remaining_args, env)
+        params = Params(main_args, None, remaining_args, env)
         clone_cmd(params)
     elif main_args.subcmd == "checkout":
-        params = Params(main_args, remaining_args, env)
+        params = Params(main_args, None, remaining_args, env)
         checkout_cmd(params)
+    elif main_args.subcmd == "diff":
+        sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
+        params = Params(main_args, sub_args, sub_remaining_args, env)
+        diff_cmd(params)
     else:
         raise Exception()
