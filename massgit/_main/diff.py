@@ -13,6 +13,7 @@ def diff_cmd(params: Params):
         params.remaining_args,
         basedir=params.basedir,
         is_shortstat=params.is_shortstat,
+        show_no_change=params.show_no_change,
     )
 
 
@@ -21,15 +22,23 @@ def diff(
     args: t.Sequence[str] = tuple(),
     *,
     basedir: t.Optional[str] = None,
-    is_shortstat: bool,
+    is_shortstat: bool = False,
+    show_no_change: bool = False,
 ):
     for repo in repos:
-        res = gitproc.diff(repo, args, basedir=basedir, is_shortstat=is_shortstat)
+        res = gitproc.diff(
+            repo,
+            args,
+            basedir=basedir,
+            is_shortstat=is_shortstat,
+        )
         if res.returncode == 0:
-            if is_shortstat:
-                print(repo_dirname(repo) + ":", res.stdout.strip() or "0 files changed")
-            else:
-                print(repo_dirname(repo))
-                print(res.stdout)
+            stdout_trimmed = res.stdout.strip()
+            if show_no_change or len(stdout_trimmed) > 0:
+                if is_shortstat:
+                    print(repo_dirname(repo) + ":", stdout_trimmed or "0 files changed")
+                else:
+                    print(repo_dirname(repo))
+                    print(res.stdout)
         else:
             print(repo_dirname(repo) + f": failed ({res.returncode})")

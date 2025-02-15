@@ -39,3 +39,7 @@ class Params:
     @property
     def is_shortstat(self) -> bool:
         return getattr(self._args, "shortstat", False)
+
+    @property
+    def show_no_change(self) -> bool:
+        return getattr(self._args, "show_no_change", False)

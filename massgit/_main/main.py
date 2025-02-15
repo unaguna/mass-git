@@ -1,6 +1,6 @@
 import os
 import sys
-from argparse import ArgumentParser, BooleanOptionalAction
+from argparse import ArgumentParser
 
 from ._params import Params
 from .checkout import checkout_cmd
@@ -22,6 +22,7 @@ def main():
         help="Show changes between commits, commit and working tree, etc",
     )
     parser_diff.add_argument("--shortstat", action="store_true")
+    parser_diff.add_argument("--show-no-change", action="store_true")
 
     main_args, remaining_args = parser.parse_known_args(sys.argv[1:])
     env = {**os.environ}

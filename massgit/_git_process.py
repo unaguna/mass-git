@@ -45,7 +45,7 @@ def diff(
     repo: Repo,
     args: t.Sequence[str] = tuple(),
     *,
-    is_shortstat: bool,
+    is_shortstat: bool = False,
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
@@ -63,10 +63,3 @@ def diff(
         cwd=os.path.join(basedir or "", repo_dirname(repo)),
     )
     return res
-
-
-def start(cmd: t.Sequence[str]):
-    with subprocess.Popen(cmd) as proc:
-        pass
-        # for line in proc.stdout:
-        #     print(line)
