@@ -1,0 +1,2 @@
+class EnvKey:
+    REPOS_FILE = "MASSGIT_REPOS_FILE"
