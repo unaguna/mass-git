@@ -18,7 +18,7 @@ def checkout(
     basedir: t.Optional[str] = None,
 ):
     for repo in repos:
-        print("checkout", repo_dirname(repo), *args, end="")
+        print(repo_dirname(repo), "checkout", *args, end="")
         res = gitproc.checkout(repo, args, basedir=basedir)
 
         if res.returncode == 0:

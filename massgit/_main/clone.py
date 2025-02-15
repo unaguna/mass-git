@@ -13,9 +13,9 @@ def clone_cmd(params: Params):
 
 def clone(repos: t.Sequence[Repo], *, basedir: t.Optional[str] = None):
     for repo in repos:
-        print("clone", repo_dirname(repo) + " ", end="")
+        print(repo_dirname(repo), "clone", end="")
         return_code = gitproc.clone(repo, basedir=basedir)
         if return_code == 0:
-            print("done")
+            print(" done")
         else:
-            print(f"failed ({return_code})")
+            print(f" failed ({return_code})")
