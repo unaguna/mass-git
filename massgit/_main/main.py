@@ -6,6 +6,7 @@ from ._params import Params
 from .checkout import checkout_cmd
 from .clone import clone_cmd
 from .diff import diff_cmd
+from .status import status_cmd
 
 
 def main():
@@ -16,6 +17,10 @@ def main():
     subparsers.add_parser(
         "checkout",
         help="Switch branches or restore working tree files",
+    )
+    subparsers.add_parser(
+        "status",
+        help="Show the working tree status",
     )
     parser_diff = subparsers.add_parser(
         "diff",
@@ -33,6 +38,9 @@ def main():
     elif main_args.subcmd == "checkout":
         params = Params(main_args, None, remaining_args, env)
         checkout_cmd(params)
+    elif main_args.subcmd == "status":
+        params = Params(main_args, None, remaining_args, env)
+        status_cmd(params)
     elif main_args.subcmd == "diff":
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
         params = Params(main_args, sub_args, sub_remaining_args, env)
