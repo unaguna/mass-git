@@ -1,8 +1,8 @@
 import sys
 from argparse import ArgumentParser
 
-from .clone import clone
-from .._repo import load_repos
+from ._params import Params
+from .clone import clone_cmd
 
 
 def main():
@@ -15,10 +15,9 @@ def main():
     parser_clone.set_defaults()
 
     args = parser.parse_args(sys.argv[1:])
-
-    repos = load_repos()
+    params = Params(args)
 
     if args.subcmd == "clone":
-        clone(repos)
+        clone_cmd(params)
     else:
         raise Exception()
