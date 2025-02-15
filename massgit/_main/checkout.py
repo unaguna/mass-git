@@ -2,6 +2,7 @@ import typing as t
 
 import massgit._git_process as gitproc
 from ._params import Params
+from .._utils.text import tail
 from .._repo import load_repos, repo_dirname
 from .._types import Repo
 
@@ -23,19 +24,15 @@ def checkout(
 
         if res.returncode == 0:
             print(" done", end="")
-            tail_stdout = [
-                line for line in res.stdout.rsplit("\n", 3) if len(line.strip()) > 0
-            ]
-            if len(tail_stdout) == 0:
-                print()
+            tail_stdout = tail(res.stdout)
+            if tail_stdout is not None:
+                print(";", tail_stdout)
             else:
-                print(";", tail_stdout[-1])
+                print()
         else:
             print(f" failed ({res.returncode})", end="")
-            tail_stderr = [
-                line for line in res.stderr.rsplit("\n", 3) if len(line.strip()) > 0
-            ]
-            if len(tail_stderr) == 0:
-                print()
+            tail_stderr = tail(res.stderr)
+            if tail_stderr is not None:
+                print(";", tail_stderr)
             else:
-                print(";", tail_stderr[-1])
+                print()
