@@ -1,7 +1,7 @@
 import typing as t
 
 from .._types import Repo
-from .._repo import repo_dirname, load_repos
+from .._repo import load_repos
 from ._params import Params
 import massgit._git_process as gitproc
 
@@ -36,9 +36,9 @@ def diff(
             stdout_trimmed = res.stdout.strip()
             if show_no_change or len(stdout_trimmed) > 0:
                 if is_shortstat:
-                    print(repo_dirname(repo) + ":", stdout_trimmed or "0 files changed")
+                    print(repo["dirname"] + ":", stdout_trimmed or "0 files changed")
                 else:
-                    print(repo_dirname(repo))
+                    print(repo["dirname"])
                     print(res.stdout)
         else:
-            print(repo_dirname(repo) + f": failed ({res.returncode})")
+            print(repo["dirname"] + f": failed ({res.returncode})")

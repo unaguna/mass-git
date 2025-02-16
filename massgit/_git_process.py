@@ -4,7 +4,6 @@ import sys
 import typing as t
 
 from ._types import Repo
-from ._repo import repo_dirname
 
 
 def clone(
@@ -36,7 +35,7 @@ def checkout(
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         encoding=encoding,
-        cwd=os.path.join(basedir or "", repo_dirname(repo)),
+        cwd=os.path.join(basedir or "", repo["dirname"]),
     )
     return res
 
@@ -54,7 +53,7 @@ def status(
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         encoding=encoding,
-        cwd=os.path.join(basedir or "", repo_dirname(repo)),
+        cwd=os.path.join(basedir or "", repo["dirname"]),
     )
     return res
 
@@ -78,6 +77,6 @@ def diff(
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         encoding=encoding,
-        cwd=os.path.join(basedir or "", repo_dirname(repo)),
+        cwd=os.path.join(basedir or "", repo["dirname"]),
     )
     return res
