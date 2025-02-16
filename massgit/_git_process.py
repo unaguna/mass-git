@@ -13,9 +13,12 @@ def clone(
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
 ) -> int:
+    cmd = [git, "clone", repo["url"]]
+    if not repo["dirname_is_default"]:
+        cmd.append(repo["dirname"])
+
     res = subprocess.run(
-        [git, "clone", repo["url"]],
-        stderr=subprocess.DEVNULL,
+        cmd,
         encoding=encoding,
         cwd=basedir,
     )

@@ -14,5 +14,8 @@ def load_repos(
     for repo in repos:
         if "dirname" not in repo:
             repo["dirname"] = repo["url"].removesuffix(".git").rsplit("/", 2)[-1]
+            repo["dirname_is_default"] = True
+        else:
+            repo["dirname_is_default"] = False
 
     return repos
