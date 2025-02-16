@@ -55,20 +55,30 @@ def main(
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
     if main_args.subcmd == "clone":
-        params = Params(main_args, None, remaining_args, env)
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
         clone_cmd(params)
     elif main_args.subcmd == "checkout":
-        params = Params(main_args, None, remaining_args, env)
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
         checkout_cmd(params)
     elif main_args.subcmd == "status":
-        params = Params(main_args, None, remaining_args, env)
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
         status_cmd(params)
     elif main_args.subcmd == "diff":
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
-        params = Params(main_args, sub_args, sub_remaining_args, env)
+        params = Params(
+            main_args, sub_args, sub_remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
         diff_cmd(params)
     elif main_args.subcmd in ("branch", "fetch"):
-        params = Params(main_args, None, remaining_args, env)
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
         cmn_each_repo_cmd(main_args.subcmd, params)
     else:
         raise Exception()

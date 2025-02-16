@@ -1,4 +1,5 @@
 import argparse
+import os
 import typing as t
 
 from ._env_name import EnvKey
@@ -9,6 +10,7 @@ class Params:
     _sub_args: t.Optional[argparse.Namespace]
     _remaining_args: t.Sequence[str]
     _env: t.Dict[str, str]
+    _cwd_config_dir: t.Union[str, os.PathLike]
 
     def __init__(
         self,
@@ -16,11 +18,13 @@ class Params:
         sub_args: t.Optional[argparse.Namespace],
         remaining_args: t.Sequence[str],
         env: t.Dict[str, str],
+        cwd_config_dir: t.Union[str, os.PathLike],
     ):
         self._args = args
         self._sub_args = sub_args
         self._remaining_args = remaining_args
         self._env = env
+        self._cwd_config_dir = cwd_config_dir
 
     @property
     def remaining_args(self) -> t.Sequence[str]:
@@ -30,7 +34,7 @@ class Params:
     def repos_file(self) -> str:
         if EnvKey.REPOS_FILE in self._env:
             return self._env[EnvKey.REPOS_FILE]
-        return ".massgit/repos.json"
+        return os.path.join(self._cwd_config_dir, "repos.json")
 
     @property
     def git_exec_path(self) -> str:
