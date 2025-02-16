@@ -6,9 +6,10 @@ from ._params import Params
 import massgit._git_process as gitproc
 
 
-def branch_cmd(params: Params):
+def cmn_each_repo_cmd(subcmd: str, params: Params):
     repos = load_repos(params.repos_file)
     branch(
+        subcmd,
         repos,
         params.remaining_args,
         basedir=params.basedir,
@@ -16,6 +17,7 @@ def branch_cmd(params: Params):
 
 
 def branch(
+    subcmd: str,
     repos: t.Sequence[Repo],
     args: t.Sequence[str] = tuple(),
     *,
@@ -23,7 +25,7 @@ def branch(
 ):
     for repo in repos:
         res = gitproc.trap_stdout(
-            "branch",
+            subcmd,
             repo,
             args,
             basedir=basedir,
