@@ -33,7 +33,7 @@ def cmn_each_repo(
         if res.returncode == 0:
             stdout_trimmed = res.stdout.strip()
             if stdout_trimmed.count("\n") <= 0:
-                print(repo["dirname"] + ":", stdout_trimmed)
+                print(repo["dirname"] + ":", stdout_trimmed or "done")
             else:
                 print(repo["dirname"])
                 print(res.stdout)
