@@ -47,6 +47,10 @@ def main(
         "pull",
         help="Fetch from and integrate with another repository or a local branch",
     )
+    subparsers.add_parser(
+        "grep",
+        help="Print lines matching a pattern",
+    )
 
     main_args, remaining_args = parser.parse_known_args(argv)
 
@@ -84,5 +88,10 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         cmn_each_repo_cmd(main_args.subcmd, params)
+    elif main_args.subcmd in ("grep",):
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
+        cmn_each_repo_cmd(main_args.subcmd, params, repo_for_each_stdout_line=True)
     else:
         raise Exception()
