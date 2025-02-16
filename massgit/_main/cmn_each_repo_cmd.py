@@ -13,6 +13,7 @@ def cmn_each_repo_cmd(subcmd: str, params: Params):
         repos,
         params.remaining_args,
         basedir=params.basedir,
+        git=params.git_exec_path,
     )
 
 
@@ -22,6 +23,7 @@ def cmn_each_repo(
     args: t.Sequence[str] = tuple(),
     *,
     basedir: t.Optional[str] = None,
+    git: str = "git",
 ):
     for repo in repos:
         res = gitproc.trap_stdout(
@@ -29,6 +31,7 @@ def cmn_each_repo(
             repo,
             args,
             basedir=basedir,
+            git=git,
         )
         if res.returncode == 0:
             stdout_trimmed = res.stdout.strip()

@@ -9,7 +9,12 @@ from .._types import Repo
 
 def checkout_cmd(params: Params):
     repos = load_repos(params.repos_file)
-    checkout(repos, params.remaining_args, basedir=params.basedir)
+    checkout(
+        repos,
+        params.remaining_args,
+        basedir=params.basedir,
+        git=params.git_exec_path,
+    )
 
 
 def checkout(
@@ -17,10 +22,16 @@ def checkout(
     args: t.Sequence[str] = tuple(),
     *,
     basedir: t.Optional[str] = None,
+    git: str = "git",
 ):
     for repo in repos:
         print(repo["dirname"], "checkout", *args, end="")
-        res = gitproc.checkout(repo, args, basedir=basedir)
+        res = gitproc.checkout(
+            repo,
+            args,
+            basedir=basedir,
+            git=git,
+        )
 
         if res.returncode == 0:
             print(" done", end="")

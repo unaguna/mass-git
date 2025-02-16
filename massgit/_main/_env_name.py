@@ -1,2 +1,3 @@
 class EnvKey:
+    GIT_PATH = "MASSGIT_GIT"
     REPOS_FILE = "MASSGIT_REPOS_FILE"

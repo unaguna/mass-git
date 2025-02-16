@@ -9,7 +9,12 @@ from .._types import Repo
 
 def status_cmd(params: Params):
     repos = load_repos(params.repos_file)
-    status(repos, params.remaining_args, basedir=params.basedir)
+    status(
+        repos,
+        params.remaining_args,
+        basedir=params.basedir,
+        git=params.git_exec_path,
+    )
 
 
 def status(
@@ -17,9 +22,10 @@ def status(
     args: t.Sequence[str] = tuple(),
     *,
     basedir: t.Optional[str] = None,
+    git: str = "git",
 ):
     for repo in repos:
-        res = gitproc.status(repo, args, basedir=basedir)
+        res = gitproc.status(repo, args, basedir=basedir, git=git)
 
         if res.returncode == 0:
             for line in res.stdout.split("\n"):

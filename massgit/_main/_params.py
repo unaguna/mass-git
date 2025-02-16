@@ -33,6 +33,12 @@ class Params:
         return "repos.json"
 
     @property
+    def git_exec_path(self) -> str:
+        if EnvKey.GIT_PATH in self._env:
+            return self._env[EnvKey.GIT_PATH]
+        return "git"
+
+    @property
     def basedir(self) -> t.Optional[str]:
         return None
 
