@@ -43,6 +43,10 @@ def main(
         "fetch",
         help="Download objects and refs from another repository",
     )
+    subparsers.add_parser(
+        "pull",
+        help="Fetch from and integrate with another repository or a local branch",
+    )
 
     main_args, remaining_args = parser.parse_known_args(argv)
 
@@ -75,7 +79,7 @@ def main(
             main_args, sub_args, sub_remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         diff_cmd(params)
-    elif main_args.subcmd in ("branch", "fetch"):
+    elif main_args.subcmd in ("branch", "fetch", "pull"):
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
