@@ -2,6 +2,7 @@ import os
 import typing as t
 from argparse import ArgumentParser
 
+from .._utils.dotenv import load_dotenv
 from ._params import Params
 from .checkout import checkout_cmd
 from .clone import clone_cmd
@@ -10,7 +11,12 @@ from .diff import diff_cmd
 from .status import status_cmd
 
 
-def main(argv: t.Sequence[str]):
+def main(
+    argv: t.Sequence[str],
+    *,
+    install_config_dir: str,
+    cwd_config_dir: str = ".massgit",
+):
     parser = ArgumentParser(prog="massgit")
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
@@ -39,7 +45,14 @@ def main(argv: t.Sequence[str]):
     )
 
     main_args, remaining_args = parser.parse_known_args(argv)
-    env = {**os.environ}
+
+    dotenv_pub = load_dotenv(
+        os.path.join(install_config_dir, ".env"), empty_if_non_exist=True
+    )
+    dotenv_cwd = load_dotenv(
+        os.path.join(cwd_config_dir, ".env"), empty_if_non_exist=True
+    )
+    env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
     if main_args.subcmd == "clone":
         params = Params(main_args, None, remaining_args, env)
