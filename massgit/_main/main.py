@@ -1,5 +1,5 @@
 import os
-import sys
+import typing as t
 from argparse import ArgumentParser
 
 from ._params import Params
@@ -10,7 +10,7 @@ from .diff import diff_cmd
 from .status import status_cmd
 
 
-def main():
+def main(argv: t.Sequence[str]):
     parser = ArgumentParser(prog="massgit")
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
@@ -38,7 +38,7 @@ def main():
         help="Download objects and refs from another repository",
     )
 
-    main_args, remaining_args = parser.parse_known_args(sys.argv[1:])
+    main_args, remaining_args = parser.parse_known_args(argv)
     env = {**os.environ}
 
     if main_args.subcmd == "clone":
