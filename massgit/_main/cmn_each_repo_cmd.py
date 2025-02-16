@@ -11,9 +11,9 @@ def cmn_each_repo_cmd(
     params: Params,
     *,
     repo_for_each_stdout_line: bool = False,
-):
+) -> int:
     repos = load_repos(params.repos_file)
-    cmn_each_repo(
+    return cmn_each_repo(
         subcmd,
         repos,
         params.remaining_args,
@@ -33,7 +33,8 @@ def cmn_each_repo(
     basedir: t.Optional[str] = None,
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
-):
+) -> int:
+    exit_codes = []
     for repo in repos:
         res = gitproc.trap_stdout(
             subcmd,
@@ -43,6 +44,8 @@ def cmn_each_repo(
             git=git,
             env=env,
         )
+        exit_codes.append(res.returncode)
+
         if repo_for_each_stdout_line:
             if res.returncode == 0:
                 for line in res.stdout.split("\n"):
@@ -61,3 +64,5 @@ def cmn_each_repo(
                     print(res.stdout)
             else:
                 print(repo["dirname"] + f": failed ({res.returncode})")
+
+    return max(exit_codes)

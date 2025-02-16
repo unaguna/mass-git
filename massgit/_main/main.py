@@ -17,7 +17,7 @@ def main(
     *,
     install_config_dir: str,
     cwd_config_dir: str = ".massgit",
-):
+) -> int:
     parser = ArgumentParser(prog="massgit")
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
@@ -67,32 +67,34 @@ def main(
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
-        clone_cmd(params)
+        exit_code = clone_cmd(params)
     elif main_args.subcmd == "checkout":
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
-        checkout_cmd(params)
+        exit_code = checkout_cmd(params)
     elif main_args.subcmd == "status":
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
-        status_cmd(params)
+        exit_code = status_cmd(params)
     elif main_args.subcmd == "diff":
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
         params = Params(
             main_args, sub_args, sub_remaining_args, env, cwd_config_dir=cwd_config_dir
         )
-        diff_cmd(params)
+        exit_code = diff_cmd(params)
     elif main_args.subcmd == "grep":
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
-        grep_cmd(params)
+        exit_code = grep_cmd(params)
     elif main_args.subcmd in ("branch", "fetch", "pull"):
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
-        cmn_each_repo_cmd(main_args.subcmd, params)
+        exit_code = cmn_each_repo_cmd(main_args.subcmd, params)
     else:
         raise Exception()
+
+    return exit_code

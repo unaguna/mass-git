@@ -65,7 +65,6 @@ def diff(
     res = subprocess.run(
         cmd,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
         encoding=encoding,
         cwd=os.path.join(basedir or "", repo["dirname"]),
         env=env,

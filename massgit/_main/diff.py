@@ -6,9 +6,9 @@ from ._params import Params
 import massgit._git_process as gitproc
 
 
-def diff_cmd(params: Params):
+def diff_cmd(params: Params) -> int:
     repos = load_repos(params.repos_file)
-    diff(
+    return diff(
         repos,
         params.remaining_args,
         basedir=params.basedir,
@@ -28,7 +28,8 @@ def diff(
     show_no_change: bool = False,
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
-):
+) -> int:
+    exit_codes = []
     for repo in repos:
         res = gitproc.diff(
             repo,
@@ -38,6 +39,8 @@ def diff(
             git=git,
             env=env,
         )
+        exit_codes.append(res.returncode)
+
         if res.returncode == 0:
             stdout_trimmed = res.stdout.strip()
             if show_no_change or len(stdout_trimmed) > 0:
@@ -48,3 +51,5 @@ def diff(
                     print(res.stdout)
         else:
             print(repo["dirname"] + f": failed ({res.returncode})")
+
+    return max(exit_codes)

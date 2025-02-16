@@ -7,9 +7,9 @@ from .._repo import load_repos
 from .._types import Repo
 
 
-def checkout_cmd(params: Params):
+def checkout_cmd(params: Params) -> int:
     repos = load_repos(params.repos_file)
-    checkout(
+    return checkout(
         repos,
         params.remaining_args,
         basedir=params.basedir,
@@ -25,7 +25,8 @@ def checkout(
     basedir: t.Optional[str] = None,
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
-):
+) -> int:
+    exit_codes = []
     for repo in repos:
         print(repo["dirname"], "checkout", *args, end="")
         res = gitproc.checkout(
@@ -35,6 +36,7 @@ def checkout(
             git=git,
             env=env,
         )
+        exit_codes.append(res.returncode)
 
         if res.returncode == 0:
             print(" done", end="")
@@ -50,3 +52,5 @@ def checkout(
                 print(";", tail_stderr)
             else:
                 print()
+
+    return max(exit_codes)
