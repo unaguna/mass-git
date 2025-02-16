@@ -3,6 +3,7 @@ import sys
 from argparse import ArgumentParser
 
 from ._params import Params
+from .branch import branch_cmd
 from .checkout import checkout_cmd
 from .clone import clone_cmd
 from .diff import diff_cmd
@@ -28,6 +29,10 @@ def main():
     )
     parser_diff.add_argument("--shortstat", action="store_true")
     parser_diff.add_argument("--show-no-change", action="store_true")
+    subparsers.add_parser(
+        "branch",
+        help="List, create, or delete branches",
+    )
 
     main_args, remaining_args = parser.parse_known_args(sys.argv[1:])
     env = {**os.environ}
@@ -45,5 +50,8 @@ def main():
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
         params = Params(main_args, sub_args, sub_remaining_args, env)
         diff_cmd(params)
+    elif main_args.subcmd == "branch":
+        params = Params(main_args, None, remaining_args, env)
+        branch_cmd(params)
     else:
         raise Exception()

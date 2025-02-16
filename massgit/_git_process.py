@@ -80,3 +80,22 @@ def diff(
         cwd=os.path.join(basedir or "", repo["dirname"]),
     )
     return res
+
+
+def trap_stdout(
+    subcmd: str,
+    repo: Repo,
+    args: t.Sequence[str] = tuple(),
+    *,
+    git: str = "git",
+    basedir: t.Optional[str] = None,
+    encoding: str = sys.getdefaultencoding(),
+) -> subprocess.CompletedProcess[str]:
+    cmd = [git, subcmd, *args]
+    res = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        encoding=encoding,
+        cwd=os.path.join(basedir or "", repo["dirname"]),
+    )
+    return res
