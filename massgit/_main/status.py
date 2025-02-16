@@ -14,6 +14,7 @@ def status_cmd(params: Params):
         params.remaining_args,
         basedir=params.basedir,
         git=params.git_exec_path,
+        env=params.env,
     )
 
 
@@ -23,9 +24,10 @@ def status(
     *,
     basedir: t.Optional[str] = None,
     git: str = "git",
+    env: t.Union[t.Mapping[str, str]] = None,
 ):
     for repo in repos:
-        res = gitproc.status(repo, args, basedir=basedir, git=git)
+        res = gitproc.status(repo, args, basedir=basedir, git=git, env=env)
 
         if res.returncode == 0:
             for line in res.stdout.split("\n"):

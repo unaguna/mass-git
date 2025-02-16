@@ -12,6 +12,7 @@ def clone(
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
+    env: t.Optional[t.Mapping[str, str]] = None,
 ) -> int:
     cmd = [git, "clone", repo["url"]]
     if not repo["dirname_is_default"]:
@@ -21,6 +22,7 @@ def clone(
         cmd,
         encoding=encoding,
         cwd=basedir,
+        env=env,
     )
     return res.returncode
 
@@ -32,6 +34,7 @@ def checkout(
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
+    env: t.Optional[t.Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
     res = subprocess.run(
         [git, "checkout", *args],
@@ -39,6 +42,7 @@ def checkout(
         stderr=subprocess.PIPE,
         encoding=encoding,
         cwd=os.path.join(basedir or "", repo["dirname"]),
+        env=env,
     )
     return res
 
@@ -50,6 +54,7 @@ def status(
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
+    env: t.Optional[t.Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
     res = subprocess.run(
         [git, "status", "--porcelain", *(arg for arg in args if arg != "--porcelain")],
@@ -57,6 +62,7 @@ def status(
         stderr=subprocess.PIPE,
         encoding=encoding,
         cwd=os.path.join(basedir or "", repo["dirname"]),
+        env=env,
     )
     return res
 
@@ -69,6 +75,7 @@ def diff(
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
+    env: t.Optional[t.Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
     cmd = [git, "diff"]
     if is_shortstat:
@@ -81,6 +88,7 @@ def diff(
         stderr=subprocess.PIPE,
         encoding=encoding,
         cwd=os.path.join(basedir or "", repo["dirname"]),
+        env=env,
     )
     return res
 
@@ -93,6 +101,7 @@ def trap_stdout(
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
+    env: t.Optional[t.Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
     cmd = [git, subcmd, *args]
     res = subprocess.run(
@@ -100,5 +109,6 @@ def trap_stdout(
         stdout=subprocess.PIPE,
         encoding=encoding,
         cwd=os.path.join(basedir or "", repo["dirname"]),
+        env=env,
     )
     return res

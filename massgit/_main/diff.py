@@ -15,6 +15,7 @@ def diff_cmd(params: Params):
         is_shortstat=params.is_shortstat,
         show_no_change=params.show_no_change,
         git=params.git_exec_path,
+        env=params.env,
     )
 
 
@@ -26,6 +27,7 @@ def diff(
     is_shortstat: bool = False,
     show_no_change: bool = False,
     git: str = "git",
+    env: t.Union[t.Mapping[str, str]] = None,
 ):
     for repo in repos:
         res = gitproc.diff(
@@ -34,6 +36,7 @@ def diff(
             basedir=basedir,
             is_shortstat=is_shortstat,
             git=git,
+            env=env,
         )
         if res.returncode == 0:
             stdout_trimmed = res.stdout.strip()

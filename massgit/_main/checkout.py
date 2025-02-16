@@ -14,6 +14,7 @@ def checkout_cmd(params: Params):
         params.remaining_args,
         basedir=params.basedir,
         git=params.git_exec_path,
+        env=params.env,
     )
 
 
@@ -23,6 +24,7 @@ def checkout(
     *,
     basedir: t.Optional[str] = None,
     git: str = "git",
+    env: t.Union[t.Mapping[str, str]] = None,
 ):
     for repo in repos:
         print(repo["dirname"], "checkout", *args, end="")
@@ -31,6 +33,7 @@ def checkout(
             args,
             basedir=basedir,
             git=git,
+            env=env,
         )
 
         if res.returncode == 0:

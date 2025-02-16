@@ -27,6 +27,10 @@ class Params:
         self._cwd_config_dir = cwd_config_dir
 
     @property
+    def env(self) -> t.Dict[str, str]:
+        return self._env
+
+    @property
     def remaining_args(self) -> t.Sequence[str]:
         return self._remaining_args
 
