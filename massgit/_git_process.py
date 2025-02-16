@@ -47,26 +47,6 @@ def checkout(
     return res
 
 
-def status(
-    repo: Repo,
-    args: t.Sequence[str] = tuple(),
-    *,
-    git: str = "git",
-    basedir: t.Optional[str] = None,
-    encoding: str = sys.getdefaultencoding(),
-    env: t.Optional[t.Mapping[str, str]] = None,
-) -> subprocess.CompletedProcess[str]:
-    res = subprocess.run(
-        [git, "status", "--porcelain", *(arg for arg in args if arg != "--porcelain")],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        encoding=encoding,
-        cwd=os.path.join(basedir or "", repo["dirname"]),
-        env=env,
-    )
-    return res
-
-
 def diff(
     repo: Repo,
     args: t.Sequence[str] = tuple(),

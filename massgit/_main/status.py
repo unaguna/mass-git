@@ -26,8 +26,13 @@ def status(
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
 ):
+    if "--porcelain" not in args:
+        args = ["--porcelain", *args]
+
     for repo in repos:
-        res = gitproc.status(repo, args, basedir=basedir, git=git, env=env)
+        res = gitproc.trap_stdout(
+            "status", repo, args, basedir=basedir, git=git, env=env
+        )
 
         if res.returncode == 0:
             for line in res.stdout.split("\n"):
