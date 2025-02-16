@@ -8,7 +8,7 @@ import massgit._git_process as gitproc
 
 def cmn_each_repo_cmd(subcmd: str, params: Params):
     repos = load_repos(params.repos_file)
-    branch(
+    cmn_each_repo(
         subcmd,
         repos,
         params.remaining_args,
@@ -16,7 +16,7 @@ def cmn_each_repo_cmd(subcmd: str, params: Params):
     )
 
 
-def branch(
+def cmn_each_repo(
     subcmd: str,
     repos: t.Sequence[Repo],
     args: t.Sequence[str] = tuple(),

@@ -33,6 +33,10 @@ def main():
         "branch",
         help="List, create, or delete branches",
     )
+    subparsers.add_parser(
+        "fetch",
+        help="Download objects and refs from another repository",
+    )
 
     main_args, remaining_args = parser.parse_known_args(sys.argv[1:])
     env = {**os.environ}
@@ -50,7 +54,7 @@ def main():
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
         params = Params(main_args, sub_args, sub_remaining_args, env)
         diff_cmd(params)
-    elif main_args.subcmd in ("branch",):
+    elif main_args.subcmd in ("branch", "fetch"):
         params = Params(main_args, None, remaining_args, env)
         cmn_each_repo_cmd(main_args.subcmd, params)
     else:
