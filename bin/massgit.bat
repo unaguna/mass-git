@@ -2,11 +2,14 @@
 setlocal
 
 REM バッチファイル自身が存在するディレクトリパスを取得
-set "script_dir=%~dp0"
-set "script_dir=%script_dir:~0,-1%"
+set "bin_dir=%~dp0"
+set "bin_dir=%bin_dir:~0,-1%"
+set "root_dir=%bin_dir%\.."
+set "script_dir=%root_dir%\etc"
+
 
 REM 環境変数 PYTHONPATH に親ディレクトリを指定
-for %%I in ("%script_dir%") do set "PYTHONPATH=%%~dpI"
+set "PYTHONPATH=%root_dir%"
 
 REM 仮想環境のディレクトリを指定
 set "venv_dir=%script_dir%\.venv"
