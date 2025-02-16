@@ -30,7 +30,7 @@ class Params:
     def repos_file(self) -> str:
         if EnvKey.REPOS_FILE in self._env:
             return self._env[EnvKey.REPOS_FILE]
-        return "repos.json"
+        return ".massgit/repos.json"
 
     @property
     def git_exec_path(self) -> str:

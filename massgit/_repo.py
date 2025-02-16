@@ -6,7 +6,7 @@ from ._types import Repo
 
 
 def load_repos(
-    repos_file: t.Union[str, os.PathLike] = "repos.json",
+    repos_file: t.Union[str, os.PathLike] = ".massgit/repos.json",
 ) -> t.Sequence[Repo]:
     with open(repos_file, mode="r", encoding="utf-8") as fp:
         repos = json.load(fp)
