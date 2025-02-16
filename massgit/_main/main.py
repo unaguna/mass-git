@@ -2,6 +2,7 @@ import os
 import typing as t
 from argparse import ArgumentParser
 
+from .grep import grep_cmd
 from .._utils.dotenv import load_dotenv
 from ._params import Params
 from .checkout import checkout_cmd
@@ -83,15 +84,15 @@ def main(
             main_args, sub_args, sub_remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         diff_cmd(params)
+    elif main_args.subcmd == "grep":
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
+        grep_cmd(params)
     elif main_args.subcmd in ("branch", "fetch", "pull"):
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         cmn_each_repo_cmd(main_args.subcmd, params)
-    elif main_args.subcmd in ("grep",):
-        params = Params(
-            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
-        cmn_each_repo_cmd(main_args.subcmd, params, repo_for_each_stdout_line=True)
     else:
         raise Exception()
