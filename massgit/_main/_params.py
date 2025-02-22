@@ -35,10 +35,14 @@ class Params:
         return self._remaining_args
 
     @property
+    def massgit_dir(self) -> str:
+        return self._cwd_config_dir
+
+    @property
     def repos_file(self) -> str:
         if EnvKey.REPOS_FILE in self._env:
             return self._env[EnvKey.REPOS_FILE]
-        return os.path.join(self._cwd_config_dir, "repos.json")
+        return os.path.join(self.massgit_dir, "repos.json")
 
     @property
     def git_exec_path(self) -> str:

@@ -39,7 +39,7 @@ def initialize(
     for git_dir in Path(basedir).rglob(git_dir_name):
         dirname = git_dir.relative_to(basedir).parent
         try:
-            url = get_remote_url("origin", dirname)
+            url = get_remote_url("origin", dirname, basedir=basedir)
         except GitExitWithNonZeroException:
             no_url_dirs.append(dirname)
             url = None

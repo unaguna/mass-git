@@ -7,15 +7,18 @@ from ..initialize import initialize
 def massinit_cmd(params: Params) -> int:
     return massinit(
         basedir=params.basedir,
+        massgit_dir_name=params.massgit_dir,
     )
 
 
 def massinit(
     *,
     basedir: t.Optional[str] = None,
+    massgit_dir_name: t.Optional[str] = None,
 ) -> int:
     result = initialize(
         basedir=basedir or ".",
+        massgit_dir_name=massgit_dir_name,
     )
 
     if len(result.no_url_dirs) > 0:
