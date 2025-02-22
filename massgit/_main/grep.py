@@ -1,3 +1,5 @@
+import os
+import sys
 import typing as t
 
 from .._types import Repo
@@ -43,10 +45,10 @@ def grep(
             for line in res.stdout.split("\n"):
                 if len(line) <= 0:
                     continue
-                print(repo["dirname"], line)
+                print(repo["dirname"] + os.sep + line)
         else:
             exit_codes_err.append(res.returncode)
-            print(repo["dirname"] + f": failed ({res.returncode})")
+            print(repo["dirname"] + f": failed ({res.returncode})", file=sys.stderr)
 
     if len(exit_codes_err) > 0:
         return max(exit_codes_err)
