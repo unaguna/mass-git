@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 import typing as t
 
-from ._types import RepoOrigin
+from ._git_process import get_remote_url
+from ._types import RepoOrigin, GitExitWithNonZeroException
 
 
 def initialize(
@@ -29,7 +30,13 @@ def initialize(
     repos: t.List[RepoOrigin] = []
     for git_dir in Path(basedir).rglob(git_dir_name):
         dirname = git_dir.relative_to(basedir).parent
-        repos.append({"url": None, "dirname": dirname})
+        try:
+            url = get_remote_url("origin", dirname)
+        except GitExitWithNonZeroException:
+            # TODO: 警告
+            url = None
+
+        repos.append({"url": url, "dirname": dirname})
 
     with open(os.path.join(massgit_dir, repos_filename), mode="w") as fp:
         json.dump(repos, fp=fp, indent=2, default=str)
