@@ -2,11 +2,11 @@ import typing as t
 
 
 class Repo(t.TypedDict):
-    url: str
+    url: t.Optional[str]
     dirname: t.Optional[str]  # NotRequired
     dirname_is_default: bool
 
 
 class RepoOrigin(t.TypedDict):
-    url: str
+    url: t.Optional[str]
     dirname: t.Optional[str]  # NotRequired

@@ -29,7 +29,7 @@ def initialize(
     repos: t.List[RepoOrigin] = []
     for git_dir in Path(basedir).rglob(git_dir_name):
         dirname = git_dir.relative_to(basedir).parent
-        repos.append({"url": "", "dirname": dirname})
+        repos.append({"url": None, "dirname": dirname})
 
     with open(os.path.join(massgit_dir, repos_filename), mode="w") as fp:
         json.dump(repos, fp=fp, indent=2, default=str)

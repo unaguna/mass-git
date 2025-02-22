@@ -14,6 +14,9 @@ def clone(
     encoding: str = sys.getdefaultencoding(),
     env: t.Optional[t.Mapping[str, str]] = None,
 ) -> int:
+    if repo.get("url") is None:
+        raise ValueError("cannot clone repo with None of url")
+
     cmd = [git, "clone", repo["url"]]
     if not repo["dirname_is_default"]:
         cmd.append(repo["dirname"])
