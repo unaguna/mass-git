@@ -5,6 +5,15 @@ import typing as t
 from ._types import Repo
 
 
+def load_repos_if_exists(
+    repos_file: t.Union[str, os.PathLike] = ".massgit/repos.json",
+) -> t.Optional[t.Sequence[Repo]]:
+    if os.path.exists(repos_file):
+        return load_repos(repos_file)
+    else:
+        return None
+
+
 def load_repos(
     repos_file: t.Union[str, os.PathLike] = ".massgit/repos.json",
 ) -> t.Sequence[Repo]:

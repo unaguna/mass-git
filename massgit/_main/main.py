@@ -3,6 +3,7 @@ import typing as t
 from argparse import ArgumentParser
 
 from .grep import grep_cmd
+from .massinit import massinit_cmd
 from .._utils.dotenv import load_dotenv
 from ._params import Params
 from .checkout import checkout_cmd
@@ -22,6 +23,10 @@ def main(
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
     subparsers.add_parser("clone", help="Clone repositories into new directories")
+    subparsers.add_parser(
+        "massinit",
+        help="Initialize massgit",
+    )
     subparsers.add_parser(
         "checkout",
         help="Switch branches or restore working tree files",
@@ -68,6 +73,11 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = clone_cmd(params)
+    elif main_args.subcmd == "massinit":
+        params = Params(
+            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
+        )
+        exit_code = massinit_cmd(params)
     elif main_args.subcmd == "checkout":
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
