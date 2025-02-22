@@ -55,6 +55,7 @@ def diff(
     args: t.Sequence[str] = tuple(),
     *,
     is_shortstat: bool = False,
+    name_only: bool = False,
     git: str = "git",
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
@@ -63,6 +64,8 @@ def diff(
     cmd = [git, "diff"]
     if is_shortstat:
         cmd.append("--shortstat")
+    if name_only:
+        cmd.append("--name-only")
     if len(args) > 0:
         cmd.append(*args)
     res = subprocess.run(

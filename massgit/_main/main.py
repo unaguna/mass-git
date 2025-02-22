@@ -41,6 +41,7 @@ def main(
     )
     parser_diff.add_argument("--shortstat", action="store_true")
     parser_diff.add_argument("--show-no-change", action="store_true")
+    parser_diff.add_argument("--name-only", action="store_true")
     subparsers.add_parser(
         "branch",
         help="List, create, or delete branches",

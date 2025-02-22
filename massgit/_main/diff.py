@@ -1,3 +1,4 @@
+import os
 import typing as t
 
 from .._types import Repo
@@ -14,6 +15,7 @@ def diff_cmd(params: Params) -> int:
         basedir=params.basedir,
         is_shortstat=params.is_shortstat,
         show_no_change=params.show_no_change,
+        name_only=params.name_only,
         git=params.git_exec_path,
         env=params.env,
     )
@@ -26,6 +28,7 @@ def diff(
     basedir: t.Optional[str] = None,
     is_shortstat: bool = False,
     show_no_change: bool = False,
+    name_only: bool = False,
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
 ) -> int:
@@ -36,6 +39,7 @@ def diff(
             args,
             basedir=basedir,
             is_shortstat=is_shortstat,
+            name_only=name_only,
             git=git,
             env=env,
         )
@@ -46,6 +50,11 @@ def diff(
             if show_no_change or len(stdout_trimmed) > 0:
                 if is_shortstat:
                     print(repo["dirname"] + ":", stdout_trimmed or "0 files changed")
+                elif name_only:
+                    for line in stdout_trimmed.split("\n"):
+                        line_stripped = line.strip()
+                        if len(line_stripped) > 0:
+                            print(repo["dirname"] + os.sep + line_stripped)
                 else:
                     print(repo["dirname"])
                     print(res.stdout)

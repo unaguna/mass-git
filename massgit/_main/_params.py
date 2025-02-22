@@ -61,3 +61,7 @@ class Params:
     @property
     def show_no_change(self) -> bool:
         return getattr(self._args, "show_no_change", False)
+
+    @property
+    def name_only(self) -> bool:
+        return getattr(self._args, "name_only", False)
