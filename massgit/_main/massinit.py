@@ -14,8 +14,13 @@ def massinit(
     *,
     basedir: t.Optional[str] = None,
 ) -> int:
-    massgit_dir = initialize(
+    result = initialize(
         basedir=basedir or ".",
     )
-    print("massgit is initialized:", massgit_dir)
+
+    if len(result.no_url_dirs) > 0:
+        for dirname in result.no_url_dirs:
+            print(f"WARN: cannot register url of '{dirname}' because get-url is failed")
+
+    print("massgit is initialized:", result.massgit_dir)
     return 0
