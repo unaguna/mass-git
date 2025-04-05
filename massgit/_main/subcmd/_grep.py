@@ -3,7 +3,7 @@ import sys
 import typing as t
 
 from ._cmn import SubCmd
-from ..stdout_type import StdoutNameEachLinePrefix, StdoutType
+from ..res_processor import StdoutNameEachLinePrefix, SubprocessResultProcessor
 
 
 class GrepCmd(SubCmd):
@@ -13,7 +13,9 @@ class GrepCmd(SubCmd):
     def help(self) -> str:
         return "Print lines matching a pattern"
 
-    def stdout_type(self, args: t.Sequence[str]) -> StdoutType:
+    def subprocess_result_processor(
+        self, args: t.Sequence[str]
+    ) -> SubprocessResultProcessor:
         return StdoutNameEachLinePrefix(sep=os.sep, trim_empty_line=True)
 
     def file_to_output_fail_msg(self, args: t.Sequence[str]) -> t.TextIO:

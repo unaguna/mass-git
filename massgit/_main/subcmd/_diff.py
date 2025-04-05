@@ -2,7 +2,11 @@ import os
 import typing as t
 
 from ._cmn import SubCmd
-from ..stdout_type import StdoutDefault, StdoutNameEachLinePrefix, StdoutType
+from ..res_processor import (
+    StdoutDefault,
+    StdoutNameEachLinePrefix,
+    SubprocessResultProcessor,
+)
 
 
 class DiffCmd(SubCmd):
@@ -12,7 +16,9 @@ class DiffCmd(SubCmd):
     def help(self) -> str:
         return "Show changes between commits, commit and working tree, etc"
 
-    def stdout_type(self, args: t.Sequence[str]) -> StdoutType:
+    def subprocess_result_processor(
+        self, args: t.Sequence[str]
+    ) -> SubprocessResultProcessor:
         joined_args = " ".join(args)
         shortstat = "--shortstat" in joined_args
         name_only = "--name-only" in joined_args

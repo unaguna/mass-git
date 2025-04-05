@@ -2,12 +2,12 @@ import abc
 import typing as t
 
 
-class StdoutType(abc.ABC):
+class SubprocessResultProcessor(abc.ABC):
     @abc.abstractmethod
     def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str): ...
 
 
-class StdoutDefault(StdoutType):
+class StdoutDefault(SubprocessResultProcessor):
     _output_with_empty_stdout: str
 
     def __init__(self, *, output_with_empty_stdout: str = "done"):
@@ -22,7 +22,7 @@ class StdoutDefault(StdoutType):
             print(origin_stdout)
 
 
-class StdoutOnlyResultMessage(StdoutType):
+class StdoutOnlyResultMessage(SubprocessResultProcessor):
     _message_by_code: t.Callable[[int], str]
 
     def __init__(self, *, message_by_code: t.Optional[t.Callable[[int], str]] = None):
@@ -39,7 +39,7 @@ class StdoutOnlyResultMessage(StdoutType):
             return f"failed ({exit_code})"
 
 
-class StdoutNameEachLinePrefix(StdoutType):
+class StdoutNameEachLinePrefix(SubprocessResultProcessor):
     _sep: str
     _trim_empty_line: bool
 

@@ -1,7 +1,11 @@
 import typing as t
 
 from ._cmn import SubCmd
-from ..stdout_type import StdoutDefault, StdoutNameEachLinePrefix, StdoutType
+from ..res_processor import (
+    StdoutDefault,
+    StdoutNameEachLinePrefix,
+    SubprocessResultProcessor,
+)
 
 
 class StatusCmd(SubCmd):
@@ -11,7 +15,9 @@ class StatusCmd(SubCmd):
     def help(self) -> str:
         return "Show the working tree status"
 
-    def stdout_type(self, args: t.Sequence[str]) -> StdoutType:
+    def subprocess_result_processor(
+        self, args: t.Sequence[str]
+    ) -> SubprocessResultProcessor:
         porcelain = "--porcelain" in ",".join(args)
 
         if porcelain:

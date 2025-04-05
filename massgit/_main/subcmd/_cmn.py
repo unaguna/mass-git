@@ -2,7 +2,7 @@ import abc
 import sys
 import typing as t
 
-from ..stdout_type import StdoutType
+from ..res_processor import SubprocessResultProcessor
 
 
 class SubCmd(abc.ABC):
@@ -13,7 +13,9 @@ class SubCmd(abc.ABC):
     def help(self) -> t.Optional[str]: ...
 
     @abc.abstractmethod
-    def stdout_type(self, args: t.Sequence[str]) -> StdoutType: ...
+    def subprocess_result_processor(
+        self, args: t.Sequence[str]
+    ) -> SubprocessResultProcessor: ...
 
     def file_to_output_fail_msg(self, args: t.Sequence[str]) -> t.TextIO:
         return sys.stdout

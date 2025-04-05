@@ -1,7 +1,7 @@
 import typing as t
 
 from ._cmn import SubCmd
-from ..stdout_type import StdoutDefault
+from ..res_processor import StdoutDefault
 
 
 class BranchCmd(SubCmd):
@@ -11,5 +11,5 @@ class BranchCmd(SubCmd):
     def help(self) -> str:
         return "List, create, or delete branches"
 
-    def stdout_type(self, args: t.Sequence[str]):
+    def subprocess_result_processor(self, args: t.Sequence[str]):
         return StdoutDefault()

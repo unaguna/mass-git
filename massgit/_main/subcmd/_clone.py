@@ -1,7 +1,7 @@
 import typing as t
 
 from ._cmn import SubCmd
-from ..stdout_type import StdoutOnlyResultMessage
+from ..res_processor import StdoutOnlyResultMessage
 
 
 class CloneCmd(SubCmd):
@@ -11,5 +11,5 @@ class CloneCmd(SubCmd):
     def help(self) -> str:
         return "Clone repositories into new directories"
 
-    def stdout_type(self, args: t.Sequence[str]):
+    def subprocess_result_processor(self, args: t.Sequence[str]):
         return StdoutOnlyResultMessage()
