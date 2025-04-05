@@ -46,7 +46,7 @@ def cmn_each_repo(
 
         if res.returncode == 0:
             subcmd.stdout_type(args=args).print_stdout(
-                res.stdout, dirname=repo["dirname"]
+                res.returncode, res.stdout, dirname=repo["dirname"]
             )
         else:
             print(
