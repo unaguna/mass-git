@@ -32,6 +32,10 @@ def main(
         help="Switch branches or restore working tree files",
     )
     subparsers.add_parser(
+        "config",
+        help="Get and set repository options",
+    )
+    subparsers.add_parser(
         "status",
         help="Show the working tree status",
     )
@@ -100,7 +104,7 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = grep_cmd(params)
-    elif main_args.subcmd in ("branch", "fetch", "pull"):
+    elif main_args.subcmd in ("config", "branch", "fetch", "pull"):
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
