@@ -45,7 +45,9 @@ def cmn_each_repo(
         exit_codes.append(res.returncode)
 
         if res.returncode == 0:
-            subcmd.stdout_type().print_stdout(res.stdout, dirname=repo["dirname"])
+            subcmd.stdout_type(args=args).print_stdout(
+                res.stdout, dirname=repo["dirname"]
+            )
         else:
             print(repo["dirname"] + f": failed ({res.returncode})")
 

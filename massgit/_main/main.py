@@ -12,9 +12,9 @@ from .clone import clone_cmd
 from .cmn_each_repo_cmd import cmn_each_repo_cmd
 from .diff import diff_cmd
 from .status import status_cmd
-from .subcmd import ConfigCmd
+from .subcmd import ConfigCmd, StatusCmd
 
-subcmd_list = [ConfigCmd()]
+subcmd_list = [ConfigCmd(), StatusCmd()]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
 
@@ -41,10 +41,6 @@ def main(
             cmd.name(),
             help=cmd.help(),
         )
-    subparsers.add_parser(
-        "status",
-        help="Show the working tree status",
-    )
     parser_diff = subparsers.add_parser(
         "diff",
         help="Show changes between commits, commit and working tree, etc",
@@ -99,11 +95,6 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = checkout_cmd(params)
-    elif main_args.subcmd == "status":
-        params = Params(
-            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
-        exit_code = status_cmd(params)
     elif main_args.subcmd == "diff":
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
         params = Params(
