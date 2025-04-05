@@ -2,6 +2,7 @@ import os
 import typing as t
 from argparse import ArgumentParser
 
+from .cmn_each_repo import cmn_each_repo_cmd2
 from .grep import grep_cmd
 from .massinit import massinit_cmd
 from .._utils.dotenv import load_dotenv
@@ -11,6 +12,10 @@ from .clone import clone_cmd
 from .cmn_each_repo_cmd import cmn_each_repo_cmd
 from .diff import diff_cmd
 from .status import status_cmd
+from .subcmd import ConfigCmd
+
+subcmd_list = [ConfigCmd()]
+subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
 
 def main(
@@ -31,10 +36,11 @@ def main(
         "checkout",
         help="Switch branches or restore working tree files",
     )
-    subparsers.add_parser(
-        "config",
-        help="Get and set repository options",
-    )
+    for cmd in subcmd_list:
+        subparsers.add_parser(
+            cmd.name(),
+            help=cmd.help(),
+        )
     subparsers.add_parser(
         "status",
         help="Show the working tree status",
@@ -73,7 +79,12 @@ def main(
     )
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
-    if main_args.subcmd == "clone":
+    if main_args.subcmd in subcmds:
+        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        exit_code = cmn_each_repo_cmd2(
+            subcmds[main_args.subcmd], params, remaining_args
+        )
+    elif main_args.subcmd == "clone":
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
@@ -104,7 +115,7 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = grep_cmd(params)
-    elif main_args.subcmd in ("config", "branch", "fetch", "pull"):
+    elif main_args.subcmd in ("branch", "fetch", "pull"):
         params = Params(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
