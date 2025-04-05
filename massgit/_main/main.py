@@ -6,12 +6,27 @@ from .cmn_each_repo import cmn_each_repo_cmd2
 from .massinit import massinit_cmd
 from .._utils.dotenv import load_dotenv
 from ._params import Params
-from .checkout import checkout_cmd
 from .clone import clone_cmd
 from .diff import diff_cmd
-from .subcmd import BranchCmd, ConfigCmd, FetchCmd, GrepCmd, PullCmd, StatusCmd
+from .subcmd import (
+    BranchCmd,
+    CheckoutCmd,
+    ConfigCmd,
+    FetchCmd,
+    GrepCmd,
+    PullCmd,
+    StatusCmd,
+)
 
-subcmd_list = [ConfigCmd(), GrepCmd(), StatusCmd(), BranchCmd(), FetchCmd(), PullCmd()]
+subcmd_list = [
+    ConfigCmd(),
+    GrepCmd(),
+    StatusCmd(),
+    CheckoutCmd(),
+    BranchCmd(),
+    FetchCmd(),
+    PullCmd(),
+]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
 
@@ -28,10 +43,6 @@ def main(
     subparsers.add_parser(
         "massinit",
         help="Initialize massgit",
-    )
-    subparsers.add_parser(
-        "checkout",
-        help="Switch branches or restore working tree files",
     )
     for cmd in subcmd_list:
         subparsers.add_parser(
@@ -71,11 +82,6 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = massinit_cmd(params)
-    elif main_args.subcmd == "checkout":
-        params = Params(
-            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
-        exit_code = checkout_cmd(params)
     elif main_args.subcmd == "diff":
         sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
         params = Params(
