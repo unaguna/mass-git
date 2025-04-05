@@ -16,10 +16,12 @@ from .subcmd import (
     GrepCmd,
     PullCmd,
     StatusCmd,
+    DiffCmd,
 )
 
 subcmd_list = [
     ConfigCmd(),
+    DiffCmd(),
     GrepCmd(),
     StatusCmd(),
     CheckoutCmd(),
@@ -49,13 +51,6 @@ def main(
             cmd.name(),
             help=cmd.help(),
         )
-    parser_diff = subparsers.add_parser(
-        "diff",
-        help="Show changes between commits, commit and working tree, etc",
-    )
-    parser_diff.add_argument("--shortstat", action="store_true")
-    parser_diff.add_argument("--show-no-change", action="store_true")
-    parser_diff.add_argument("--name-only", action="store_true")
 
     main_args, remaining_args = parser.parse_known_args(argv)
 
@@ -82,12 +77,6 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = massinit_cmd(params)
-    elif main_args.subcmd == "diff":
-        sub_args, sub_remaining_args = parser_diff.parse_known_args(remaining_args)
-        params = Params(
-            main_args, sub_args, sub_remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
-        exit_code = diff_cmd(params)
     else:
         raise Exception()
 
