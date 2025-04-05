@@ -1,5 +1,6 @@
 from ._branch import BranchCmd
 from ._checkout import CheckoutCmd
+from ._clone import CloneCmd
 from ._config import ConfigCmd
 from ._cmn import SubCmd
 from ._diff import DiffCmd
