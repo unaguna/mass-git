@@ -67,9 +67,7 @@ def main(
             subcmds[main_args.subcmd], params, remaining_args
         )
     elif main_args.subcmd == "massinit":
-        params = Params(
-            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
+        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         exit_code = massinit_cmd(params)
     else:
         raise Exception()
