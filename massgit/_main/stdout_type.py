@@ -8,10 +8,15 @@ class StdoutType(abc.ABC):
 
 
 class StdoutDefault(StdoutType):
+    _output_with_empty_stdout: str
+
+    def __init__(self, *, output_with_empty_stdout: str = "done"):
+        self._output_with_empty_stdout = output_with_empty_stdout
+
     def print_stdout(self, origin_stdout: str, dirname: str):
         stdout_trimmed = origin_stdout.strip()
         if stdout_trimmed.count("\n") <= 0:
-            print(dirname + ":", stdout_trimmed or "done")
+            print(dirname + ":", stdout_trimmed or self._output_with_empty_stdout)
         else:
             print(dirname + ":")
             print(origin_stdout)
