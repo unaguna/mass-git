@@ -51,4 +51,4 @@ def cmn_each_repo(
         else:
             print(repo["dirname"] + f": failed ({res.returncode})")
 
-    return max(exit_codes)
+    return subcmd.summarize_exit_code(exit_codes)

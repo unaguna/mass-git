@@ -13,3 +13,6 @@ class SubCmd(abc.ABC):
 
     @abc.abstractmethod
     def stdout_type(self, args: t.Sequence[str]) -> StdoutType: ...
+
+    def summarize_exit_code(self, exit_codes: t.Iterable[int]) -> int:
+        return max(exit_codes)
