@@ -9,12 +9,10 @@ from .._utils.dotenv import load_dotenv
 from ._params import Params
 from .checkout import checkout_cmd
 from .clone import clone_cmd
-from .cmn_each_repo_cmd import cmn_each_repo_cmd
 from .diff import diff_cmd
-from .status import status_cmd
-from .subcmd import ConfigCmd, StatusCmd
+from .subcmd import BranchCmd, ConfigCmd, FetchCmd, PullCmd, StatusCmd
 
-subcmd_list = [ConfigCmd(), StatusCmd()]
+subcmd_list = [ConfigCmd(), StatusCmd(), BranchCmd(), FetchCmd(), PullCmd()]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
 
@@ -48,18 +46,6 @@ def main(
     parser_diff.add_argument("--shortstat", action="store_true")
     parser_diff.add_argument("--show-no-change", action="store_true")
     parser_diff.add_argument("--name-only", action="store_true")
-    subparsers.add_parser(
-        "branch",
-        help="List, create, or delete branches",
-    )
-    subparsers.add_parser(
-        "fetch",
-        help="Download objects and refs from another repository",
-    )
-    subparsers.add_parser(
-        "pull",
-        help="Fetch from and integrate with another repository or a local branch",
-    )
     subparsers.add_parser(
         "grep",
         help="Print lines matching a pattern",
@@ -106,11 +92,6 @@ def main(
             main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = grep_cmd(params)
-    elif main_args.subcmd in ("branch", "fetch", "pull"):
-        params = Params(
-            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
-        exit_code = cmn_each_repo_cmd(main_args.subcmd, params)
     else:
         raise Exception()
 
