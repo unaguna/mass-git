@@ -3,16 +3,15 @@ import typing as t
 from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
-from .grep import grep_cmd
 from .massinit import massinit_cmd
 from .._utils.dotenv import load_dotenv
 from ._params import Params
 from .checkout import checkout_cmd
 from .clone import clone_cmd
 from .diff import diff_cmd
-from .subcmd import BranchCmd, ConfigCmd, FetchCmd, PullCmd, StatusCmd
+from .subcmd import BranchCmd, ConfigCmd, FetchCmd, GrepCmd, PullCmd, StatusCmd
 
-subcmd_list = [ConfigCmd(), StatusCmd(), BranchCmd(), FetchCmd(), PullCmd()]
+subcmd_list = [ConfigCmd(), GrepCmd(), StatusCmd(), BranchCmd(), FetchCmd(), PullCmd()]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
 
@@ -46,10 +45,6 @@ def main(
     parser_diff.add_argument("--shortstat", action="store_true")
     parser_diff.add_argument("--show-no-change", action="store_true")
     parser_diff.add_argument("--name-only", action="store_true")
-    subparsers.add_parser(
-        "grep",
-        help="Print lines matching a pattern",
-    )
 
     main_args, remaining_args = parser.parse_known_args(argv)
 
@@ -87,11 +82,6 @@ def main(
             main_args, sub_args, sub_remaining_args, env, cwd_config_dir=cwd_config_dir
         )
         exit_code = diff_cmd(params)
-    elif main_args.subcmd == "grep":
-        params = Params(
-            main_args, None, remaining_args, env, cwd_config_dir=cwd_config_dir
-        )
-        exit_code = grep_cmd(params)
     else:
         raise Exception()
 

@@ -49,6 +49,9 @@ def cmn_each_repo(
                 res.stdout, dirname=repo["dirname"]
             )
         else:
-            print(repo["dirname"] + f": failed ({res.returncode})")
+            print(
+                repo["dirname"] + f": failed ({res.returncode})",
+                file=subcmd.file_to_output_fail_msg(args),
+            )
 
     return subcmd.summarize_exit_code(exit_codes)
