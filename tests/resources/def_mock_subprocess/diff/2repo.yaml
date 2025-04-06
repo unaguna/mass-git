@@ -13,6 +13,7 @@ mock:
       }
       +
       +// a
+    stderr: err1
   - repo:
       dirname: repo2
     expected_cmd: ["git", "diff"]
@@ -27,6 +28,7 @@ mock:
       }
       +
       +// b
+    stderr: err2
 expected_stdout: |+
   repo1:
   diff --git a/build.gradle.kts b/build.gradle.kts
@@ -50,3 +52,6 @@ expected_stdout: |+
   }
   +
   +// b
+expected_stderr: |+
+  err1
+  err2
