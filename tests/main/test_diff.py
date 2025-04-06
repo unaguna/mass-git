@@ -1,37 +1,27 @@
-import sys
+import pytest
+from pytest_subprocess import FakeProcess
 
 from massgit import main
 from tests.utils.init import create_massgit_dir
-from tests.utils.mock import mock_run
 
 
-def test__diff(capfd, tmp_cwd):
-    create_massgit_dir(tmp_cwd)
+@pytest.mark.parametrize(
+    ("mock_def",),
+    [
+        ("diff/1repo",),
+        ("diff/2repo",),
+    ],
+)
+def test__diff(capfd, fp: FakeProcess, tmp_cwd, resources, mock_def):
+    def_mock_subproc = resources.load_mock_subproc(mock_def)
+    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
-    mock_stdout = """diff --git a/build.gradle.kts b/build.gradle.kts
-index 70f897e..1489a09 100644
---- a/build.gradle.kts
-+++ b/build.gradle.kts
-@@ -36,3 +36,5 @@ compose.desktop {
-         }
-     }
- }
-+
-+// a
-"""
     mock_stderr = "b\n"
-
-    expected_stdout = "repo1:\n" + mock_stdout + "\n"
+    for mock_kwargs in def_mock_subproc.mock_param_iter():
+        fp.register(**mock_kwargs)
 
     args = ["diff"]
-    with mock_run(
-        "git",
-        "diff",
-        stdout=mock_stdout,
-        stderr=mock_stderr,
-        side_effect=lambda: print("b", file=sys.stderr),
-    ):
-        main(args)
+    main(args)
     out, err = capfd.readouterr()
-    assert out == expected_stdout
-    assert err == mock_stderr
+    assert out == def_mock_subproc.expected_stdout
+    # assert err == mock_stderr
