@@ -12,7 +12,10 @@ from tests.utils.init import create_massgit_dir
         ("diff/2repo",),
         ("diff/some_found",),
         ("diff/some_found_shortstat",),
-        ("diff/some_found_nameonly",),
+        ("diff/some_found_name_only",),
+        ("diff/some_error",),
+        ("diff/some_error_reverse",),
+        ("diff/some_error_shortstat",),
     ],
 )
 def test__diff(capfd, fp: FakeProcess, mock_sep, tmp_cwd, resources, mock_def):
