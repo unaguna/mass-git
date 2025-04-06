@@ -4,6 +4,8 @@ from tests.utils.resources import DefMockSubproc
 
 
 class OutputDetail:
+    """the object to print details of pytest into stdout"""
+
     def mock(self, mock: DefMockSubproc):
         print()
         print("--mock--")

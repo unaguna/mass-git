@@ -11,6 +11,8 @@ from tests.utils.resources import TestResources, DefMockSubproc
 
 @pytest.fixture
 def mock_sep(monkeypatch, tmp_path) -> t.Iterator[str]:
+    """mock os.sep for multi-platform test"""
+
     sep = "/"
     origin_sep = os.sep
     os.sep = sep
@@ -20,6 +22,8 @@ def mock_sep(monkeypatch, tmp_path) -> t.Iterator[str]:
 
 @pytest.fixture
 def mock_subprocess(fp: FakeProcess) -> t.Callable[[DefMockSubproc], None]:
+    """the function to mock subprocess.Open and .run by pytest-subprocess according the definition"""
+
     def _mock_subproc(def_mock_subproc: DefMockSubproc):
         for mock_kwargs in def_mock_subproc.mock_param_iter():
             fp.register(**mock_kwargs)
@@ -29,6 +33,8 @@ def mock_subprocess(fp: FakeProcess) -> t.Callable[[DefMockSubproc], None]:
 
 @pytest.fixture
 def tmp_cwd(monkeypatch, tmp_path) -> Path:
+    """change working directory temporary"""
+
     pwd = tmp_path.joinpath("working")
     pwd.mkdir()
     monkeypatch.chdir(pwd)
@@ -37,9 +43,11 @@ def tmp_cwd(monkeypatch, tmp_path) -> Path:
 
 @pytest.fixture
 def resources() -> TestResources:
+    """Accessor to test resources"""
     return TestResources(Path(os.path.dirname(__file__), "resources"))
 
 
 @pytest.fixture(scope="session")
 def output_detail() -> OutputDetail:
+    """the object to print details of pytest into stdout"""
     return OutputDetail()
