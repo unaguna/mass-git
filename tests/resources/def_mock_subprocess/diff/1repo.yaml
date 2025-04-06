@@ -1,7 +1,9 @@
+input_args: ["diff"]
 mock:
   - repo:
       dirname: repo1
     expected_cmd: ["git", "diff"]
+    result_code: 0
     stdout: |-
       diff --git a/build.gradle.kts b/build.gradle.kts
       index 70f897e..1489a09 100644
@@ -15,6 +17,7 @@ mock:
       +// a
     stderr:
       err
+expected_result_code: 0
 expected_stdout: |+
   repo1:
   diff --git a/build.gradle.kts b/build.gradle.kts

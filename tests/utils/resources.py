@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 import typing as t
+from pprint import pprint
 
 import yaml
 
@@ -12,12 +13,15 @@ class _DefMockSubprocRepoTypedDict(t.TypedDict):
 class _DefMockSubprocMockTypedDict(t.TypedDict):
     repo: _DefMockSubprocRepoTypedDict
     expected_cmd: t.Sequence[str]
+    result_code: int
     stdout: str
     stderr: t.Optional[str]
 
 
 class _DefMockSubprocTypedDict(t.TypedDict):
+    input_args: t.Sequence[str]
     mock: t.Sequence[_DefMockSubprocMockTypedDict]
+    expected_result_code: t.Optional[int]
     expected_stdout: t.Optional[str]
     expected_stderr: t.Optional[str]
 
@@ -38,6 +42,7 @@ class DefMockSubproc:
         for mock in self._base_dict["mock"]:
             yield {
                 "command": mock["expected_cmd"],
+                "returncode": mock["result_code"],
                 "stdout": mock["stdout"],
                 "callback": _create_mock_callback(mock),
             }
@@ -46,14 +51,23 @@ class DefMockSubproc:
         return [m["repo"]["dirname"] for m in self._base_dict["mock"]]
 
     @property
+    def input_args(self) -> t.Sequence[str]:
+        return self._base_dict["input_args"]
+
+    @property
+    def expected_result_code(self) -> int:
+        stored = self._base_dict.get("expected_result_code")
+        return stored or NotSpecified()
+
+    @property
     def expected_stdout(self) -> str:
         stored = self._base_dict["expected_stdout"]
-        return stored or ""
+        return stored or NotSpecified()
 
     @property
     def expected_stderr(self) -> str:
         stored = self._base_dict["expected_stderr"]
-        return stored or ""
+        return stored or NotSpecified()
 
 
 class TestResources:
@@ -65,8 +79,16 @@ class TestResources:
         if not self._basedir.is_dir():
             raise FileNotFoundError(self._basedir)
 
-    def load_mock_subproc(self, name: str) -> DefMockSubproc:
+    def load_mock_subproc(self, name: str, *, pp: bool = True) -> DefMockSubproc:
         with open(self._basedir.joinpath("def_mock_subprocess", name + ".yaml")) as fp:
             d: _DefMockSubprocTypedDict = yaml.safe_load(fp)
 
+        if pp:
+            pprint(d)
+
         return DefMockSubproc(d)
+
+
+class NotSpecified:
+    def __eq__(self, other):
+        return True

@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import pytest
 from pytest_subprocess import FakeProcess
 
@@ -21,12 +19,9 @@ def test__diff(capfd, fp: FakeProcess, tmp_cwd, resources, mock_def):
 
         for mock_kwargs in def_mock_subproc.mock_param_iter():
             fp.register(**mock_kwargs)
-            print("FakeProcess.register:")
-            pprint(mock_kwargs)
 
-        args = ["diff"]
-
-    main(args)
+    actual_exit_code = main(def_mock_subproc.input_args)
     out, err = capfd.readouterr()
+    assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
