@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from tests.utils.output_detail import OutputDetail
 from tests.utils.resources import TestResources
 
 
@@ -27,3 +28,8 @@ def tmp_cwd(monkeypatch, tmp_path) -> Path:
 @pytest.fixture
 def resources() -> TestResources:
     return TestResources(Path(os.path.dirname(__file__), "resources"))
+
+
+@pytest.fixture(scope="session")
+def output_detail() -> OutputDetail:
+    return OutputDetail()

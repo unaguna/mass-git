@@ -37,6 +37,9 @@ class DefMockSubproc:
     def __init__(self, base_dict: _DefMockSubprocTypedDict):
         self._base_dict = base_dict
 
+    def pprint(self):
+        pprint(self._base_dict)
+
     def mock_param_iter(self) -> t.Iterable[t.Dict[str, t.Any]]:
         """FakeProcess.registerの引数として使用する辞書をイテレーションする。"""
         for mock in self._base_dict["mock"]:
@@ -79,12 +82,9 @@ class TestResources:
         if not self._basedir.is_dir():
             raise FileNotFoundError(self._basedir)
 
-    def load_mock_subproc(self, name: str, *, pp: bool = True) -> DefMockSubproc:
+    def load_mock_subproc(self, name: str) -> DefMockSubproc:
         with open(self._basedir.joinpath("def_mock_subprocess", name + ".yaml")) as fp:
             d: _DefMockSubprocTypedDict = yaml.safe_load(fp)
-
-        if pp:
-            pprint(d)
 
         return DefMockSubproc(d)
 

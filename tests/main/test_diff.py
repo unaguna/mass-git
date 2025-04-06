@@ -18,9 +18,12 @@ from tests.utils.init import create_massgit_dir
         ("diff/some_error_shortstat",),
     ],
 )
-def test__diff(capfd, fp: FakeProcess, mock_sep, tmp_cwd, resources, mock_def):
+def test__diff(
+    capfd, fp: FakeProcess, mock_sep, tmp_cwd, resources, mock_def, output_detail
+):
     with capfd.disabled():
         def_mock_subproc = resources.load_mock_subproc(mock_def)
+        output_detail.mock(def_mock_subproc)
         create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
         for mock_kwargs in def_mock_subproc.mock_param_iter():
@@ -28,6 +31,7 @@ def test__diff(capfd, fp: FakeProcess, mock_sep, tmp_cwd, resources, mock_def):
 
     actual_exit_code = main(def_mock_subproc.input_args)
     out, err = capfd.readouterr()
+    output_detail.res(out=out, err=err)
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
