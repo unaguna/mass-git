@@ -1,4 +1,4 @@
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests",]
-addopts = "--cov=massgit --cov-report html"
+addopts = "--cov=massgit --cov-report html --cov-branch"
