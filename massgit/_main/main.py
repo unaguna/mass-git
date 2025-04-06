@@ -35,7 +35,9 @@ subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 def main(
     argv: t.Sequence[str],
     *,
-    install_config_dir: str,
+    install_config_dir: str = os.path.normpath(
+        os.path.join(__file__, "..", "..", "..", "etc")
+    ),
     cwd_config_dir: str = ".massgit",
 ) -> int:
     parser = ArgumentParser(prog="massgit")
