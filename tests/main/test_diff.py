@@ -1,5 +1,4 @@
 import pytest
-from pytest_subprocess import FakeProcess
 
 from massgit import main
 from tests.utils.init import create_massgit_dir
@@ -19,13 +18,12 @@ from tests.utils.mock import captured_stdouterr
         ("diff/some_error_shortstat",),
     ],
 )
-def test__diff(fp: FakeProcess, mock_sep, tmp_cwd, resources, mock_def, output_detail):
+def test__diff(mock_subprocess, mock_sep, tmp_cwd, resources, output_detail, mock_def):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
-    for mock_kwargs in def_mock_subproc.mock_param_iter():
-        fp.register(**mock_kwargs)
+    mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(def_mock_subproc.input_args)
