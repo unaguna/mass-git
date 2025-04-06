@@ -1,0 +1,20 @@
+input_args: ["diff", "--shortstat"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "diff", "--shortstat"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "diff", "--shortstat"]
+    result_code: 0
+    stdout: |-
+      1 file changed, 2 insertions(+)
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1: 0 file changed
+  repo2: 1 file changed, 2 insertions(+)
+expected_stderr: |+

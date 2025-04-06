@@ -11,9 +11,11 @@ from tests.utils.init import create_massgit_dir
         ("diff/1repo",),
         ("diff/2repo",),
         ("diff/some_found",),
+        ("diff/some_found_shortstat",),
+        ("diff/some_found_nameonly",),
     ],
 )
-def test__diff(capfd, fp: FakeProcess, tmp_cwd, resources, mock_def):
+def test__diff(capfd, fp: FakeProcess, mock_sep, tmp_cwd, resources, mock_def):
     with capfd.disabled():
         def_mock_subproc = resources.load_mock_subproc(mock_def)
         create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())

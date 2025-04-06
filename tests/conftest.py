@@ -1,9 +1,19 @@
 import os
+import typing as t
 from pathlib import Path
 
 import pytest
 
 from tests.utils.resources import TestResources
+
+
+@pytest.fixture
+def mock_sep(monkeypatch, tmp_path) -> t.Iterator[str]:
+    sep = "/"
+    origin_sep = os.sep
+    os.sep = sep
+    yield sep
+    os.sep = origin_sep
 
 
 @pytest.fixture
