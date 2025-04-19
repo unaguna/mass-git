@@ -22,7 +22,7 @@ mock:
       +
       +// b
     stderr: ""
-expected_result_code: 0
+expected_result_code: 2
 expected_stdout: |+
   repo1: failed (2)
   repo2:

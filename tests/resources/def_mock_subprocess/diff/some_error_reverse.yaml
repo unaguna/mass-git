@@ -22,7 +22,7 @@ mock:
     result_code: 3
     stdout: ""
     stderr: ""
-expected_result_code: 0
+expected_result_code: 3
 expected_stdout: |+
   repo2:
   diff --git a/build.gradle.kts b/build.gradle.kts

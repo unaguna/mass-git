@@ -60,7 +60,7 @@ class DefMockSubproc:
     @property
     def expected_result_code(self) -> int:
         stored = self._base_dict.get("expected_result_code")
-        return stored or NotSpecified()
+        return stored if stored is not None else NotSpecified()
 
     @property
     def expected_stdout(self) -> str:
