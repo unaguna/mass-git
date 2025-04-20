@@ -42,6 +42,15 @@ def tmp_cwd(monkeypatch, tmp_path) -> Path:
 
 
 @pytest.fixture
+def tmp_config_dir(monkeypatch, tmp_path) -> Path:
+    """create install_config_dir"""
+
+    env_dir = tmp_path.joinpath("env_dir")
+    env_dir.mkdir()
+    return env_dir
+
+
+@pytest.fixture
 def resources() -> TestResources:
     """Accessor to test resources"""
     return TestResources(Path(os.path.dirname(__file__), "resources"))
