@@ -1,0 +1,30 @@
+input_args: ["branch"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "branch"]
+    result_code: 1
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "branch"]
+    result_code: 0
+    stdout:
+      "  branch2
+
+      \ \ develop
+
+      * main
+
+"
+    stderr: ""
+expected_result_code: 1
+expected_stdout: |+
+  repo1: failed (1)
+  repo2:
+    branch2
+    develop
+  * main
+
+expected_stderr: |+
