@@ -1,0 +1,28 @@
+input_args: ["status"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "status"]
+    result_code: 1
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "status"]
+    result_code: 0
+    stdout: |+
+      On branch main
+      Your branch is up to date with 'origin/main'.
+      
+      nothing to commit, working tree clean
+    stderr: ""
+expected_result_code: 1
+expected_stdout: |+
+  repo1: failed (1)
+  repo2:
+  On branch main
+  Your branch is up to date with 'origin/main'.
+  
+  nothing to commit, working tree clean
+
+expected_stderr: |+

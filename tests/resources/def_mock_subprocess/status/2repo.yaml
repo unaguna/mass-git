@@ -1,0 +1,49 @@
+input_args: ["status"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "status"]
+    result_code: 0
+    stdout: |+
+      On branch main
+      Your branch is up to date with 'origin/main'.
+      
+      Changes not staged for commit:
+        (use "git add <file>..." to update what will be committed)
+        (use "git restore <file>..." to discard changes in working directory)
+              modified:   build.gradle.kts
+      
+      no changes added to commit (use "git add" and/or "git commit -a")
+    stderr:
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "status"]
+    result_code: 0
+    stdout: |+
+      On branch main
+      Your branch is up to date with 'origin/main'.
+      
+      nothing to commit, working tree clean
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1:
+  On branch main
+  Your branch is up to date with 'origin/main'.
+  
+  Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+          modified:   build.gradle.kts
+  
+  no changes added to commit (use "git add" and/or "git commit -a")
+  
+  repo2:
+  On branch main
+  Your branch is up to date with 'origin/main'.
+  
+  nothing to commit, working tree clean
+
+expected_stderr: |+
+  err

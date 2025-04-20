@@ -1,0 +1,18 @@
+input_args: ["status", "--porcelain"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "status", "--porcelain"]
+    result_code: 0
+    stdout: " M build.gradle.kts\n"
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "status", "--porcelain"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1:  M build.gradle.kts
+expected_stderr: |+
