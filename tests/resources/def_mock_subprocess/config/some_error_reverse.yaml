@@ -16,7 +16,7 @@ mock:
     expected_cmd: ["git", "config", "--list"]
     result_code: 1
     stdout: ""
-    stderr:
+    stderr: |+
       err
 expected_result_code: 1
 expected_stdout: |+

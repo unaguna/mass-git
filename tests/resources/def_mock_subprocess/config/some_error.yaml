@@ -5,7 +5,7 @@ mock:
     expected_cmd: ["git", "config", "--list"]
     result_code: 1
     stdout: ""
-    stderr:
+    stderr: |+
       err
   - repo:
       dirname: repo2

@@ -5,7 +5,7 @@ mock:
     expected_cmd: ["git", "checkout", "branch1"]
     result_code: 1
     stdout: ""
-    stderr:
+    stderr: |+
       err
   - repo:
       dirname: repo2

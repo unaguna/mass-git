@@ -15,7 +15,8 @@ mock:
       }
       +
       +// a
-    stderr: err1
+    stderr: |+
+      err1
   - repo:
       dirname: repo2
     expected_cmd: ["git", "diff"]
@@ -31,7 +32,8 @@ mock:
       }
       +
       +// b
-    stderr: err2
+    stderr: |+
+      err2
 expected_result_code: 0
 expected_stdout: |+
   repo1:

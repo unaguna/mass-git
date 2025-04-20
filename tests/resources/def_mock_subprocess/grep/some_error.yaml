@@ -5,7 +5,8 @@ mock:
     expected_cmd: ["git", "grep", "word"]
     result_code: 2
     stdout: ""
-    stderr: err
+    stderr: |+
+      err
   - repo:
       dirname: repo2
     expected_cmd: ["git", "grep", "word"]

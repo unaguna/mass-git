@@ -28,7 +28,7 @@ class _DefMockSubprocTypedDict(t.TypedDict):
 
 def _create_mock_callback(mock: _DefMockSubprocMockTypedDict) -> t.Callable:
     stderr = mock.get("stderr")
-    return lambda _: stderr and print(stderr, file=sys.stderr)
+    return lambda _: stderr and print(stderr, file=sys.stderr, end="")
 
 
 class DefMockSubproc:

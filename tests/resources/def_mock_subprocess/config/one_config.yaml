@@ -6,7 +6,7 @@ mock:
     result_code: 0
     stdout: |+
       true
-    stderr:
+    stderr: |+
       err
   - repo:
       dirname: repo2

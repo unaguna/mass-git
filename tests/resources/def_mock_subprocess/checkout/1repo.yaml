@@ -7,7 +7,7 @@ mock:
     stdout: |+
       branch 'branch1' set up to track 'origin/branch1'.
       Switched to a new branch 'branch1'
-    stderr:
+    stderr: |+
       err
 expected_result_code: 0
 expected_stdout: |+

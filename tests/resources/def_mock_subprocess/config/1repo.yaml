@@ -13,7 +13,7 @@ mock:
       core.fscache=true
       core.symlinks=true
       pull.rebase=false
-    stderr:
+    stderr: |+
       err
 expected_result_code: 0
 expected_stdout: |+

@@ -15,7 +15,7 @@ mock:
       }
       +
       +// a
-    stderr:
+    stderr: |+
       err
 expected_result_code: 0
 expected_stdout: |+
