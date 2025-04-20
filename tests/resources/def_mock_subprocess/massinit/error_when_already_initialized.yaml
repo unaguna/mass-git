@@ -1,0 +1,6 @@
+input_args: ["massinit"]
+mock: []
+expected_result_code: 1
+expected_stdout: |+
+  massgit initialization failed: already initialized: .\.massgit
+expected_stderr: |+

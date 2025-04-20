@@ -31,7 +31,7 @@ def initialize(
 
     massgit_dir = os.path.join(basedir, massgit_dir_name)
     if os.path.exists(massgit_dir):
-        raise FileExistsError(massgit_dir)
+        raise MassgitAlreadyInitialized(massgit_dir)
     os.mkdir(massgit_dir)
 
     repos: t.List[RepoOrigin] = []
@@ -53,3 +53,7 @@ def initialize(
         massgit_dir=str(massgit_dir),
         no_url_dirs=no_url_dirs,
     )
+
+
+class MassgitAlreadyInitialized(Exception):
+    pass
