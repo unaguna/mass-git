@@ -65,12 +65,12 @@ class DefMockSubproc:
     @property
     def expected_stdout(self) -> str:
         stored = self._base_dict["expected_stdout"]
-        return stored or NotSpecified()
+        return stored if stored is not None else NotSpecified()
 
     @property
     def expected_stderr(self) -> str:
         stored = self._base_dict["expected_stderr"]
-        return stored or NotSpecified()
+        return stored if stored is not None else NotSpecified()
 
 
 class TestResources:
