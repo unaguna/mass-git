@@ -9,7 +9,6 @@ from ._params import Params
 from .subcmd import (
     BranchCmd,
     CheckoutCmd,
-    CloneCmd,
     ConfigCmd,
     FetchCmd,
     GrepCmd,
@@ -19,7 +18,6 @@ from .subcmd import (
 )
 
 subcmd_list = [
-    CloneCmd(),
     ConfigCmd(),
     DiffCmd(),
     GrepCmd(),
