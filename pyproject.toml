@@ -6,6 +6,9 @@ testpaths = ["tests",]
 
 [tool.coverage.run]
 branch = true
+include = [
+    "massgit/**/*"
+]
 
 [tool.coverage.report]
 exclude_lines = [
