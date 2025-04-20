@@ -1,0 +1,22 @@
+input_args: ["massinit"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "remote", "get-url", "origin"]
+    result_code: 0
+    stdout: |+
+      https://dummy.example.com/repo1.git
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "remote", "get-url", "origin"]
+    result_code: 2
+    stdout: ""
+    stderr: |+
+      error: No such remote 'origin'
+expected_result_code: 0
+expected_stdout: |+
+  WARN: cannot register url of 'repo2' because get-url is failed
+  massgit is initialized: .\.massgit
+expected_stderr: |+
+  error: No such remote 'origin'

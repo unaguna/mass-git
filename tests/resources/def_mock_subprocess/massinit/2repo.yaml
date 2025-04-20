@@ -1,0 +1,24 @@
+input_args: ["massinit"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "remote", "get-url", "origin"]
+    result_code: 0
+    stdout: |+
+      https://dummy.example.com/repo1.git
+    stderr: |+
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "remote", "get-url", "origin"]
+    result_code: 0
+    stdout: |+
+      https://dummy.example.com/repo2.git
+    stderr: |+
+      err
+expected_result_code: 0
+expected_stdout: |+
+  massgit is initialized: .\.massgit
+expected_stderr: |+
+  err
+  err

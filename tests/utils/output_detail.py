@@ -1,10 +1,16 @@
 import typing as t
+from pprint import pprint
 
 from tests.utils.resources import DefMockSubproc
 
 
 class OutputDetail:
     """the object to print details of pytest into stdout"""
+
+    def obj(self, name: str, obj: t.Any):
+        print()
+        print(f"--{name}--")
+        pprint(obj)
 
     def mock(self, mock: DefMockSubproc):
         print()
