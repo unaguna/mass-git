@@ -1,0 +1,31 @@
+input_args: ["fetch"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "fetch"]
+    result_code: 0
+    stdout: |-
+      remote: Enumerating objects: 1, done.
+      remote: Counting objects: 100% (1/1), done.
+      remote: Compressing objects: 100% (1/1), done.
+      remote: Total 1 (delta 1), reused 1 (delta 1), pack-reused 1
+    stderr:
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "fetch"]
+    result_code: 0
+    stdout: ""
+    stderr:
+      err
+expected_result_code: 0
+expected_stdout: |+
+  repo1:
+  remote: Enumerating objects: 1, done.
+  remote: Counting objects: 100% (1/1), done.
+  remote: Compressing objects: 100% (1/1), done.
+  remote: Total 1 (delta 1), reused 1 (delta 1), pack-reused 1
+  repo2: done
+expected_stderr: |+
+  err
+  err
