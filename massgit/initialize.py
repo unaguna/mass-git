@@ -37,7 +37,7 @@ def initialize(
     repos: t.List[RepoOrigin] = []
     no_url_dirs: t.List[str] = []
     for git_dir in Path(basedir).rglob(git_dir_name):
-        dirname = git_dir.relative_to(basedir).parent
+        dirname = str(git_dir.relative_to(basedir).parent)
         try:
             url = get_remote_url("origin", dirname, basedir=basedir)
         except GitExitWithNonZeroException:
