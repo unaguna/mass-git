@@ -16,7 +16,7 @@ class InitializeResult:
 
 def initialize(
     *,
-    basedir: t.Optional[str] = ".",
+    basedir: t.Union[str, os.PathLike[str]] = ".",
     massgit_dir_name: t.Optional[str] = None,
     git_dir_name: t.Optional[str] = None,
     repos_filename: str = "repos.json",
