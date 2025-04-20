@@ -3,3 +3,9 @@ pythonpath = ["."]
 testpaths = ["tests",]
 # comment out --cov to use debugger
 # addopts = "--cov=massgit --cov-report html --cov-branch"
+
+[tool.coverage.report]
+exclude_lines = [
+    "@abstractmethod",
+    "@abc.abstractmethod",
+]
