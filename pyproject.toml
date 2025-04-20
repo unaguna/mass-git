@@ -12,3 +12,6 @@ exclude_lines = [
     "@abstractmethod",
     "@abc.abstractmethod",
 ]
+omit = [
+    "massgit/__main__.py",
+]
