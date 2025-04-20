@@ -1,0 +1,23 @@
+input_args: ["config", "core.autocrlf"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "config", "core.autocrlf"]
+    result_code: 0
+    stdout: |+
+      true
+    stderr:
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "config", "core.autocrlf"]
+    result_code: 0
+    stdout: |+
+      false
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1: true
+  repo2: false
+expected_stderr: |+
+  err

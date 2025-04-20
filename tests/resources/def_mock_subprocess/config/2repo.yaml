@@ -1,0 +1,39 @@
+input_args: ["config", "--list"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "config", "--list"]
+    result_code: 0
+    stdout: |+
+      filter.lfs.clean=git-lfs clean -- %f
+      filter.lfs.smudge=git-lfs smudge -- %f
+      pull.rebase=false
+    stderr:
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "config", "--list"]
+    result_code: 0
+    stdout: |+
+      filter.lfs.process=git-lfs filter-process
+      filter.lfs.required=true
+      core.autocrlf=false
+      core.fscache=true
+      core.symlinks=true
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1:
+  filter.lfs.clean=git-lfs clean -- %f
+  filter.lfs.smudge=git-lfs smudge -- %f
+  pull.rebase=false
+
+  repo2:
+  filter.lfs.process=git-lfs filter-process
+  filter.lfs.required=true
+  core.autocrlf=false
+  core.fscache=true
+  core.symlinks=true
+
+expected_stderr: |+
+  err
