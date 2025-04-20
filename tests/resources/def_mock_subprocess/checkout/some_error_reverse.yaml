@@ -1,0 +1,26 @@
+input_args: ["checkout", "branch1"]
+mock:
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "checkout", "branch1"]
+    result_code: 0
+    stdout: |+
+      branch 'branch1' set up to track 'origin/branch1'.
+      Switched to a new branch 'branch1'
+    stderr: ""
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "checkout", "branch1"]
+    result_code: 1
+    stdout: ""
+    stderr:
+      err
+expected_result_code: 1
+expected_stdout: |+
+  repo2:
+  branch 'branch1' set up to track 'origin/branch1'.
+  Switched to a new branch 'branch1'
+
+  repo1: failed (1)
+expected_stderr: |+
+  err
