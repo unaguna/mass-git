@@ -22,23 +22,6 @@ class StdoutDefault(SubprocessResultProcessor):
             print(origin_stdout)
 
 
-class StdoutOnlyResultMessage(SubprocessResultProcessor):
-    _message_by_code: t.Callable[[int], str]
-
-    def __init__(self, *, message_by_code: t.Optional[t.Callable[[int], str]] = None):
-        self._message_by_code = message_by_code or self._only_result_message
-
-    def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str):
-        print(dirname, self._message_by_code(exit_code), sep=": ")
-
-    @classmethod
-    def _only_result_message(cls, exit_code: int) -> str:
-        if exit_code == 0:
-            return "done"
-        else:
-            return f"failed ({exit_code})"
-
-
 class StdoutNameEachLinePrefix(SubprocessResultProcessor):
     _sep: str
     _trim_empty_line: bool
