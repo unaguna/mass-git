@@ -44,7 +44,7 @@ def cmn_each_repo(
         )
         exit_codes.append(res.returncode)
 
-        if res.returncode == 0:
+        if subcmd.exit_code_is_no_error(res.returncode):
             subcmd.subprocess_result_processor(args=args).print_stdout(
                 res.returncode, res.stdout, dirname=repo["dirname"]
             )

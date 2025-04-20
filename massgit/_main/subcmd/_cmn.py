@@ -17,6 +17,10 @@ class SubCmd(abc.ABC):
         self, args: t.Sequence[str]
     ) -> SubprocessResultProcessor: ...
 
+    def exit_code_is_no_error(self, exit_code: int) -> bool:
+        """judge which the exit_code of git command means non-error"""
+        return exit_code == 0
+
     def file_to_output_fail_msg(self, args: t.Sequence[str]) -> t.TextIO:
         return sys.stdout
 

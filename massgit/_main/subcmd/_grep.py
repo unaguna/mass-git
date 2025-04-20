@@ -18,6 +18,9 @@ class GrepCmd(SubCmd):
     ) -> SubprocessResultProcessor:
         return StdoutNameEachLinePrefix(sep=os.sep, trim_empty_line=True)
 
+    def exit_code_is_no_error(self, exit_code: int) -> bool:
+        return exit_code == 0 or exit_code == 1
+
     def file_to_output_fail_msg(self, args: t.Sequence[str]) -> t.TextIO:
         return sys.stderr
 
