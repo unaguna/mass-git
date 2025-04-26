@@ -1,0 +1,2 @@
+class GitExitWithNonZeroException(Exception):
+    pass

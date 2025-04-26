@@ -1,6 +1,6 @@
 import pytest
 
-from massgit._types import GitExitWithNonZeroException
+from massgit.exceptions import GitExitWithNonZeroException
 from tests.utils.init import create_massgit_dir
 from tests.utils.mock import captured_stdouterr
 

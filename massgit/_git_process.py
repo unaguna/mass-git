@@ -3,7 +3,8 @@ import subprocess
 import sys
 import typing as t
 
-from ._types import Repo, GitExitWithNonZeroException
+from ._types import Repo
+from .exceptions import GitExitWithNonZeroException
 
 
 def trap_stdout(
