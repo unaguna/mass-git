@@ -21,11 +21,15 @@ def mock_sep(monkeypatch, tmp_path) -> t.Iterator[str]:
 
 
 @pytest.fixture
-def mock_subprocess(fp: FakeProcess) -> t.Callable[[DefMockSubproc], None]:
+def mock_subprocess(fp: FakeProcess):
     """the function to mock subprocess.Open and .run by pytest-subprocess according the definition"""
 
-    def _mock_subproc(def_mock_subproc: DefMockSubproc):
-        for mock_kwargs in def_mock_subproc.mock_param_iter():
+    def _mock_subproc(
+        def_mock_subproc: DefMockSubproc,
+        *,
+        trap_stderr: bool = False,
+    ):
+        for mock_kwargs in def_mock_subproc.mock_param_iter(trap_stderr=trap_stderr):
             fp.register(**mock_kwargs)
 
     return _mock_subproc

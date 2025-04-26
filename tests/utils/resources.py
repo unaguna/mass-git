@@ -26,6 +26,10 @@ class _DefMockSubprocTypedDict(t.TypedDict):
     expected_stderr: t.Optional[str]
 
 
+def _do_nothing(_: t.Any):
+    pass
+
+
 def _create_mock_callback(mock: _DefMockSubprocMockTypedDict) -> t.Callable:
     stderr = mock.get("stderr")
     return lambda _: stderr and print(stderr, file=sys.stderr, end="")
@@ -40,14 +44,28 @@ class DefMockSubproc:
     def pprint(self):
         pprint(self._base_dict)
 
-    def mock_param_iter(self) -> t.Iterable[t.Dict[str, t.Any]]:
-        """FakeProcess.registerの引数として使用する辞書をイテレーションする。"""
+    def mock_param_iter(
+        self,
+        *,
+        trap_stderr: bool = False,
+    ) -> t.Iterable[t.Dict[str, t.Any]]:
+        """FakeProcess.registerの引数として使用する辞書をイテレーションする。
+
+        Parameters
+        ----------
+        trap_stderr
+            True の場合、サブプロセス実行時に標準エラー出力が PIPE 等で取得されることを前提にモック化する。
+            False の場合、サブプロセス実行時に標準エラー出力がそのまま標準エラー出力へ出力されることを前提にモック化する。
+        """
         for mock in self._base_dict["mock"]:
             yield {
                 "command": mock["expected_cmd"],
                 "returncode": mock["result_code"],
                 "stdout": mock["stdout"],
-                "callback": _create_mock_callback(mock),
+                "stderr": mock["stderr"] if trap_stderr else None,
+                "callback": (
+                    _create_mock_callback(mock) if not trap_stderr else _do_nothing
+                ),
             }
 
     def repo_dirnames(self) -> t.Sequence[str]:
