@@ -3,7 +3,7 @@ import typing as t
 from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
-from .massinit import massinit_cmd
+from .mginit import mginit_cmd
 from .._utils.dotenv import load_dotenv
 from ._params import Params
 from .subcmd import (
@@ -42,7 +42,7 @@ def main(
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
     subparsers.add_parser(
-        "massinit",
+        "mg-init",
         help="Initialize massgit",
     )
     for cmd in subcmd_list:
@@ -66,9 +66,9 @@ def main(
         exit_code = cmn_each_repo_cmd2(
             subcmds[main_args.subcmd], params, remaining_args
         )
-    elif main_args.subcmd == "massinit":
+    elif main_args.subcmd == "mg-init":
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        exit_code = massinit_cmd(params)
+        exit_code = mginit_cmd(params)
     else:
         raise Exception()
 

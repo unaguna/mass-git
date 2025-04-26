@@ -4,14 +4,14 @@ from ._params import Params
 from ..initialize import initialize, MassgitAlreadyInitialized
 
 
-def massinit_cmd(params: Params) -> int:
-    return massinit(
+def mginit_cmd(params: Params) -> int:
+    return mginit(
         basedir=params.basedir,
         massgit_dir_name=params.massgit_dir,
     )
 
 
-def massinit(
+def mginit(
     *,
     basedir: t.Optional[str] = None,
     massgit_dir_name: t.Optional[str] = None,

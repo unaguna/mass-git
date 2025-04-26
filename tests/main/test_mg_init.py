@@ -11,11 +11,11 @@ from tests.utils.mock import captured_stdouterr
 @pytest.mark.parametrize(
     ("mock_def", "repo_list"),
     [
-        ("massinit/1repo", ["repo1"]),
-        ("massinit/2repo", ["repo1", "repo2"]),
+        ("mg_init/1repo", ["repo1"]),
+        ("mg_init/2repo", ["repo1", "repo2"]),
     ],
 )
-def test__massinit(
+def test__mg_init(
     mock_subprocess,
     mock_sep,
     tmp_cwd,
@@ -27,7 +27,7 @@ def test__massinit(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    # don't create massgit dir (it is created in main(["massinit"]))
+    # don't create massgit dir (it is created in main(["mg-init"]))
     # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
     # create stubs of git local repository
@@ -60,7 +60,7 @@ def test__massinit(
     ]
 
 
-def test__massinit__some_no_url(
+def test__mg_init__some_no_url(
     mock_subprocess,
     mock_sep,
     tmp_cwd,
@@ -68,11 +68,11 @@ def test__massinit__some_no_url(
     resources,
     output_detail,
 ):
-    mock_def = "massinit/some_no_url"
+    mock_def = "mg_init/some_no_url"
     repo_list = ["repo1", "repo2"]
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    # don't create massgit dir (it is created in main(["massinit"]))
+    # don't create massgit dir (it is created in main(["mg-init"]))
     # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
     # create stubs of git local repository
@@ -105,7 +105,7 @@ def test__massinit__some_no_url(
     ]
 
 
-def test__massinit__error_when_already_initialized(
+def test__mg_init__error_when_already_initialized(
     mock_subprocess,
     mock_sep,
     tmp_cwd,
@@ -113,11 +113,11 @@ def test__massinit__error_when_already_initialized(
     resources,
     output_detail,
 ):
-    mock_def = "massinit/error_when_already_initialized"
+    mock_def = "mg_init/error_when_already_initialized"
     repo_list = ["repo1", "repo2"]
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    # create massgit dir (raise conflict to main(["massinit"]))
+    # create massgit dir (raise conflict to main(["mginit"]))
     create_massgit_dir(tmp_cwd, dirnames=repo_list)
 
     # create stubs of git local repository
@@ -127,7 +127,7 @@ def test__massinit__error_when_already_initialized(
     mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
-        actual_exit_code = main(["massinit"], install_config_dir=tmp_config_dir)
+        actual_exit_code = main(["mg-init"], install_config_dir=tmp_config_dir)
     out, err = capout.readouterr()
     output_detail.res(out=out, err=err)
     assert actual_exit_code == def_mock_subproc.expected_result_code

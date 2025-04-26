@@ -1,4 +1,4 @@
-input_args: ["massinit"]
+input_args: ["mg-init"]
 mock: []
 expected_result_code: 1
 expected_stdout: |+
