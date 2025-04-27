@@ -33,7 +33,7 @@ def mgclone(
             print(f"clone {repo['dirname']} completed.")
             exit_codes.append(0)
         except _InnerException as e:
-            print(f"clone {repo['dirname']} failed: " + e.msg)
+            print(f"clone {repo['dirname']} failed: " + e.msg.strip())
             exit_codes.append(1)
         except Exception as e:
             print(f"clone {repo['dirname']} failed: {type(e).__name__} {e}")

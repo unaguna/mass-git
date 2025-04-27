@@ -10,12 +10,17 @@ class _DefMockSubprocRepoTypedDict(t.TypedDict):
     dirname: str
 
 
+class _DefMockSubprocRaiseTypedDict(t.TypedDict):
+    msg: str
+
+
 class _DefMockSubprocMockTypedDict(t.TypedDict):
     repo: _DefMockSubprocRepoTypedDict
     expected_cmd: t.Sequence[str]
     result_code: int
     stdout: str
     stderr: t.Optional[str]
+    exception: t.Optional[_DefMockSubprocRaiseTypedDict]
 
 
 class _DefMockSubprocTypedDict(t.TypedDict):
@@ -30,9 +35,22 @@ def _do_nothing(_: t.Any):
     pass
 
 
-def _create_mock_callback(mock: _DefMockSubprocMockTypedDict) -> t.Callable:
+def _create_mock_callback(
+    mock: _DefMockSubprocMockTypedDict,
+    *,
+    trap_stderr: bool,
+) -> t.Callable:
     stderr = mock.get("stderr")
-    return lambda _: stderr and print(stderr, file=sys.stderr, end="")
+    exception = mock.get("exception")
+
+    def _mock_callback(_: t.Any):
+        if not trap_stderr and stderr is not None:
+            print(stderr, file=sys.stderr, end="")
+
+        if exception is not None:
+            raise Exception(exception.get("msg") or "exception for test")
+
+    return _mock_callback
 
 
 class DefMockSubproc:
@@ -63,9 +81,7 @@ class DefMockSubproc:
                 "returncode": mock["result_code"],
                 "stdout": mock["stdout"],
                 "stderr": mock["stderr"] if trap_stderr else None,
-                "callback": (
-                    _create_mock_callback(mock) if not trap_stderr else _do_nothing
-                ),
+                "callback": _create_mock_callback(mock, trap_stderr=trap_stderr),
             }
 
     def repo_dirnames(self) -> t.Sequence[str]:

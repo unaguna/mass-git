@@ -10,6 +10,8 @@ from tests.utils.mock import captured_stdouterr
     [
         ("mg_clone/1repo",),
         ("mg_clone/2repo",),
+        ("mg_clone/some_error",),
+        ("mg_clone/some_exception",),
     ],
 )
 def test__mg_clone(
