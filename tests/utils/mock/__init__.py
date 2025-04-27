@@ -1,0 +1,1 @@
+from ._captured_stdouterr import captured_stdouterr
