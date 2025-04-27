@@ -80,6 +80,7 @@ def main(
         mgclone_parser.parse_args(remaining_args)
         exit_code = mgclone_cmd(params)
     else:
-        raise Exception()
+        # NOT reachable (maybe raised faster)
+        raise ValueError("unknown subcmd")
 
     return exit_code
