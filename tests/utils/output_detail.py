@@ -1,3 +1,5 @@
+import json
+import os
 import sys
 import traceback
 import typing as t
@@ -41,3 +43,9 @@ class OutputDetail:
         traceback.print_exception(
             exc_info.type, exc_info.value, exc_info.tb, file=sys.stdout
         )
+
+    def json_file(self, path: t.Union[str, os.PathLike[str]], name: str = "JSON file"):
+        print()
+        print(f"--{name} ({path})--")
+        with open(path) as fp:
+            pprint(json.load(fp))

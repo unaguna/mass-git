@@ -57,11 +57,12 @@ def test__mg_clone__error_with_no_url(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(
+    massgit_dir = create_massgit_dir(
         tmp_cwd,
         dirnames=["repo1", *def_mock_subproc.repo_dirnames()],
         no_url_dirnames={"repo1"},
     )
+    output_detail.json_file(massgit_dir.repos_path, name="repos.json")
 
     mock_subprocess(def_mock_subproc, trap_stderr=True)
 
