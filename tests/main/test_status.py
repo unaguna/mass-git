@@ -30,7 +30,7 @@ def test__status(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
-    mock_subprocess(def_mock_subproc)
+    mocked_subproc = mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(
@@ -41,3 +41,4 @@ def test__status(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()

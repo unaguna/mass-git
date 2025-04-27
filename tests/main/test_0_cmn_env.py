@@ -39,7 +39,7 @@ def test__install_dir_env__change_git_command(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
-    mock_subprocess(def_mock_subproc)
+    mocked_subproc = mock_subprocess(def_mock_subproc)
 
     # write .env
     with open(tmp_config_dir.joinpath(".env"), mode="w") as fp:
@@ -54,3 +54,4 @@ def test__install_dir_env__change_git_command(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
