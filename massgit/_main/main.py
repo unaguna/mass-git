@@ -3,6 +3,7 @@ import typing as t
 from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
+from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .._utils.dotenv import load_dotenv
 from ._params import Params
@@ -45,6 +46,10 @@ def main(
         "mg-init",
         help="Initialize massgit",
     )
+    subparsers.add_parser(
+        "mg-clone",
+        help="Clone defined repos",
+    )
     for cmd in subcmd_list:
         subparsers.add_parser(
             cmd.name(),
@@ -69,6 +74,9 @@ def main(
     elif main_args.subcmd == "mg-init":
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         exit_code = mginit_cmd(params)
+    elif main_args.subcmd == "mg-clone":
+        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        exit_code = mgclone_cmd(params)
     else:
         raise Exception()
 
