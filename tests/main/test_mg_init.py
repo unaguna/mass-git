@@ -34,7 +34,7 @@ def test__mg_init(
     for repo in repo_list:
         os.makedirs(tmp_cwd.joinpath(repo, ".git"))
 
-    mock_subprocess(def_mock_subproc)
+    mocked_subproc = mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(
@@ -45,6 +45,7 @@ def test__mg_init(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
 
     # assert massgit dir
     massgit_dir = tmp_cwd.joinpath(".massgit")
@@ -79,7 +80,7 @@ def test__mg_init__some_no_url(
     for repo in repo_list:
         os.makedirs(tmp_cwd.joinpath(repo, ".git"))
 
-    mock_subprocess(def_mock_subproc)
+    mocked_subproc = mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(
@@ -90,6 +91,7 @@ def test__mg_init__some_no_url(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
 
     # assert massgit dir
     massgit_dir = tmp_cwd.joinpath(".massgit")
@@ -124,7 +126,7 @@ def test__mg_init__error_when_already_initialized(
     for repo in repo_list:
         os.makedirs(tmp_cwd.joinpath(repo, ".git"))
 
-    mock_subprocess(def_mock_subproc)
+    mocked_subproc = mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(["mg-init"], install_config_dir=tmp_config_dir)
@@ -133,6 +135,7 @@ def test__mg_init__error_when_already_initialized(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
 
 
 def test__mg_init__error_with_unknown_cmd_option(
@@ -154,7 +157,7 @@ def test__mg_init__error_with_unknown_cmd_option(
     for repo in repo_list:
         os.makedirs(tmp_cwd.joinpath(repo, ".git"))
 
-    mock_subprocess(def_mock_subproc)
+    mocked_subproc = mock_subprocess(def_mock_subproc)
 
     with captured_stdouterr() as capout:
         with pytest.raises(SystemExit) as exc_info:
@@ -165,3 +168,4 @@ def test__mg_init__error_with_unknown_cmd_option(
     assert exc_info.value.code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()

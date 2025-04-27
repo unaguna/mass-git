@@ -27,7 +27,7 @@ def test__mg_clone(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
-    mock_subprocess(def_mock_subproc, trap_stderr=True)
+    mocked_subproc = mock_subprocess(def_mock_subproc, trap_stderr=True)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(
@@ -38,6 +38,7 @@ def test__mg_clone(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
 
 
 @pytest.mark.parametrize(
@@ -64,7 +65,7 @@ def test__mg_clone__error_with_no_url(
     )
     output_detail.json_file(massgit_dir.repos_path, name="repos.json")
 
-    mock_subprocess(def_mock_subproc, trap_stderr=True)
+    mocked_subproc = mock_subprocess(def_mock_subproc, trap_stderr=True)
 
     with captured_stdouterr() as capout:
         actual_exit_code = main(
@@ -75,6 +76,7 @@ def test__mg_clone__error_with_no_url(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
 
 
 def test__mg_clone__error_with_unknown_cmd_option(
@@ -90,7 +92,7 @@ def test__mg_clone__error_with_unknown_cmd_option(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(tmp_cwd, dirnames=["repo1"])
 
-    mock_subprocess(def_mock_subproc, trap_stderr=True)
+    mocked_subproc = mock_subprocess(def_mock_subproc, trap_stderr=True)
 
     with captured_stdouterr() as capout:
         with pytest.raises(SystemExit) as exc_info:
@@ -101,3 +103,4 @@ def test__mg_clone__error_with_unknown_cmd_option(
     assert exc_info.value.code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
