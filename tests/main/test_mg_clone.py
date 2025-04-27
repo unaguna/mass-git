@@ -75,3 +75,29 @@ def test__mg_clone__error_with_no_url(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+
+
+def test__mg_clone__error_with_unknown_cmd_option(
+    mock_subprocess,
+    mock_sep,
+    tmp_cwd,
+    tmp_config_dir,
+    resources,
+    output_detail,
+):
+    mock_def = "mg_init/error_with_unknown_option"
+    def_mock_subproc = resources.load_mock_subproc(mock_def)
+    output_detail.mock(def_mock_subproc)
+    create_massgit_dir(tmp_cwd, dirnames=["repo1"])
+
+    mock_subprocess(def_mock_subproc, trap_stderr=True)
+
+    with captured_stdouterr() as capout:
+        with pytest.raises(SystemExit) as exc_info:
+            main(def_mock_subproc.input_args, install_config_dir=tmp_config_dir)
+    output_detail.exc_info(exc_info)
+    out, err = capout.readouterr()
+    output_detail.res(out=out, err=err)
+    assert exc_info.value.code == def_mock_subproc.expected_result_code
+    assert out == def_mock_subproc.expected_stdout
+    assert err == def_mock_subproc.expected_stderr

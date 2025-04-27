@@ -1,0 +1,7 @@
+input_args: ["mg-clone", "--unknown-option"]
+mock: []
+expected_result_code: 2
+expected_stdout: |+
+expected_stderr: |+
+  usage: massgit mg-clone [-h]
+  massgit mg-clone: error: unrecognized arguments: --unknown-option

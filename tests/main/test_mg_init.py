@@ -133,3 +133,35 @@ def test__mg_init__error_when_already_initialized(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+
+
+def test__mg_init__error_with_unknown_cmd_option(
+    mock_subprocess,
+    mock_sep,
+    tmp_cwd,
+    tmp_config_dir,
+    resources,
+    output_detail,
+):
+    mock_def = "mg_init/error_with_unknown_option"
+    repo_list = ["repo1", "repo2"]
+    def_mock_subproc = resources.load_mock_subproc(mock_def)
+    output_detail.mock(def_mock_subproc)
+    # don't create massgit dir (it is created in main(["mg-init"]))
+    # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+
+    # create stubs of git local repository
+    for repo in repo_list:
+        os.makedirs(tmp_cwd.joinpath(repo, ".git"))
+
+    mock_subprocess(def_mock_subproc)
+
+    with captured_stdouterr() as capout:
+        with pytest.raises(SystemExit) as exc_info:
+            main(def_mock_subproc.input_args, install_config_dir=tmp_config_dir)
+    output_detail.exc_info(exc_info)
+    out, err = capout.readouterr()
+    output_detail.res(out=out, err=err)
+    assert exc_info.value.code == def_mock_subproc.expected_result_code
+    assert out == def_mock_subproc.expected_stdout
+    assert err == def_mock_subproc.expected_stderr

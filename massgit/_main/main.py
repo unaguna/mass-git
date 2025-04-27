@@ -42,11 +42,11 @@ def main(
     parser = ArgumentParser(prog="massgit")
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
-    subparsers.add_parser(
+    mginit_parser = subparsers.add_parser(
         "mg-init",
         help="Initialize massgit",
     )
-    subparsers.add_parser(
+    mgclone_parser = subparsers.add_parser(
         "mg-clone",
         help="Clone defined repos",
     )
@@ -73,9 +73,11 @@ def main(
         )
     elif main_args.subcmd == "mg-init":
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        mginit_parser.parse_args(remaining_args)
         exit_code = mginit_cmd(params)
     elif main_args.subcmd == "mg-clone":
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        mgclone_parser.parse_args(remaining_args)
         exit_code = mgclone_cmd(params)
     else:
         raise Exception()

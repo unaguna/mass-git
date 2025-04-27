@@ -1,0 +1,7 @@
+input_args: ["mg-init", "--unknown-option"]
+mock: []
+expected_result_code: 2
+expected_stdout: |+
+expected_stderr: |+
+  usage: massgit mg-init [-h]
+  massgit mg-init: error: unrecognized arguments: --unknown-option
