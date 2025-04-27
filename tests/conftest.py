@@ -5,8 +5,9 @@ from pathlib import Path
 import pytest
 from pytest_subprocess import FakeProcess
 
+from tests.utils.mock import mock_subproc
 from tests.utils.output_detail import OutputDetail
-from tests.utils.resources import TestResources, DefMockSubproc
+from tests.utils.resources import TestResources
 
 
 @pytest.fixture
@@ -24,15 +25,7 @@ def mock_sep(monkeypatch, tmp_path) -> t.Iterator[str]:
 def mock_subprocess(fp: FakeProcess):
     """the function to mock subprocess.Open and .run by pytest-subprocess according the definition"""
 
-    def _mock_subproc(
-        def_mock_subproc: DefMockSubproc,
-        *,
-        trap_stderr: bool = False,
-    ):
-        for mock_kwargs in def_mock_subproc.mock_param_iter(trap_stderr=trap_stderr):
-            fp.register(**mock_kwargs)
-
-    return _mock_subproc
+    return lambda *args, **kwargs: mock_subproc(*args, **kwargs, fp=fp)
 
 
 @pytest.fixture
