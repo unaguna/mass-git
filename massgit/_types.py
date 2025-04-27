@@ -10,7 +10,3 @@ class Repo(t.TypedDict):
 class RepoOrigin(t.TypedDict):
     url: t.Optional[str]
     dirname: t.Optional[str]  # NotRequired
-
-
-class GitExitWithNonZeroException(Exception):
-    pass

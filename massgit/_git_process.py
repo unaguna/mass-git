@@ -3,7 +3,8 @@ import subprocess
 import sys
 import typing as t
 
-from ._types import Repo, GitExitWithNonZeroException
+from ._types import Repo
+from .exceptions import GitExitWithNonZeroException
 
 
 def trap_stdout(
@@ -48,5 +49,30 @@ def get_remote_url(
 
     if res.returncode == 0:
         return res.stdout.strip()
+    else:
+        raise GitExitWithNonZeroException(res.stderr)
+
+
+def clone(
+    repo_url: str,
+    repo_dirname: str,
+    *,
+    git: str = "git",
+    basedir: t.Optional[str] = None,
+    encoding: str = sys.getdefaultencoding(),
+    env: t.Optional[t.Mapping[str, str]] = None,
+):
+    cmd = [git, "clone", repo_url, repo_dirname]
+    res = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        encoding=encoding,
+        cwd=basedir,
+        env=env,
+    )
+
+    if res.returncode == 0:
+        return None
     else:
         raise GitExitWithNonZeroException(res.stderr)

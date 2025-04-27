@@ -1,0 +1,13 @@
+input_args: null
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "clone", "http://dummy.example.com/repo1.git", "repo1"]
+    result_code: 0
+    stdout: |+
+      dummy
+    stderr: |+
+      err
+expected_result_code: 0
+expected_stdout: |+
+expected_stderr: |+

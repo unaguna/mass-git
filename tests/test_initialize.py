@@ -10,8 +10,8 @@ from tests.utils.mock import captured_stdouterr
 @pytest.mark.parametrize(
     ("mock_def", "repo_list"),
     [
-        ("massinit/1repo", ["repo1"]),
-        ("massinit/2repo", ["repo1", "repo2"]),
+        ("mg_init/1repo", ["repo1"]),
+        ("mg_init/2repo", ["repo1", "repo2"]),
     ],
 )
 def test__initialize__arg_git_dir_name(
@@ -27,7 +27,7 @@ def test__initialize__arg_git_dir_name(
     git_dir_name = "stub_git"
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    # don't create massgit dir (it is created in main(["massinit"]))
+    # don't create massgit dir (it is created in main(["mg-init"]))
     # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
     # create stubs of git local repository
@@ -61,8 +61,8 @@ def test__initialize__arg_git_dir_name(
 @pytest.mark.parametrize(
     ("mock_def", "repo_list"),
     [
-        ("massinit/1repo", ["repo1"]),
-        ("massinit/2repo", ["repo1", "repo2"]),
+        ("mg_init/1repo", ["repo1"]),
+        ("mg_init/2repo", ["repo1", "repo2"]),
     ],
 )
 def test__initialize__arg_massgit_dir_name_default(
@@ -77,7 +77,7 @@ def test__initialize__arg_massgit_dir_name_default(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    # don't create massgit dir (it is created in main(["massinit"]))
+    # don't create massgit dir (it is created in main(["mg-init"]))
     # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
 
     # create stubs of git local repository

@@ -1,0 +1,15 @@
+input_args: ["mg-clone"]
+mock:
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "clone", "http://example.com/repo2", "repo2"]
+    result_code: 0
+    stdout: |+
+      dummy
+    stderr: |+
+      err2
+expected_result_code: 1
+expected_stdout: |+
+  clone repo1 failed: URL is not specified
+  clone repo2 completed.
+expected_stderr: |+

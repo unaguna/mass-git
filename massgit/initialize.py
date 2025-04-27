@@ -5,7 +5,8 @@ from pathlib import Path
 import typing as t
 
 from ._git_process import get_remote_url
-from ._types import RepoOrigin, GitExitWithNonZeroException
+from ._types import RepoOrigin
+from .exceptions import GitExitWithNonZeroException
 
 
 @dataclasses.dataclass
