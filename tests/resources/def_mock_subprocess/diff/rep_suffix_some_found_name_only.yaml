@@ -1,0 +1,21 @@
+input_args: ["--rep-suffix", "@", "diff", "--name-only"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "diff", "--name-only"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "diff", "--name-only"]
+    result_code: 0
+    stdout: |-
+      build.gradle.kts
+      dir/build.gradle.kts
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo2@build.gradle.kts
+  repo2@dir/build.gradle.kts
+expected_stderr: |+

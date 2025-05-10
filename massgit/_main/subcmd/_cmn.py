@@ -14,7 +14,7 @@ class SubCmd(abc.ABC):
 
     @abc.abstractmethod
     def subprocess_result_processor(
-        self, args: t.Sequence[str]
+        self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
     ) -> SubprocessResultProcessor: ...
 
     def exit_code_is_no_error(self, exit_code: int) -> bool:

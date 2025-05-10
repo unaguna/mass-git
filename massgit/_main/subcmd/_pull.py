@@ -11,5 +11,7 @@ class PullCmd(SubCmd):
     def help(self) -> str:
         return "Fetch from and integrate with another repository or a local branch"
 
-    def subprocess_result_processor(self, args: t.Sequence[str]):
-        return StdoutDefault()
+    def subprocess_result_processor(
+        self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
+    ):
+        return StdoutDefault(sep=rep_suffix)

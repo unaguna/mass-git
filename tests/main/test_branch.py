@@ -13,6 +13,7 @@ from tests.utils.mock import captured_stdouterr
         ("branch/show-current",),
         ("branch/some_error",),
         ("branch/some_error_reverse",),
+        ("branch/rep_suffix",),
     ],
 )
 def test__branch(

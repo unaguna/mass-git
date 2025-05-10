@@ -11,5 +11,7 @@ class ShowCmd(SubCmd):
     def help(self) -> str:
         return "Show various types of objects"
 
-    def subprocess_result_processor(self, args: t.Sequence[str]):
-        return StdoutDefault()
+    def subprocess_result_processor(
+        self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
+    ):
+        return StdoutDefault(sep=rep_suffix)

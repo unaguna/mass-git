@@ -14,6 +14,8 @@ from tests.utils.mock import captured_stdouterr
         ("grep/some_error_reverse",),
         ("grep/some_found",),
         ("grep/not_found",),
+        ("grep/rep_suffix",),
+        ("grep/rep_suffix_some_found",),
     ],
 )
 def test__grep(

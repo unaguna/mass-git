@@ -42,6 +42,11 @@ def main(
     cwd_config_dir: str = ".massgit",
 ) -> int:
     parser = ArgumentParser(prog="massgit")
+    parser.add_argument(
+        "--rep-suffix",
+        required=False,
+        help='The suffix of repository name in output. Default is ": " in almost every subcommand.',
+    )
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
     mginit_parser = subparsers.add_parser(

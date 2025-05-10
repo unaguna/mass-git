@@ -12,6 +12,7 @@ from tests.utils.mock import captured_stdouterr
         ("pull/2repo",),
         ("pull/some_error",),
         ("pull/some_error_reverse",),
+        ("pull/rep_suffix",),
     ],
 )
 def test__pull(

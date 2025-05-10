@@ -20,6 +20,7 @@ def cmn_each_repo_cmd2(
         basedir=params.basedir,
         git=params.git_exec_path,
         env=params.env,
+        rep_suffix=params.rep_suffix,
     )
 
 
@@ -31,7 +32,9 @@ def cmn_each_repo(
     basedir: t.Optional[str] = None,
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
+    rep_suffix: t.Optional[str] = None,
 ) -> int:
+    rep_suffix_err = rep_suffix if rep_suffix is not None else ": "
     exit_codes = []
     for repo in repos:
         res = gitproc.trap_stdout(
@@ -45,13 +48,16 @@ def cmn_each_repo(
         exit_codes.append(res.returncode)
 
         if subcmd.exit_code_is_no_error(res.returncode):
-            subcmd.subprocess_result_processor(args=args).print_stdout(
-                res.returncode, res.stdout, dirname=repo["dirname"]
-            )
+            subcmd.subprocess_result_processor(
+                args=args, rep_suffix=rep_suffix
+            ).print_stdout(res.returncode, res.stdout, dirname=repo["dirname"])
         else:
             print(
-                repo["dirname"] + f": failed ({res.returncode})",
+                repo["dirname"],
+                rep_suffix_err,
+                f"failed ({res.returncode})",
                 file=subcmd.file_to_output_fail_msg(args),
+                sep="",
             )
 
     return subcmd.summarize_exit_code(exit_codes)

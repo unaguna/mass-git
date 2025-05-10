@@ -14,9 +14,11 @@ class GrepCmd(SubCmd):
         return "Print lines matching a pattern"
 
     def subprocess_result_processor(
-        self, args: t.Sequence[str]
+        self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
     ) -> SubprocessResultProcessor:
-        return StdoutNameEachLinePrefix(sep=os.sep, trim_empty_line=True)
+        return StdoutNameEachLinePrefix(
+            sep=rep_suffix if rep_suffix is not None else os.sep, trim_empty_line=True
+        )
 
     def exit_code_is_no_error(self, exit_code: int) -> bool:
         return exit_code == 0 or exit_code == 1

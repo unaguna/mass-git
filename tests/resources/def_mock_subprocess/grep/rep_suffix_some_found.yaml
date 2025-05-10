@@ -1,0 +1,19 @@
+input_args: ["--rep-suffix", "@ ", "grep", "word"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "grep", "word"]
+    result_code: 1
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "grep", "word"]
+    result_code: 0
+    stdout: |-
+      file.txt:the word is here.
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo2@ file.txt:the word is here.
+expected_stderr: |+

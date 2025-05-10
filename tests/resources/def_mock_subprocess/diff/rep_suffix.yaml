@@ -1,0 +1,63 @@
+input_args: ["--rep-suffix", "@", "diff"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "diff"]
+    result_code: 0
+    stdout: |-
+      diff --git a/build.gradle.kts b/build.gradle.kts
+      index 70f897e..1489a09 100644
+      --- a/build.gradle.kts
+      +++ b/build.gradle.kts
+      @@ -36,3 +36,5 @@ compose.desktop {
+      }
+      }
+      }
+      +
+      +// a
+    stderr: |+
+      err1
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "diff"]
+    result_code: 0
+    stdout: |-
+      diff --git a/build.gradle.kts b/build.gradle.kts
+      index 70f897e..1489a09 100644
+      --- a/build.gradle.kts
+      +++ b/build.gradle.kts
+      @@ -36,3 +36,5 @@ compose.desktop {
+      }
+      }
+      }
+      +
+      +// b
+    stderr: |+
+      err2
+expected_result_code: 0
+expected_stdout: |+
+  repo1@
+  diff --git a/build.gradle.kts b/build.gradle.kts
+  index 70f897e..1489a09 100644
+  --- a/build.gradle.kts
+  +++ b/build.gradle.kts
+  @@ -36,3 +36,5 @@ compose.desktop {
+  }
+  }
+  }
+  +
+  +// a
+  repo2@
+  diff --git a/build.gradle.kts b/build.gradle.kts
+  index 70f897e..1489a09 100644
+  --- a/build.gradle.kts
+  +++ b/build.gradle.kts
+  @@ -36,3 +36,5 @@ compose.desktop {
+  }
+  }
+  }
+  +
+  +// b
+expected_stderr: |+
+  err1
+  err2

@@ -8,17 +8,30 @@ class SubprocessResultProcessor(abc.ABC):
 
 
 class StdoutDefault(SubprocessResultProcessor):
+    _sep: str
     _output_with_empty_stdout: str
 
-    def __init__(self, *, output_with_empty_stdout: str = "done"):
+    def __init__(
+        self, *, sep: t.Optional[str] = None, output_with_empty_stdout: str = "done"
+    ):
+        self._sep = sep if sep is not None else ": "
         self._output_with_empty_stdout = output_with_empty_stdout
+
+    @property
+    def separator(self) -> str:
+        return self._sep
 
     def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str):
         stdout_trimmed = origin_stdout.strip()
         if stdout_trimmed.count("\n") <= 0:
-            print(dirname + ":", stdout_trimmed or self._output_with_empty_stdout)
+            print(
+                dirname,
+                self._sep,
+                stdout_trimmed or self._output_with_empty_stdout,
+                sep="",
+            )
         else:
-            print(dirname + ":")
+            print(dirname + self._sep.rstrip())
             print(origin_stdout)
 
 
@@ -26,8 +39,8 @@ class StdoutNameEachLinePrefix(SubprocessResultProcessor):
     _sep: str
     _trim_empty_line: bool
 
-    def __init__(self, *, sep: str, trim_empty_line: bool = False):
-        self._sep = sep
+    def __init__(self, *, sep: t.Optional[str], trim_empty_line: bool = False):
+        self._sep = sep if sep is not None else ": "
         self._trim_empty_line = trim_empty_line
 
     @property

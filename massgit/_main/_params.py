@@ -43,3 +43,7 @@ class Params:
     @property
     def basedir(self) -> t.Optional[str]:
         return None
+
+    @property
+    def rep_suffix(self) -> t.Optional[str]:
+        return self._args.rep_suffix

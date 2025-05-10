@@ -11,5 +11,7 @@ class CheckoutCmd(SubCmd):
     def help(self) -> str:
         return "Switch branches or restore working tree files"
 
-    def subprocess_result_processor(self, args: t.Sequence[str]):
-        return StdoutDefault()
+    def subprocess_result_processor(
+        self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
+    ):
+        return StdoutDefault(sep=rep_suffix)

@@ -12,6 +12,7 @@ from tests.utils.mock import captured_stdouterr
         ("show/2repo",),
         ("show/some_error",),
         ("show/format_1line",),
+        ("show/rep_suffix",),
     ],
 )
 def test__show(

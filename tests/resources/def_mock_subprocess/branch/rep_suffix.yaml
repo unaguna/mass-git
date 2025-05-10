@@ -1,0 +1,45 @@
+input_args: ["--rep-suffix", "@", "branch"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "branch"]
+    result_code: 0
+    stdout:
+      "  branch1
+
+      \ \ develop
+
+      * main
+
+"
+    stderr: |+
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "branch"]
+    result_code: 0
+    stdout:
+      "  branch2
+
+      \ \ develop
+
+      * main
+
+"
+    stderr: |+
+      err
+expected_result_code: 0
+expected_stdout: |+
+  repo1@
+    branch1
+    develop
+  * main
+  
+  repo2@
+    branch2
+    develop
+  * main
+
+expected_stderr: |+
+  err
+  err

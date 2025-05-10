@@ -15,6 +15,8 @@ from tests.utils.mock import captured_stdouterr
         ("status/some_error",),
         ("status/some_error_reverse",),
         ("status/some_error_porcelain",),
+        ("status/rep_suffix",),
+        ("status/rep_suffix_porcelain2",),
     ],
 )
 def test__status(

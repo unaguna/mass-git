@@ -16,6 +16,10 @@ from tests.utils.mock import captured_stdouterr
         ("diff/some_error",),
         ("diff/some_error_reverse",),
         ("diff/some_error_shortstat",),
+        ("diff/rep_suffix",),
+        ("diff/rep_suffix_some_found",),
+        ("diff/rep_suffix_some_found_shortstat",),
+        ("diff/rep_suffix_some_found_name_only",),
     ],
 )
 def test__diff(
