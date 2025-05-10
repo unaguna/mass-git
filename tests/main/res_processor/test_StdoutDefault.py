@@ -3,6 +3,15 @@ import pytest
 from tests.utils.mock import captured_stdouterr
 
 
+def test__prop_separator():
+    from massgit._main.res_processor import StdoutDefault
+
+    sep = "r"
+
+    subproc_result_processor = StdoutDefault(sep=sep)
+    assert subproc_result_processor.separator == sep
+
+
 @pytest.mark.parametrize(
     ("output_with_empty_stdout", "origin_stdout", "expected_output"),
     [
