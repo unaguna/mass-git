@@ -58,6 +58,10 @@ def test__change_rep_suffix__by_dotenv(
             "0_cmn_rep_suffix/default",
             {"MASSGIT_REP_SUFFIX": "@@"},
         ),
+        (
+            "0_cmn_rep_suffix/some_one_line",
+            {"MASSGIT_REP_SUFFIX": "@@ "},
+        ),
     ],
 )
 def test__change_rep_suffix__by_env(
