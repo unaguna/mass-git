@@ -46,4 +46,12 @@ class Params:
 
     @property
     def rep_suffix(self) -> t.Optional[str]:
-        return self._args.rep_suffix
+        return _or(self._args.rep_suffix, self._env.get(EnvKey.REP_SUFFIX))
+
+
+def _or(*args):
+    for arg in args:
+        if arg is not None:
+            return arg
+    else:
+        return None
