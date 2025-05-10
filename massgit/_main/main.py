@@ -14,6 +14,7 @@ from .subcmd import (
     FetchCmd,
     GrepCmd,
     PullCmd,
+    ShowCmd,
     StatusCmd,
     DiffCmd,
 )
@@ -22,6 +23,7 @@ subcmd_list = [
     ConfigCmd(),
     DiffCmd(),
     GrepCmd(),
+    ShowCmd(),
     StatusCmd(),
     CheckoutCmd(),
     BranchCmd(),

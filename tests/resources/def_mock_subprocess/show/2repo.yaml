@@ -1,0 +1,59 @@
+input_args: ["show"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "show"]
+    result_code: 0
+    stdout: |-
+      commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+      Author: Tom <tom@example.com>
+      Date:   Wed Jun 26 16:52:40 2024 +0900
+      
+          remove print for debugging
+      
+      diff --git a/App.kt b/App.kt
+      index 85ca9fd..7a0d65a 100644
+      --- a/App.kt
+      +++ b/App.kt
+      @@ -107,7 +107,7 @@ fun App() {
+                       serverState = ServerState.Started(emptyList(), null)
+                       println("the server socket is open")
+      
+      -                println("waiting...")
+    stderr: |+
+      err1
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "show"]
+    result_code: 0
+    stdout: |-
+      commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+      Author: Tom <tom@example.com>
+      Date:   Wed Jun 26 16:52:40 2024 +0900
+    stderr: |+
+      err2
+expected_result_code: 0
+expected_stdout: |+
+  repo1:
+  commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+  Author: Tom <tom@example.com>
+  Date:   Wed Jun 26 16:52:40 2024 +0900
+  
+      remove print for debugging
+  
+  diff --git a/App.kt b/App.kt
+  index 85ca9fd..7a0d65a 100644
+  --- a/App.kt
+  +++ b/App.kt
+  @@ -107,7 +107,7 @@ fun App() {
+                   serverState = ServerState.Started(emptyList(), null)
+                   println("the server socket is open")
+  
+  -                println("waiting...")
+  repo2:
+  commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+  Author: Tom <tom@example.com>
+  Date:   Wed Jun 26 16:52:40 2024 +0900
+expected_stderr: |+
+  err1
+  err2

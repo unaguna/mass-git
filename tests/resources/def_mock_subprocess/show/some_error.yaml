@@ -1,0 +1,25 @@
+input_args: ["show"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "show"]
+    result_code: 2
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "show"]
+    result_code: 0
+    stdout: |-
+      commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+      Author: Tom <tom@example.com>
+      Date:   Wed Jun 26 16:52:40 2024 +0900
+    stderr: ""
+expected_result_code: 2
+expected_stdout: |+
+  repo1: failed (2)
+  repo2:
+  commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+  Author: Tom <tom@example.com>
+  Date:   Wed Jun 26 16:52:40 2024 +0900
+expected_stderr: |+

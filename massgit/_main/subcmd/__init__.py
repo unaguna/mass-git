@@ -6,4 +6,5 @@ from ._diff import DiffCmd
 from ._fetch import FetchCmd
 from ._grep import GrepCmd
 from ._pull import PullCmd
+from ._show import ShowCmd
 from ._status import StatusCmd

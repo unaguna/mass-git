@@ -1,0 +1,25 @@
+input_args: ["show", "--no-patch", '--format="%H %d"']
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "show", "--no-patch", '--format="%H %d"']
+    result_code: 0
+    stdout: |-
+      0217bbaef701b8b4e7886f96eb9a69273ee949cf  (HEAD -> main, dummy)
+    stderr: |+
+      err1
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "show", "--no-patch", '--format="%H %d"']
+    result_code: 0
+    stdout: |-
+      1217bbaef701b8b4e7886f96eb9a69273ee949cf  (HEAD -> main, dummy)
+    stderr: |+
+      err2
+expected_result_code: 0
+expected_stdout: |+
+  repo1: 0217bbaef701b8b4e7886f96eb9a69273ee949cf  (HEAD -> main, dummy)
+  repo2: 1217bbaef701b8b4e7886f96eb9a69273ee949cf  (HEAD -> main, dummy)
+expected_stderr: |+
+  err1
+  err2
