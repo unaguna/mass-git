@@ -17,6 +17,7 @@ from .subcmd import (
     ShowCmd,
     StatusCmd,
     DiffCmd,
+    LsFillsCmd,
 )
 
 subcmd_list = [
@@ -29,6 +30,7 @@ subcmd_list = [
     BranchCmd(),
     FetchCmd(),
     PullCmd(),
+    LsFillsCmd(),
 ]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 

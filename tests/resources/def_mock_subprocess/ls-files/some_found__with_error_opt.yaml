@@ -1,0 +1,24 @@
+input_args: ["ls-files", "--error-unmatch", "--", "*.properties"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "ls-files", "--error-unmatch", "--", "*.properties"]
+    result_code: 1
+    stdout: ""
+    stderr: |+
+      error: pathspec '*.properties' did not match any file(s) known to git
+      Did you forget to 'git add'?
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "ls-files", "--error-unmatch", "--", "*.properties"]
+    result_code: 0
+    stdout: |-
+      gradle.properties
+    stderr: ""
+expected_result_code: 1
+expected_stdout: |+
+  repo2/gradle.properties
+expected_stderr: |+
+  error: pathspec '*.properties' did not match any file(s) known to git
+  Did you forget to 'git add'?
+  repo1: failed (1)

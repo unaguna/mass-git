@@ -1,0 +1,19 @@
+input_args: ["ls-files", "--", "*.properties"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "ls-files", "--", "*.properties"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "ls-files", "--", "*.properties"]
+    result_code: 0
+    stdout: |-
+      gradle.properties
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo2/gradle.properties
+expected_stderr: |+
