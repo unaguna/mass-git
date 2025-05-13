@@ -19,9 +19,8 @@ class DiffCmd(SubCmd):
     def subprocess_result_processor(
         self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
     ) -> SubprocessResultProcessor:
-        joined_args = " ".join(args)
-        shortstat = "--shortstat" in joined_args
-        name_only = "--name-only" in joined_args
+        shortstat = "--shortstat" in args
+        name_only = "--name-only" in args
 
         if shortstat:
             return StdoutDefault(
