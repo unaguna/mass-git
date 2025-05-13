@@ -10,6 +10,7 @@ from tests.utils.mock import captured_stdouterr
     [
         ("grep/1repo",),
         ("grep/2repo",),
+        ("grep/null_sep",),
         ("grep/some_error",),
         ("grep/some_error_reverse",),
         ("grep/some_found",),

@@ -16,8 +16,13 @@ class GrepCmd(SubCmd):
     def subprocess_result_processor(
         self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
     ) -> SubprocessResultProcessor:
+        stdout_line_sep = "\0" if "-z" in args or "--null" in args else "\n"
+
         return StdoutNameEachLinePrefix(
-            sep=rep_suffix if rep_suffix is not None else os.sep, trim_empty_line=True
+            sep=rep_suffix if rep_suffix is not None else os.sep,
+            trim_empty_line=True,
+            result_line_sep=stdout_line_sep,
+            output_line_sep=stdout_line_sep,
         )
 
     def exit_code_is_no_error(self, exit_code: int) -> bool:

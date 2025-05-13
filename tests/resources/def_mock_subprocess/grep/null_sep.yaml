@@ -1,0 +1,24 @@
+input_args: ["grep", "-z", "word"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "grep", "-z", "word"]
+    result_code: 0
+    stdout: "file.txt:the word is here.\0dir/file.txt:the word is here.\0"
+    stderr: |+
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "grep", "-z", "word"]
+    result_code: 0
+    stdout: "file.txt:the word is here.\0"
+    stderr: |+
+      err
+expected_result_code: 0
+expected_stdout: "\
+  repo1/file.txt:the word is here.\0\
+  repo1/dir/file.txt:the word is here.\0\
+  repo2/file.txt:the word is here.\0"
+expected_stderr: |+
+  err
+  err
