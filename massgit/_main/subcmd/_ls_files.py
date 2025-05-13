@@ -19,8 +19,13 @@ class LsFillsCmd(SubCmd):
     def subprocess_result_processor(
         self, args: t.Sequence[str], *, rep_suffix: t.Optional[str]
     ) -> SubprocessResultProcessor:
+        stdout_line_sep = "\0" if "-z" in args else "\n"
+
         return StdoutNameEachLinePrefix(
-            sep=rep_suffix if rep_suffix is not None else os.sep, trim_empty_line=True
+            sep=rep_suffix if rep_suffix is not None else os.sep,
+            trim_empty_line=True,
+            result_line_sep=stdout_line_sep,
+            output_line_sep=stdout_line_sep,
         )
 
     def file_to_output_fail_msg(self, args: t.Sequence[str]) -> t.TextIO:

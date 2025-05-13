@@ -38,10 +38,21 @@ class StdoutDefault(SubprocessResultProcessor):
 class StdoutNameEachLinePrefix(SubprocessResultProcessor):
     _sep: str
     _trim_empty_line: bool
+    _result_line_sep: str
+    _output_line_sep: str
 
-    def __init__(self, *, sep: t.Optional[str], trim_empty_line: bool = False):
+    def __init__(
+        self,
+        *,
+        sep: t.Optional[str],
+        trim_empty_line: bool = False,
+        result_line_sep: str = "\n",
+        output_line_sep: str = "\n"
+    ):
         self._sep = sep if sep is not None else ": "
         self._trim_empty_line = trim_empty_line
+        self._result_line_sep = result_line_sep
+        self._output_line_sep = output_line_sep
 
     @property
     def separator(self) -> str:
@@ -49,13 +60,13 @@ class StdoutNameEachLinePrefix(SubprocessResultProcessor):
 
     def _line_iter(self, text: str) -> t.Iterator[str]:
         if self._trim_empty_line:
-            for line in text.split("\n"):
+            for line in text.split(self._result_line_sep):
                 if len(line) > 0:
                     yield line
         else:
-            for line in text.split("\n"):
+            for line in text.split(self._result_line_sep):
                 yield line
 
     def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str):
         for line in self._line_iter(origin_stdout):
-            print(dirname, self._sep, line, sep="")
+            print(dirname, self._sep, line, sep="", end=self._output_line_sep)

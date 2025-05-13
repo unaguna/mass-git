@@ -10,6 +10,7 @@ from tests.utils.mock import captured_stdouterr
     [
         ("ls-files/1repo",),
         ("ls-files/2repo",),
+        ("ls-files/null_sep",),
         ("ls-files/some_error",),
         ("ls-files/some_found",),
         ("ls-files/some_found__with_error_opt",),
