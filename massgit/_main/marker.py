@@ -14,5 +14,8 @@ class MarkerProcessor:
 
 
 class AcceptAnyMarkerProcessor(MarkerProcessor):
+    def __init__(self):
+        super().__init__([])
+
     def accept(self, markers: t.Sequence[str]) -> bool:
         return True

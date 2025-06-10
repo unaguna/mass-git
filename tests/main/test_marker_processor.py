@@ -37,5 +37,5 @@ def test__marker_processor__contains_or_not(marker_condition_args, markers, resu
 
 @pytest.mark.parametrize(*PARAMS_CONTAIN_OR_NOT)
 def test__marker_processor__contains_all(marker_condition_args, markers, result):
-    processor = AcceptAnyMarkerProcessor(marker_condition_args)
+    processor = AcceptAnyMarkerProcessor()
     assert processor.accept(markers)
