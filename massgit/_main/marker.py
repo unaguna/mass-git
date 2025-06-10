@@ -9,8 +9,5 @@ class MarkerProcessor:
             part for marker in marker_condition_args for part in marker.split()
         )
 
-    def __contains__(self, item: str) -> bool:
-        if not isinstance(item, str):
-            return False
-
-        return item in self._markers
+    def accept(self, markers: t.Sequence[str]) -> bool:
+        return any(marker in self._markers for marker in markers)
