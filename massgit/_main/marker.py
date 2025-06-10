@@ -11,3 +11,8 @@ class MarkerProcessor:
 
     def accept(self, markers: t.Sequence[str]) -> bool:
         return any(marker in self._markers for marker in markers)
+
+
+class AcceptAnyMarkerProcessor(MarkerProcessor):
+    def accept(self, markers: t.Sequence[str]) -> bool:
+        return True
