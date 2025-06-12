@@ -34,7 +34,7 @@ def test__change_rep_suffix__by_args(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(
         tmp_cwd,
-        dirnames=def_mock_subproc.repo_dirnames(),
+        repos=def_mock_subproc.repos(),
     )
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
@@ -79,7 +79,7 @@ def test__change_rep_suffix__by_dotenv(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(
         tmp_cwd,
-        dirnames=def_mock_subproc.repo_dirnames(),
+        repos=def_mock_subproc.repos(),
     )
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
@@ -127,7 +127,7 @@ def test__change_rep_suffix__by_env(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(
         tmp_cwd,
-        dirnames=def_mock_subproc.repo_dirnames(),
+        repos=def_mock_subproc.repos(),
     )
 
     mocked_subproc = mock_subprocess(def_mock_subproc)

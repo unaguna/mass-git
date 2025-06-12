@@ -8,6 +8,7 @@ import yaml
 
 class _DefMockSubprocRepoTypedDict(t.TypedDict):
     dirname: str
+    markers: t.Optional[t.Sequence[str]]
 
 
 class _DefMockSubprocRaiseTypedDict(t.TypedDict):
@@ -84,8 +85,8 @@ class DefMockSubproc:
                 "callback": _create_mock_callback(mock, trap_stderr=trap_stderr),
             }
 
-    def repo_dirnames(self) -> t.Sequence[str]:
-        return [m["repo"]["dirname"] for m in self._base_dict["mock"]]
+    def repos(self) -> t.Sequence[_DefMockSubprocRepoTypedDict]:
+        return [m["repo"] for m in self._base_dict["mock"]]
 
     @property
     def input_args(self) -> t.Sequence[str]:

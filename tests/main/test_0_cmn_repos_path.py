@@ -28,7 +28,7 @@ def test__change_repos_filepath(
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(
         tmp_cwd,
-        dirnames=def_mock_subproc.repo_dirnames(),
+        repos=def_mock_subproc.repos(),
         repos_path=".massgit/stub_repos.json",
     )
 

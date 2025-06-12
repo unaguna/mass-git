@@ -37,7 +37,7 @@ def test__install_dir_env__change_git_command(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 

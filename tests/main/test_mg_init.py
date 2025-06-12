@@ -28,7 +28,7 @@ def test__mg_init(
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     # don't create massgit dir (it is created in main(["mg-init"]))
-    # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    # create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     # create stubs of git local repository
     for repo in repo_list:
@@ -74,7 +74,7 @@ def test__mg_init__some_no_url(
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     # don't create massgit dir (it is created in main(["mg-init"]))
-    # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    # create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     # create stubs of git local repository
     for repo in repo_list:
@@ -116,15 +116,15 @@ def test__mg_init__error_when_already_initialized(
     output_detail,
 ):
     mock_def = "mg_init/error_when_already_initialized"
-    repo_list = ["repo1", "repo2"]
+    repo_list = [{"dirname": r} for r in ["repo1", "repo2"]]
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     # create massgit dir (raise conflict to main(["mginit"]))
-    create_massgit_dir(tmp_cwd, dirnames=repo_list)
+    create_massgit_dir(tmp_cwd, repos=repo_list)
 
     # create stubs of git local repository
     for repo in repo_list:
-        os.makedirs(tmp_cwd.joinpath(repo, ".git"))
+        os.makedirs(tmp_cwd.joinpath(repo["dirname"], ".git"))
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 
@@ -151,7 +151,7 @@ def test__mg_init__error_with_unknown_cmd_option(
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     # don't create massgit dir (it is created in main(["mg-init"]))
-    # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    # create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     # create stubs of git local repository
     for repo in repo_list:

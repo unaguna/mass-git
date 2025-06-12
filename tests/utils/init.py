@@ -9,10 +9,10 @@ class _EmptySet:
         return False
 
 
-def _repo(dirname: str, *, no_url_dirnames: t.Set[str]) -> t.Dict[str, t.Any]:
-    repo = {"url": f"http://example.com/{dirname}", "dirname": dirname}
+def _repo(repo: t.Mapping, *, no_url_dirnames: t.Set[str]) -> t.Dict[str, t.Any]:
+    repo = {"url": f"http://example.com/{repo['dirname']}", **repo}
 
-    if dirname in no_url_dirnames:
+    if repo["dirname"] in no_url_dirnames:
         del repo["url"]
 
     return repo
@@ -39,7 +39,7 @@ class MassgitDir:
 
 def create_massgit_dir(
     cwd: os.PathLike,
-    dirnames: t.Sequence = ("repo1",),
+    repos: t.Sequence = ({"dirname": "repo1"},),
     *,
     repos_path: t.Union[os.PathLike[str], str, None] = None,
     no_url_dirnames: t.Set[str] = _EmptySet(),
@@ -51,7 +51,7 @@ def create_massgit_dir(
     massgit_dir_path = repos_path.parent
     os.mkdir(massgit_dir_path)
 
-    repos = [_repo(dirname, no_url_dirnames=no_url_dirnames) for dirname in dirnames]
+    repos = [_repo(repo, no_url_dirnames=no_url_dirnames) for repo in repos]
 
     with open(repos_path, mode="w") as fp:
         json.dump(repos, fp)
