@@ -3,7 +3,7 @@ import typing as t
 from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
-from .marker import marker_expression
+from ._arg_types import marker_expression
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .._utils.dotenv import load_dotenv
