@@ -1,4 +1,5 @@
 import abc
+import itertools
 import sys
 import typing as t
 
@@ -25,4 +26,4 @@ class SubCmd(abc.ABC):
         return sys.stdout
 
     def summarize_exit_code(self, exit_codes: t.Iterable[int]) -> int:
-        return max(exit_codes)
+        return max(itertools.chain(exit_codes, (0,)))

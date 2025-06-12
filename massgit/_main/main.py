@@ -3,6 +3,7 @@ import typing as t
 from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
+from .marker import marker_expression
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .._utils.dotenv import load_dotenv
@@ -44,6 +45,13 @@ def main(
     cwd_config_dir: str = ".massgit",
 ) -> int:
     parser = ArgumentParser(prog="massgit")
+    parser.add_argument(
+        "--marker",
+        "-m",
+        type=marker_expression,
+        dest="marker_condition",
+        help="Specify target repositories by marker. You can specify boolean expression such as 'marker1 or marker2'.",
+    )
     parser.add_argument(
         "--rep-suffix",
         required=False,
