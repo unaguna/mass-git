@@ -15,6 +15,7 @@ from tests.utils.mock import captured_stdouterr
         ("checkout/some_error_reverse",),
         ("checkout/some_error_checkout_file",),
         ("checkout/rep_suffix",),
+        ("checkout/markers",),
     ],
 )
 def test__checkout(

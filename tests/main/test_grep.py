@@ -17,6 +17,7 @@ from tests.utils.mock import captured_stdouterr
         ("grep/not_found",),
         ("grep/rep_suffix",),
         ("grep/rep_suffix_some_found",),
+        ("grep/markers",),
     ],
 )
 def test__grep(

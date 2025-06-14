@@ -18,6 +18,7 @@ from tests.utils.mock import captured_stdouterr
         ("ls-files/not_found__with_error_opt",),
         ("ls-files/rep_suffix",),
         ("ls-files/rep_suffix_some_found",),
+        ("ls-files/markers",),
     ],
 )
 def test__ls_files(

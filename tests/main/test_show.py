@@ -13,6 +13,7 @@ from tests.utils.mock import captured_stdouterr
         ("show/some_error",),
         ("show/format_1line",),
         ("show/rep_suffix",),
+        ("show/markers",),
     ],
 )
 def test__show(

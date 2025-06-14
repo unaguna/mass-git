@@ -13,6 +13,7 @@ from tests.utils.mock import captured_stdouterr
         ("pull/some_error",),
         ("pull/some_error_reverse",),
         ("pull/rep_suffix",),
+        ("pull/markers",),
     ],
 )
 def test__pull(

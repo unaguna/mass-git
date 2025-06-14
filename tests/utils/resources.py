@@ -77,8 +77,12 @@ class DefMockSubproc:
             False の場合、サブプロセス実行時に標準エラー出力がそのまま標準エラー出力へ出力されることを前提にモック化する。
         """
         for mock in self._base_dict["mock"]:
+            command = mock["expected_cmd"]
+            if command is None:
+                continue
+
             yield {
-                "command": mock["expected_cmd"],
+                "command": command,
                 "returncode": mock["result_code"],
                 "stdout": mock["stdout"],
                 "stderr": mock["stderr"] if trap_stderr else None,

@@ -14,6 +14,7 @@ from tests.utils.mock import captured_stdouterr
         ("config/some_error",),
         ("config/rep_suffix",),
         ("config/rep_suffix_one_config",),
+        ("config/markers",),
     ],
 )
 def test__config(

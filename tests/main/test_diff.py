@@ -20,6 +20,7 @@ from tests.utils.mock import captured_stdouterr
         ("diff/rep_suffix_some_found",),
         ("diff/rep_suffix_some_found_shortstat",),
         ("diff/rep_suffix_some_found_name_only",),
+        ("diff/markers",),
     ],
 )
 def test__diff(

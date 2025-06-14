@@ -13,6 +13,7 @@ from tests.utils.mock import captured_stdouterr
         ("fetch/some_error",),
         ("fetch/some_error_reverse",),
         ("fetch/rep_suffix",),
+        ("fetch/markers",),
     ],
 )
 def test__fetch(

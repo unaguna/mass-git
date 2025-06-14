@@ -1,0 +1,47 @@
+input_args: ["-m", "gt1", "diff"]
+mock:
+  - repo:
+      dirname: repo1
+      markers:
+        - all
+        - gt0
+    expected_cmd: null
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+      markers:
+        - all
+        - gt0
+        - gt1
+    expected_cmd: ["git", "diff"]
+    result_code: 0
+    stdout: |-
+      diff --git a/build.gradle.kts b/build.gradle.kts
+      index 70f897e..1489a09 100644
+      --- a/build.gradle.kts
+      +++ b/build.gradle.kts
+      @@ -36,3 +36,5 @@ compose.desktop {
+      }
+      }
+      }
+      +
+      +// b
+    stderr: |+
+      err2
+expected_result_code: 0
+expected_stdout: |+
+  repo2:
+  diff --git a/build.gradle.kts b/build.gradle.kts
+  index 70f897e..1489a09 100644
+  --- a/build.gradle.kts
+  +++ b/build.gradle.kts
+  @@ -36,3 +36,5 @@ compose.desktop {
+  }
+  }
+  }
+  +
+  +// b
+expected_stderr: |+
+  err2

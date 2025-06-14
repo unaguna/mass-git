@@ -14,6 +14,7 @@ from tests.utils.mock import captured_stdouterr
         ("branch/some_error",),
         ("branch/some_error_reverse",),
         ("branch/rep_suffix",),
+        ("branch/markers",),
     ],
 )
 def test__branch(
