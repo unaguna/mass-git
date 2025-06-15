@@ -22,7 +22,7 @@ mock:
         - all
         - gt0
         - gt1
-    expected_cmd: ["git", "status"]
+    expected_cmd: ["git", "status", "--short"]
     result_code: 0
     stdout: |+
       dummy

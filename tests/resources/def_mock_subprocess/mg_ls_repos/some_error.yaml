@@ -2,7 +2,7 @@ input_args: ["mg-ls-repos"]
 mock:
   - repo:
       dirname: repo1
-    expected_cmd: ["git", "status"]
+    expected_cmd: ["git", "status", "--short"]
     result_code: 1
     stdout: |-
       gradle.properties
@@ -11,7 +11,7 @@ mock:
       err
   - repo:
       dirname: repo2
-    expected_cmd: ["git", "status"]
+    expected_cmd: ["git", "status", "--short"]
     result_code: 0
     stdout: |-
       gradle.properties

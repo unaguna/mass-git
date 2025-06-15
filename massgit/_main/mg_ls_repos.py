@@ -30,7 +30,9 @@ def mg_ls_repos(
     exit_codes = []
 
     for repo in marker_processor.iter_accepted(repos, lambda r: r["markers"]):
-        res = gitproc.trap_stdout("status", repo, git=git, basedir=basedir, env=env)
+        res = gitproc.trap_stdout(
+            "status", repo, ("--short",), git=git, basedir=basedir, env=env
+        )
         if res.returncode == 0:
             print(repo["dirname"])
         else:
