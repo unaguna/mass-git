@@ -6,7 +6,15 @@ import typing as t
 from ..res_processor import SubprocessResultProcessor
 
 
-class WrapGitSubCmd(abc.ABC):
+class SubCmd(abc.ABC):
+    @abc.abstractmethod
+    def name(self) -> str: ...
+
+    @abc.abstractmethod
+    def help(self) -> t.Optional[str]: ...
+
+
+class WrapGitSubCmd(SubCmd, abc.ABC):
     @abc.abstractmethod
     def name(self) -> str: ...
 

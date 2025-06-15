@@ -19,6 +19,8 @@ from .subcmd import (
     StatusCmd,
     DiffCmd,
     LsFillsCmd,
+    MgCloneCmd,
+    MgInitCmd,
 )
 
 subcmd_list = [
@@ -32,6 +34,8 @@ subcmd_list = [
     FetchCmd(),
     PullCmd(),
     LsFillsCmd(),
+    MgCloneCmd(),
+    MgInitCmd(),
 ]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
@@ -59,19 +63,13 @@ def main(
     )
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
-    mginit_parser = subparsers.add_parser(
-        "mg-init",
-        help="Initialize massgit",
-    )
-    mgclone_parser = subparsers.add_parser(
-        "mg-clone",
-        help="Clone defined repos",
-    )
+    subparsers_dict = {}
     for cmd in subcmd_list:
-        subparsers.add_parser(
+        p = subparsers.add_parser(
             cmd.name(),
             help=cmd.help(),
         )
+        subparsers_dict[cmd.name()] = p
 
     main_args, remaining_args = parser.parse_known_args(argv)
 
@@ -83,19 +81,19 @@ def main(
     )
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
-    if main_args.subcmd in subcmds:
+    if main_args.subcmd == "mg-init":
+        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        subparsers_dict["mg-init"].parse_args(remaining_args)
+        exit_code = mginit_cmd(params)
+    elif main_args.subcmd == "mg-clone":
+        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        subparsers_dict["mg-clone"].parse_args(remaining_args)
+        exit_code = mgclone_cmd(params)
+    elif main_args.subcmd in subcmds:
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         exit_code = cmn_each_repo_cmd2(
             subcmds[main_args.subcmd], params, remaining_args
         )
-    elif main_args.subcmd == "mg-init":
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        mginit_parser.parse_args(remaining_args)
-        exit_code = mginit_cmd(params)
-    elif main_args.subcmd == "mg-clone":
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        mgclone_parser.parse_args(remaining_args)
-        exit_code = mgclone_cmd(params)
     else:
         # NOT reachable (maybe raised faster)
         raise ValueError("unknown subcmd")
