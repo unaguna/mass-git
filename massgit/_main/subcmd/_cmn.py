@@ -1,4 +1,5 @@
 import abc
+import argparse
 import itertools
 import sys
 import typing as t
@@ -15,6 +16,14 @@ class SubCmd(abc.ABC):
 
     def parse_sub_args(self) -> bool:
         return True
+
+    def validate(
+        self,
+        main_args: argparse.Namespace,
+        sub_args: t.Optional[argparse.Namespace],
+        subparser: argparse.ArgumentParser,
+    ):
+        pass
 
 
 class WrapGitSubCmd(SubCmd, abc.ABC):

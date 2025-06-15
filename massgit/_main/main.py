@@ -89,6 +89,7 @@ def main(
         sub_args = subcmd_parser.parse_args(remaining_args)
     else:
         sub_args = None
+    subcmd.validate(main_args, sub_args, subparser=subcmd_parser)
     params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
 
     if subcmd.name() == "mg-init":

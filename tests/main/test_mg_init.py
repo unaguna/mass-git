@@ -169,3 +169,34 @@ def test__mg_init__error_with_unknown_cmd_option(
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
     assert mocked_subproc.assert_call_count()
+
+
+def test__mg_init__error_with_marker_option(
+    fp,
+    mock_sep,
+    tmp_cwd,
+    tmp_config_dir,
+    resources,
+    output_detail,
+):
+    repo_list = ["repo1", "repo2"]
+    # don't create massgit dir (it is created in main(["mg-init"]))
+    # create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
+
+    # create stubs of git local repository
+    for repo in repo_list:
+        os.makedirs(tmp_cwd.joinpath(repo, ".git"))
+
+    with captured_stdouterr() as capout:
+        with pytest.raises(SystemExit) as exc_info:
+            main(["--marker", "marker", "mg-init"], install_config_dir=tmp_config_dir)
+    output_detail.exc_info(exc_info)
+    out, err = capout.readouterr()
+    output_detail.res(out=out, err=err)
+    assert exc_info.value.code == 2
+    assert out == ""
+    assert (
+        "massgit mg-init: error: argument --marker/-m: cannot specify marker in mg-init"
+        in err
+    )
+    assert len(fp.calls) == 0
