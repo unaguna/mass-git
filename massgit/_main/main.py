@@ -81,21 +81,17 @@ def main(
     )
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
-    if main_args.subcmd == "mg-init":
+    subcmd = subcmds[main_args.subcmd]
+    if subcmd.name() == "mg-init":
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         subparsers_dict["mg-init"].parse_args(remaining_args)
         exit_code = mginit_cmd(params)
-    elif main_args.subcmd == "mg-clone":
+    elif subcmd.name() == "mg-clone":
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         subparsers_dict["mg-clone"].parse_args(remaining_args)
         exit_code = mgclone_cmd(params)
-    elif main_args.subcmd in subcmds:
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        exit_code = cmn_each_repo_cmd2(
-            subcmds[main_args.subcmd], params, remaining_args
-        )
     else:
-        # NOT reachable (maybe raised faster)
-        raise ValueError("unknown subcmd")
+        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+        exit_code = cmn_each_repo_cmd2(subcmd, params, remaining_args)
 
     return exit_code
