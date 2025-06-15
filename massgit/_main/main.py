@@ -1,3 +1,4 @@
+import argparse
 import os
 import typing as t
 from argparse import ArgumentParser
@@ -63,7 +64,7 @@ def main(
     )
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
-    subparsers_dict = {}
+    subparsers_dict: t.Dict[str, argparse.ArgumentParser] = {}
     for cmd in subcmd_list:
         p = subparsers.add_parser(
             cmd.name(),
