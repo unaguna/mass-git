@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
 from ._arg_types import marker_expression
+from .mg_ls_repos import mg_ls_repos_cmd
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .._utils.dotenv import load_dotenv
@@ -22,6 +23,7 @@ from .subcmd import (
     LsFillsCmd,
     MgCloneCmd,
     MgInitCmd,
+    MgLsReposCmd,
     WrapGitSubCmd,
 )
 
@@ -38,6 +40,7 @@ subcmd_list = [
     LsFillsCmd(),
     MgCloneCmd(),
     MgInitCmd(),
+    MgLsReposCmd(),
 ]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
@@ -96,6 +99,8 @@ def main(
         exit_code = mginit_cmd(params)
     elif subcmd.name() == "mg-clone":
         exit_code = mgclone_cmd(params)
+    elif subcmd.name() == "mg-ls-repos":
+        exit_code = mg_ls_repos_cmd(params)
     elif isinstance(subcmd, WrapGitSubCmd):
         exit_code = cmn_each_repo_cmd2(subcmd, params, remaining_args)
     else:
