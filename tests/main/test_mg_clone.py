@@ -12,6 +12,7 @@ from tests.utils.mock import captured_stdouterr
         ("mg_clone/2repo",),
         ("mg_clone/some_error",),
         ("mg_clone/some_exception",),
+        ("mg_clone/markers",),
     ],
 )
 def test__mg_clone(
