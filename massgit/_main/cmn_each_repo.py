@@ -2,7 +2,7 @@ import sys
 import typing as t
 
 from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
-from .subcmd import SubCmd
+from .subcmd import WrapGitSubCmd
 from .._types import Repo
 from .._repo import load_repos
 from ._params import Params
@@ -10,7 +10,7 @@ import massgit._git_process as gitproc
 
 
 def cmn_each_repo_cmd2(
-    subcmd: SubCmd,
+    subcmd: WrapGitSubCmd,
     params: Params,
     remaining_args: t.Sequence[str],
 ) -> int:
@@ -28,7 +28,7 @@ def cmn_each_repo_cmd2(
 
 
 def cmn_each_repo(
-    subcmd: SubCmd,
+    subcmd: WrapGitSubCmd,
     repos: t.Sequence[Repo],
     args: t.Sequence[str] = tuple(),
     *,

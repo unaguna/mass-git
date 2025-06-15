@@ -1,7 +1,7 @@
 import os
 import typing as t
 
-from ._cmn import SubCmd
+from ._cmn import WrapGitSubCmd
 from ..res_processor import (
     StdoutDefault,
     StdoutNameEachLinePrefix,
@@ -9,7 +9,7 @@ from ..res_processor import (
 )
 
 
-class DiffCmd(SubCmd):
+class DiffCmd(WrapGitSubCmd):
     def name(self) -> str:
         return "diff"
 
