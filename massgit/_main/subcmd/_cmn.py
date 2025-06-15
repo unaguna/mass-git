@@ -13,13 +13,13 @@ class SubCmd(abc.ABC):
     @abc.abstractmethod
     def help(self) -> t.Optional[str]: ...
 
+    def parse_sub_args(self) -> bool:
+        return True
+
 
 class WrapGitSubCmd(SubCmd, abc.ABC):
-    @abc.abstractmethod
-    def name(self) -> str: ...
-
-    @abc.abstractmethod
-    def help(self) -> t.Optional[str]: ...
+    def parse_sub_args(self) -> bool:
+        return False
 
     @abc.abstractmethod
     def subprocess_result_processor(

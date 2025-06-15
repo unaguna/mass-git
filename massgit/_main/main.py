@@ -84,16 +84,18 @@ def main(
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
     subcmd = subcmds[main_args.subcmd]
+    subcmd_parser = subparsers_dict[subcmd.name()]
+    if subcmd.parse_sub_args():
+        sub_args = subcmd_parser.parse_args(remaining_args)
+    else:
+        sub_args = None
+    params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+
     if subcmd.name() == "mg-init":
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        subparsers_dict["mg-init"].parse_args(remaining_args)
         exit_code = mginit_cmd(params)
     elif subcmd.name() == "mg-clone":
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        subparsers_dict["mg-clone"].parse_args(remaining_args)
         exit_code = mgclone_cmd(params)
     elif isinstance(subcmd, WrapGitSubCmd):
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         exit_code = cmn_each_repo_cmd2(subcmd, params, remaining_args)
     else:
         # NOT reachable (maybe raised faster)
