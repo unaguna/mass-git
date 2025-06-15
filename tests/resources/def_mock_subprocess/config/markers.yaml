@@ -1,6 +1,13 @@
 input_args: ["-m", "gt1", "config", "--list"]
 mock:
   - repo:
+      dirname: repo0
+      markers: null
+    expected_cmd: null
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
       dirname: repo1
       markers:
         - all
