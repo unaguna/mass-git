@@ -20,6 +20,7 @@ from tests.utils.mock import captured_stdouterr
         ("diff/rep_suffix_some_found",),
         ("diff/rep_suffix_some_found_shortstat",),
         ("diff/rep_suffix_some_found_name_only",),
+        ("diff/markers",),
     ],
 )
 def test__diff(
@@ -33,7 +34,7 @@ def test__diff(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 

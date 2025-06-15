@@ -1,10 +1,10 @@
 import typing as t
 
-from ._cmn import SubCmd
+from ._cmn import WrapGitSubCmd
 from ..res_processor import StdoutDefault
 
 
-class ShowCmd(SubCmd):
+class ShowCmd(WrapGitSubCmd):
     def name(self) -> str:
         return "show"
 

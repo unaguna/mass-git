@@ -24,7 +24,7 @@ def test__clone(
 
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mock_subprocess(def_mock_subproc, trap_stderr=True)
 
@@ -55,7 +55,7 @@ def test__clone__error(
 
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mock_subprocess(def_mock_subproc, trap_stderr=True)
 

@@ -28,7 +28,7 @@ def test__initialize__arg_git_dir_name(
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     # don't create massgit dir (it is created in main(["mg-init"]))
-    # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    # create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     # create stubs of git local repository
     for repo in repo_list:
@@ -78,7 +78,7 @@ def test__initialize__arg_massgit_dir_name_default(
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     # don't create massgit dir (it is created in main(["mg-init"]))
-    # create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    # create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     # create stubs of git local repository
     for repo in repo_list:

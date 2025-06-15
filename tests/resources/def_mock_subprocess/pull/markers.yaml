@@ -1,0 +1,34 @@
+input_args: ["-m", "gt1", "pull"]
+mock:
+  - repo:
+      dirname: repo0
+      markers: null
+    expected_cmd: null
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo1
+      markers:
+        - all
+        - gt0
+    expected_cmd: null
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+      markers:
+        - all
+        - gt0
+        - gt1
+    expected_cmd: ["git", "pull"]
+    result_code: 0
+    stdout: ""
+    stderr: |+
+      err
+expected_result_code: 0
+expected_stdout: |+
+  repo2: done
+expected_stderr: |+
+  err

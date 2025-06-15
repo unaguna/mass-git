@@ -13,6 +13,7 @@ from tests.utils.mock import captured_stdouterr
         ("fetch/some_error",),
         ("fetch/some_error_reverse",),
         ("fetch/rep_suffix",),
+        ("fetch/markers",),
     ],
 )
 def test__fetch(
@@ -26,7 +27,7 @@ def test__fetch(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 

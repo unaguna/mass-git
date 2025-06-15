@@ -1,6 +1,6 @@
 import typing as t
 
-from ._cmn import SubCmd
+from ._cmn import WrapGitSubCmd
 from ..res_processor import (
     StdoutDefault,
     StdoutNameEachLinePrefix,
@@ -8,7 +8,7 @@ from ..res_processor import (
 )
 
 
-class StatusCmd(SubCmd):
+class StatusCmd(WrapGitSubCmd):
     def name(self) -> str:
         return "status"
 

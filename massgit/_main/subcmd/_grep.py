@@ -2,11 +2,11 @@ import os
 import sys
 import typing as t
 
-from ._cmn import SubCmd
+from ._cmn import WrapGitSubCmd
 from ..res_processor import StdoutNameEachLinePrefix, SubprocessResultProcessor
 
 
-class GrepCmd(SubCmd):
+class GrepCmd(WrapGitSubCmd):
     def name(self) -> str:
         return "grep"
 

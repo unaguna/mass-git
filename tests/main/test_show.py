@@ -13,6 +13,7 @@ from tests.utils.mock import captured_stdouterr
         ("show/some_error",),
         ("show/format_1line",),
         ("show/rep_suffix",),
+        ("show/markers",),
     ],
 )
 def test__show(
@@ -26,7 +27,7 @@ def test__show(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 

@@ -1,6 +1,8 @@
+import sys
 import typing as t
 
 from ._params import Params
+from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
 from .._repo import load_repos
 from .._types import Repo
 from ..exceptions import GitExitWithNonZeroException
@@ -14,6 +16,7 @@ def mgclone_cmd(params: Params) -> int:
         basedir=params.basedir,
         git=params.git_exec_path,
         env=params.env,
+        marker_processor=params.marker_processor,
     )
 
 
@@ -23,11 +26,11 @@ def mgclone(
     basedir: t.Optional[str] = None,
     git: str = "git",
     env: t.Union[t.Mapping[str, str]] = None,
+    marker_processor: MarkerProcessor = AcceptAnyMarkerProcessor(),
 ) -> int:
     exit_codes = []
-    # TODO: repos が空の場合の処理
 
-    for repo in repos:
+    for repo in marker_processor.iter_accepted(repos, lambda r: r["markers"]):
         try:
             _mgclone_each_repo(repo, basedir=basedir, git=git, env=env)
             print(f"clone {repo['dirname']} completed.")
@@ -38,6 +41,12 @@ def mgclone(
         except Exception as e:
             print(f"clone {repo['dirname']} failed: {type(e).__name__} {e}")
             exit_codes.append(1)
+
+    if len(exit_codes) <= 0:
+        print(
+            "WARN: The operation was performed on NO repos. Please refer repos.json and markers.",
+            file=sys.stderr,
+        )
 
     return max(exit_codes)
 

@@ -18,6 +18,7 @@ from tests.utils.mock import captured_stdouterr
         ("ls-files/not_found__with_error_opt",),
         ("ls-files/rep_suffix",),
         ("ls-files/rep_suffix_some_found",),
+        ("ls-files/markers",),
     ],
 )
 def test__ls_files(
@@ -31,7 +32,7 @@ def test__ls_files(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 

@@ -3,12 +3,14 @@ import os
 import typing as t
 
 from ._env_name import EnvKey
+from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
 
 
 class Params:
     _args: argparse.Namespace
     _env: t.Dict[str, str]
     _cwd_config_dir: t.Union[str, os.PathLike]
+    _marker_processor: MarkerProcessor
 
     def __init__(
         self,
@@ -19,6 +21,12 @@ class Params:
         self._args = args
         self._env = env
         self._cwd_config_dir = cwd_config_dir
+
+        self._marker_processor = (
+            MarkerProcessor(self._args.marker_condition)
+            if self._args.marker_condition is not None
+            else AcceptAnyMarkerProcessor()
+        )
 
     @property
     def env(self) -> t.Dict[str, str]:
@@ -47,6 +55,10 @@ class Params:
     @property
     def rep_suffix(self) -> t.Optional[str]:
         return _or(self._args.rep_suffix, self._env.get(EnvKey.REP_SUFFIX))
+
+    @property
+    def marker_processor(self) -> MarkerProcessor:
+        return self._marker_processor
 
 
 def _or(*args):

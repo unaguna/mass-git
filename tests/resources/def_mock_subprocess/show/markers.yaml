@@ -1,0 +1,40 @@
+input_args: ["-m", "gt1", "show"]
+mock:
+  - repo:
+      dirname: repo0
+      markers: null
+    expected_cmd: null
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo1
+      markers:
+        - all
+        - gt0
+    expected_cmd: null
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo2
+      markers:
+        - all
+        - gt0
+        - gt1
+    expected_cmd: ["git", "show"]
+    result_code: 0
+    stdout: |-
+      commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+      Author: Tom <tom@example.com>
+      Date:   Wed Jun 26 16:52:40 2024 +0900
+    stderr: |+
+      err2
+expected_result_code: 0
+expected_stdout: |+
+  repo2:
+  commit 0217bbaef701b8b4e7886f96eb9a69273ee949cf (HEAD -> main, dummy)
+  Author: Tom <tom@example.com>
+  Date:   Wed Jun 26 16:52:40 2024 +0900
+expected_stderr: |+
+  err2

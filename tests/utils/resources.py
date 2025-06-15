@@ -8,6 +8,7 @@ import yaml
 
 class _DefMockSubprocRepoTypedDict(t.TypedDict):
     dirname: str
+    markers: t.Optional[t.Sequence[str]]
 
 
 class _DefMockSubprocRaiseTypedDict(t.TypedDict):
@@ -76,16 +77,20 @@ class DefMockSubproc:
             False の場合、サブプロセス実行時に標準エラー出力がそのまま標準エラー出力へ出力されることを前提にモック化する。
         """
         for mock in self._base_dict["mock"]:
+            command = mock["expected_cmd"]
+            if command is None:
+                continue
+
             yield {
-                "command": mock["expected_cmd"],
+                "command": command,
                 "returncode": mock["result_code"],
                 "stdout": mock["stdout"],
                 "stderr": mock["stderr"] if trap_stderr else None,
                 "callback": _create_mock_callback(mock, trap_stderr=trap_stderr),
             }
 
-    def repo_dirnames(self) -> t.Sequence[str]:
-        return [m["repo"]["dirname"] for m in self._base_dict["mock"]]
+    def repos(self) -> t.Sequence[_DefMockSubprocRepoTypedDict]:
+        return [m["repo"] for m in self._base_dict["mock"]]
 
     @property
     def input_args(self) -> t.Sequence[str]:

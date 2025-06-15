@@ -18,4 +18,7 @@ def load_repos(
         else:
             repo["dirname_is_default"] = False
 
+        if repo.get("markers") is None:
+            repo["markers"] = []
+
     return repos

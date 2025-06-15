@@ -1,4 +1,6 @@
 import abc
+import argparse
+import itertools
 import sys
 import typing as t
 
@@ -11,6 +13,22 @@ class SubCmd(abc.ABC):
 
     @abc.abstractmethod
     def help(self) -> t.Optional[str]: ...
+
+    def parse_sub_args(self) -> bool:
+        return True
+
+    def validate(
+        self,
+        main_args: argparse.Namespace,
+        sub_args: t.Optional[argparse.Namespace],
+        subparser: argparse.ArgumentParser,
+    ):
+        pass
+
+
+class WrapGitSubCmd(SubCmd, abc.ABC):
+    def parse_sub_args(self) -> bool:
+        return False
 
     @abc.abstractmethod
     def subprocess_result_processor(
@@ -25,4 +43,4 @@ class SubCmd(abc.ABC):
         return sys.stdout
 
     def summarize_exit_code(self, exit_codes: t.Iterable[int]) -> int:
-        return max(exit_codes)
+        return max(itertools.chain(exit_codes, (0,)))

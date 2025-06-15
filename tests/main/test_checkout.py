@@ -15,6 +15,7 @@ from tests.utils.mock import captured_stdouterr
         ("checkout/some_error_reverse",),
         ("checkout/some_error_checkout_file",),
         ("checkout/rep_suffix",),
+        ("checkout/markers",),
     ],
 )
 def test__checkout(
@@ -28,7 +29,7 @@ def test__checkout(
 ):
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
-    create_massgit_dir(tmp_cwd, dirnames=def_mock_subproc.repo_dirnames())
+    create_massgit_dir(tmp_cwd, repos=def_mock_subproc.repos())
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 

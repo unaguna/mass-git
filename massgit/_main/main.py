@@ -1,8 +1,10 @@
+import argparse
 import os
 import typing as t
 from argparse import ArgumentParser
 
 from .cmn_each_repo import cmn_each_repo_cmd2
+from ._arg_types import marker_expression
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .._utils.dotenv import load_dotenv
@@ -18,6 +20,9 @@ from .subcmd import (
     StatusCmd,
     DiffCmd,
     LsFillsCmd,
+    MgCloneCmd,
+    MgInitCmd,
+    WrapGitSubCmd,
 )
 
 subcmd_list = [
@@ -31,6 +36,8 @@ subcmd_list = [
     FetchCmd(),
     PullCmd(),
     LsFillsCmd(),
+    MgCloneCmd(),
+    MgInitCmd(),
 ]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
@@ -45,25 +52,26 @@ def main(
 ) -> int:
     parser = ArgumentParser(prog="massgit")
     parser.add_argument(
+        "--marker",
+        "-m",
+        type=marker_expression,
+        dest="marker_condition",
+        help="Specify target repositories by marker. You can specify boolean expression such as 'marker1 or marker2'.",
+    )
+    parser.add_argument(
         "--rep-suffix",
         required=False,
         help='The suffix of repository name in output. Default is ": " in almost every subcommand.',
     )
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
-    mginit_parser = subparsers.add_parser(
-        "mg-init",
-        help="Initialize massgit",
-    )
-    mgclone_parser = subparsers.add_parser(
-        "mg-clone",
-        help="Clone defined repos",
-    )
+    subparsers_dict: t.Dict[str, argparse.ArgumentParser] = {}
     for cmd in subcmd_list:
-        subparsers.add_parser(
+        p = subparsers.add_parser(
             cmd.name(),
             help=cmd.help(),
         )
+        subparsers_dict[cmd.name()] = p
 
     main_args, remaining_args = parser.parse_known_args(argv)
 
@@ -75,19 +83,21 @@ def main(
     )
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
-    if main_args.subcmd in subcmds:
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        exit_code = cmn_each_repo_cmd2(
-            subcmds[main_args.subcmd], params, remaining_args
-        )
-    elif main_args.subcmd == "mg-init":
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        mginit_parser.parse_args(remaining_args)
+    subcmd = subcmds[main_args.subcmd]
+    subcmd_parser = subparsers_dict[subcmd.name()]
+    if subcmd.parse_sub_args():
+        sub_args = subcmd_parser.parse_args(remaining_args)
+    else:
+        sub_args = None
+    subcmd.validate(main_args, sub_args, subparser=subcmd_parser)
+    params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
+
+    if subcmd.name() == "mg-init":
         exit_code = mginit_cmd(params)
-    elif main_args.subcmd == "mg-clone":
-        params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
-        mgclone_parser.parse_args(remaining_args)
+    elif subcmd.name() == "mg-clone":
         exit_code = mgclone_cmd(params)
+    elif isinstance(subcmd, WrapGitSubCmd):
+        exit_code = cmn_each_repo_cmd2(subcmd, params, remaining_args)
     else:
         # NOT reachable (maybe raised faster)
         raise ValueError("unknown subcmd")
