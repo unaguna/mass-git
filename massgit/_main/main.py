@@ -22,6 +22,7 @@ from .subcmd import (
     LsFillsCmd,
     MgCloneCmd,
     MgInitCmd,
+    WrapGitSubCmd,
 )
 
 subcmd_list = [
@@ -91,8 +92,11 @@ def main(
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         subparsers_dict["mg-clone"].parse_args(remaining_args)
         exit_code = mgclone_cmd(params)
-    else:
+    elif isinstance(subcmd, WrapGitSubCmd):
         params = Params(main_args, env, cwd_config_dir=cwd_config_dir)
         exit_code = cmn_each_repo_cmd2(subcmd, params, remaining_args)
+    else:
+        # NOT reachable (maybe raised faster)
+        raise ValueError("unknown subcmd")
 
     return exit_code
