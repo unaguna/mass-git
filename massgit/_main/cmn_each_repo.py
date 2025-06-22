@@ -41,28 +41,33 @@ def cmn_each_repo(
     rep_suffix_err = rep_suffix if rep_suffix is not None else ": "
     exit_codes = []
     for repo in marker_processor.iter_accepted(repos, lambda r: r["markers"]):
-        res = gitproc.trap_stdout(
-            subcmd.name(),
-            repo,
-            args,
-            basedir=basedir,
-            git=git,
-            env=env,
-        )
-        exit_codes.append(res.returncode)
-
-        if subcmd.exit_code_is_no_error(res.returncode):
-            subcmd.subprocess_result_processor(
-                args=args, rep_suffix=rep_suffix
-            ).print_stdout(res.returncode, res.stdout, dirname=repo["dirname"])
-        else:
-            print(
-                repo["dirname"],
-                rep_suffix_err,
-                f"failed ({res.returncode})",
-                file=subcmd.file_to_output_fail_msg(args),
-                sep="",
+        try:
+            res = gitproc.trap_stdout(
+                subcmd.name(),
+                repo,
+                args,
+                basedir=basedir,
+                git=git,
+                env=env,
             )
+            exit_codes.append(res.returncode)
+
+            if subcmd.exit_code_is_no_error(res.returncode):
+                subcmd.subprocess_result_processor(
+                    args=args, rep_suffix=rep_suffix
+                ).print_stdout(res.returncode, res.stdout, dirname=repo["dirname"])
+            else:
+                print(
+                    repo["dirname"],
+                    rep_suffix_err,
+                    f"failed ({res.returncode})",
+                    file=subcmd.file_to_output_fail_msg(args),
+                    sep="",
+                )
+        except Exception as e:
+            print(f"{e.__class__.__name__}: {e}", file=sys.stderr)
+            exit_codes.append(129)
+            continue
 
     if len(exit_codes) <= 0:
         print(

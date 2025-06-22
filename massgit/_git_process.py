@@ -18,6 +18,7 @@ def trap_stdout(
     env: t.Optional[t.Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
     cmd = [git, subcmd, *args]
+    # TODO: grep等でエンコードできないバイト列が出てくるケースを想定し、この段階ではstrへのエンコードを実施しないほうがよい
     res = subprocess.run(
         cmd,
         stdout=subprocess.PIPE,
