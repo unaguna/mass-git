@@ -8,6 +8,7 @@ from tests.utils.mock import captured_stdouterr
 @pytest.mark.parametrize(
     ("mock_def",),
     [
+        ("0_cmn_logging/default_args",),
         ("0_cmn_logging/log_stderr_info",),
     ],
 )
