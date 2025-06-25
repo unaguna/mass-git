@@ -89,9 +89,8 @@ def cmn_each_repo(
             continue
 
     if len(exit_codes) <= 0:
-        print(
-            "WARN: The operation was performed on NO repos. Please refer repos.json and markers.",
-            file=sys.stderr,
+        logger.warning(
+            "The operation was performed on NO repos. Please refer repos.json and markers."
         )
 
     return subcmd.summarize_exit_code(exit_codes)

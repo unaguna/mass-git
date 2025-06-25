@@ -16,7 +16,7 @@ mock:
       error: No such remote 'origin'
 expected_result_code: 0
 expected_stdout: |+
-  WARN: cannot register url of 'repo2' because get-url is failed
   massgit is initialized: .\.massgit
 expected_stderr: |+
   error: No such remote 'origin'
+  massgit: warning: cannot register url of 'repo2' because get-url is failed

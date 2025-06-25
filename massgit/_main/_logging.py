@@ -36,9 +36,9 @@ def apply_default_logging_config():
     root_logger.addHandler(logging.NullHandler())
 
     handler = logging.StreamHandler()
-    handler.setLevel("ERROR")
+    handler.setLevel("WARNING")
     handler.formatter = CmdLogFormatter(
-        "%(levelname)s: %(message)s", remove_traceback=True
+        "massgit: %(levelname)s: %(message)s", remove_traceback=True
     )
     logger.addHandler(handler)
 
@@ -48,7 +48,7 @@ def apply_stderr_logging_config(level: str, traceback: bool):
     root_logger.setLevel(level)
     handler = logging.StreamHandler()
     handler.formatter = CmdLogFormatter(
-        "%(levelname)s: %(message)s", remove_traceback=not traceback
+        "massgit: %(levelname)s: %(message)s", remove_traceback=not traceback
     )
     root_logger.addHandler(handler)
 
@@ -59,7 +59,7 @@ def apply_logging_config_file(config_file: t.Union[str, os.PathLike]):
     handler = logging.StreamHandler()
     handler.setLevel("ERROR")
     handler.formatter = CmdLogFormatter(
-        "%(levelname)s: %(message)s", remove_traceback=True
+        "massgit: %(levelname)s: %(message)s", remove_traceback=True
     )
     logger.addHandler(handler)
 

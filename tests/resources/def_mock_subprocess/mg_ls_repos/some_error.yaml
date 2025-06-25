@@ -21,4 +21,4 @@ expected_result_code: 1
 expected_stdout: |+
   repo2
 expected_stderr: |+
-  error since loading the repo 'repo1'
+  massgit: error: some error occurred since loading the repo 'repo1'
