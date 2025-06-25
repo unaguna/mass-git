@@ -26,6 +26,7 @@ class CmdLogFormatter(logging.Formatter):
             custom_record.msg = f"{e_clz.__name__}: {e}"
         if self._remove_traceback:
             custom_record.exc_info = None
+            custom_record.exc_text = None
             custom_record.stack_info = None
         message = logging.Formatter.format(self, custom_record)
         if custom_record.name.startswith("massgit"):
