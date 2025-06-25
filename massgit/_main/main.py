@@ -53,14 +53,7 @@ def _setup_primary_configuration():
     apply_default_logging_config()
 
 
-def main(
-    argv: t.Sequence[str],
-    *,
-    install_config_dir: t.Union[os.PathLike[str], str] = os.path.normpath(
-        os.path.join(__file__, "..", "..", "..", "etc")
-    ),
-    cwd_config_dir: str = ".massgit",
-) -> int:
+def _build_main_parser() -> argparse.ArgumentParser:
     parser = ArgumentParser(prog="massgit")
     parser.add_argument(
         "--marker",
@@ -74,6 +67,18 @@ def main(
         required=False,
         help='The suffix of repository name in output. Default is ": " in almost every subcommand.',
     )
+    return parser
+
+
+def main(
+    argv: t.Sequence[str],
+    *,
+    install_config_dir: t.Union[os.PathLike[str], str] = os.path.normpath(
+        os.path.join(__file__, "..", "..", "..", "etc")
+    ),
+    cwd_config_dir: str = ".massgit",
+) -> int:
+    parser = _build_main_parser()
     subparsers = parser.add_subparsers(dest="subcmd", required=True)
 
     subparsers_dict: t.Dict[str, argparse.ArgumentParser] = {}
