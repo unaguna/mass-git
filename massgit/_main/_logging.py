@@ -27,7 +27,10 @@ class CmdLogFormatter(logging.Formatter):
         if self._remove_traceback:
             custom_record.exc_info = None
             custom_record.stack_info = None
-        return logging.Formatter.format(self, custom_record)
+        message = logging.Formatter.format(self, custom_record)
+        if custom_record.name.startswith("massgit"):
+            message = "massgit: " + message
+        return message
 
 
 def apply_default_logging_config():
@@ -38,7 +41,7 @@ def apply_default_logging_config():
     handler = logging.StreamHandler()
     handler.setLevel("WARNING")
     handler.formatter = CmdLogFormatter(
-        "massgit: %(levelname)s: %(message)s", remove_traceback=True
+        "%(levelname)s: %(message)s", remove_traceback=True
     )
     logger.addHandler(handler)
 
@@ -48,7 +51,7 @@ def apply_stderr_logging_config(level: str, traceback: bool):
     root_logger.setLevel(level)
     handler = logging.StreamHandler()
     handler.formatter = CmdLogFormatter(
-        "massgit: %(levelname)s: %(message)s", remove_traceback=not traceback
+        "%(levelname)s: %(message)s", remove_traceback=not traceback
     )
     root_logger.addHandler(handler)
 
@@ -59,7 +62,7 @@ def apply_logging_config_file(config_file: t.Union[str, os.PathLike]):
     handler = logging.StreamHandler()
     handler.setLevel("ERROR")
     handler.formatter = CmdLogFormatter(
-        "massgit: %(levelname)s: %(message)s", remove_traceback=True
+        "%(levelname)s: %(message)s", remove_traceback=True
     )
     logger.addHandler(handler)
 
