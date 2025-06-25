@@ -51,6 +51,18 @@ def cmn_each_repo(
                 git=git,
                 env=env,
             )
+        except Exception as e:
+            logger.error(
+                "failed to run '%s %s ...' for repo '%s'",
+                git,
+                subcmd.name(),
+                repo["dirname"],
+                exc_info=e,
+            )
+            exit_codes.append(129)
+            continue
+
+        try:
             exit_codes.append(res.returncode)
 
             if subcmd.exit_code_is_no_error(res.returncode):
@@ -66,7 +78,13 @@ def cmn_each_repo(
                     sep="",
                 )
         except Exception as e:
-            logger.error("", exc_info=e)
+            logger.error(
+                "failed to output result of '%s %s ...' for repo '%s'",
+                git,
+                subcmd.name(),
+                repo["dirname"],
+                exc_info=e,
+            )
             exit_codes.append(129)
             continue
 

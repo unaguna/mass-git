@@ -3,8 +3,12 @@ import subprocess
 import sys
 import typing as t
 
+from ._logging import get_logger
 from ._types import Repo
 from .exceptions import GitExitWithNonZeroException
+
+
+logger = get_logger("gitprocess")
 
 
 def trap_stdout(
@@ -18,6 +22,7 @@ def trap_stdout(
     env: t.Optional[t.Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess[str]:
     cmd = [git, subcmd, *args]
+    logger.info("run %s", cmd)
     # TODO: grep等でエンコードできないバイト列が出てくるケースを想定し、この段階ではstrへのエンコードを実施しないほうがよい
     res = subprocess.run(
         cmd,
