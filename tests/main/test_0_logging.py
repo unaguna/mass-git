@@ -9,6 +9,7 @@ from tests.utils.mock import captured_stdouterr
     ("mock_def",),
     [
         ("0_cmn_logging/default_args",),
+        ("0_cmn_logging/log_stderr_error",),
         ("0_cmn_logging/log_stderr_info",),
     ],
 )
@@ -39,4 +40,44 @@ def test__log(
     assert actual_exit_code == def_mock_subproc.expected_result_code
     assert out == def_mock_subproc.expected_stdout
     assert err == def_mock_subproc.expected_stderr
+    assert mocked_subproc.assert_call_count()
+
+
+@pytest.mark.parametrize(
+    ("mock_def",),
+    [
+        ("0_cmn_logging/log_stderr_error_full",),
+        ("0_cmn_logging/log_stderr_info_full",),
+    ],
+)
+def test__log__traceback(
+    mock_subprocess,
+    mock_sep,
+    tmp_cwd,
+    tmp_config_dir,
+    resources,
+    output_detail,
+    mock_def,
+):
+    def_mock_subproc = resources.load_mock_subproc(mock_def)
+    output_detail.mock(def_mock_subproc)
+    create_massgit_dir(
+        tmp_cwd,
+        repos=def_mock_subproc.repos(),
+    )
+
+    mocked_subproc = mock_subprocess(def_mock_subproc)
+
+    with captured_stdouterr() as capout:
+        actual_exit_code = main(
+            def_mock_subproc.input_args, install_config_dir=tmp_config_dir
+        )
+    out, err = capout.readouterr()
+    output_detail.res(out=out, err=err)
+    assert actual_exit_code == def_mock_subproc.expected_result_code
+    assert out == def_mock_subproc.expected_stdout
+    assert (
+        def_mock_subproc.expected_stderr + "Traceback (most recent call last):" in err
+    )
+    assert "Exception: exception for test" in err
     assert mocked_subproc.assert_call_count()
