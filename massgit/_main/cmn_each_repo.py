@@ -66,7 +66,7 @@ def cmn_each_repo(
                     sep="",
                 )
         except Exception as e:
-            logger.error(f"{e.__class__.__name__}: {e}", exc_info=e)
+            logger.error("", exc_info=e)
             exit_codes.append(129)
             continue
 

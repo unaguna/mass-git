@@ -21,6 +21,9 @@ class CmdLogFormatter(logging.Formatter):
         custom_record = copy.copy(record)
 
         custom_record.levelname = record.levelname.lower()
+        if custom_record.msg == "" and custom_record.exc_info:
+            e_clz, e, _ = custom_record.exc_info
+            custom_record.msg = f"{e_clz.__name__}: {e}"
         if self._remove_traceback:
             custom_record.exc_info = None
             custom_record.stack_info = None
