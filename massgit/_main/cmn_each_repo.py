@@ -1,6 +1,7 @@
 import sys
 import typing as t
 
+from ._logging import logger
 from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
 from .subcmd import WrapGitSubCmd
 from .._types import Repo
@@ -65,7 +66,7 @@ def cmn_each_repo(
                     sep="",
                 )
         except Exception as e:
-            print(f"{e.__class__.__name__}: {e}", file=sys.stderr)
+            logger.error(f"{e.__class__.__name__}: {e}", exc_info=e)
             exit_codes.append(129)
             continue
 

@@ -3,13 +3,13 @@ import os
 import typing as t
 from argparse import ArgumentParser
 
-from .cmn_each_repo import cmn_each_repo_cmd2
 from ._arg_types import marker_expression
+from ._logging import apply_default_logging_config
+from ._params import Params
+from .cmn_each_repo import cmn_each_repo_cmd2
 from .mg_ls_repos import mg_ls_repos_cmd
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
-from .._utils.dotenv import load_dotenv
-from ._params import Params
 from .subcmd import (
     BranchCmd,
     CheckoutCmd,
@@ -26,6 +26,7 @@ from .subcmd import (
     MgLsReposCmd,
     WrapGitSubCmd,
 )
+from .._utils.dotenv import load_dotenv
 
 subcmd_list = [
     ConfigCmd(),
@@ -43,6 +44,13 @@ subcmd_list = [
     MgLsReposCmd(),
 ]
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
+
+
+def _setup_primary_configuration():
+    """Setup primary python configuration"""
+
+    # setup logging
+    apply_default_logging_config()
 
 
 def main(
@@ -85,6 +93,8 @@ def main(
         os.path.join(cwd_config_dir, ".env"), empty_if_non_exist=True
     )
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
+
+    _setup_primary_configuration()
 
     subcmd = subcmds[main_args.subcmd]
     subcmd_parser = subparsers_dict[subcmd.name()]
