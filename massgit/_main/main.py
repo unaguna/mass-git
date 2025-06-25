@@ -3,6 +3,7 @@ import os
 import typing as t
 from argparse import ArgumentParser
 
+from ._logging import logger
 from ._arg_types import marker_expression
 from ._logging import apply_default_logging_config, apply_stderr_logging_config
 from ._params import Params
@@ -131,6 +132,7 @@ def main(
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
     _setup_primary_configuration(main_args)
+    logger.info("start massgit with args: %s", argv)
 
     subcmd = subcmds[main_args.subcmd]
     subcmd_parser = subparsers_dict[subcmd.name()]
