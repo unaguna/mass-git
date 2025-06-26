@@ -61,7 +61,7 @@ def apply_logging_config_file(config_file: t.Union[str, os.PathLike]):
     # まずエラー出力を設定する。
     # dictConfig 適用中のエラーも出力できるようにするために、この段階で実施する。
     handler = logging.StreamHandler()
-    handler.setLevel("ERROR")
+    handler.setLevel("WARNING")
     handler.formatter = CmdLogFormatter(
         "%(levelname)s: %(message)s", remove_traceback=True
     )
