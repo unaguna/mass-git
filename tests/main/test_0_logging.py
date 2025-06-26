@@ -91,10 +91,14 @@ def test__log__traceback(
 
 
 @pytest.mark.parametrize(
-    ("log_conf_file",),
+    ("log_conf_file", "mock_def"),
     [
-        ("log_conf/logging_conf.json",),
-        ("log_conf/logging_conf.yaml",),
+        ("log_conf/logging_conf.json", "0_cmn_logging/log_file"),
+        ("log_conf/logging_conf.yaml", "0_cmn_logging/log_file"),
+        (
+            "log_conf/logging_conf_disable_default.yaml",
+            "0_cmn_logging/log_file_disable_default",
+        ),
     ],
 )
 def test__log__yaml(
@@ -105,8 +109,8 @@ def test__log__yaml(
     resources,
     output_detail,
     log_conf_file,
+    mock_def,
 ):
-    mock_def = "0_cmn_logging/log_file"
     def_mock_subproc = resources.load_mock_subproc(mock_def)
     output_detail.mock(def_mock_subproc)
     create_massgit_dir(
