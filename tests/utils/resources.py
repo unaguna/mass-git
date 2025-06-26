@@ -1,3 +1,4 @@
+import shutil
 import sys
 from pathlib import Path
 import typing as t
@@ -114,12 +115,26 @@ class DefMockSubproc:
 
 class TestResources:
     _basedir: Path
+    _tmp_path: Path
+    _use_file_count: int
 
-    def __init__(self, basedir: Path):
+    def __init__(self, basedir: Path, *, tmp_path: Path):
         self._basedir = basedir
+        self._tmp_path = tmp_path
+        self._use_file_count = 0
 
         if not self._basedir.is_dir():
             raise FileNotFoundError(self._basedir)
+
+    def use_file(self, relative_path: str) -> Path:
+        src_path = self._basedir.joinpath(relative_path)
+        use_file_dest = self._tmp_path.joinpath("use_file_dest")
+        dest_path = use_file_dest.joinpath(str(self._use_file_count))
+
+        if not use_file_dest.is_dir():
+            use_file_dest.mkdir()
+
+        return shutil.copyfile(src_path, dest_path)
 
     def load_mock_subproc(self, name: str) -> DefMockSubproc:
         with open(self._basedir.joinpath("def_mock_subprocess", name + ".yaml")) as fp:

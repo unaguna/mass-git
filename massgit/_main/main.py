@@ -3,9 +3,13 @@ import os
 import typing as t
 from argparse import ArgumentParser
 
-from ._logging import logger
 from ._arg_types import marker_expression
-from ._logging import apply_default_logging_config, apply_stderr_logging_config
+from ._logging import (
+    apply_default_logging_config,
+    apply_logging_config_file,
+    apply_stderr_logging_config,
+    logger,
+)
 from ._params import Params
 from .cmn_each_repo import cmn_each_repo_cmd2
 from .mg_ls_repos import mg_ls_repos_cmd
@@ -28,6 +32,7 @@ from .subcmd import (
     WrapGitSubCmd,
 )
 from .._utils.dotenv import load_dotenv
+from .._utils.exceptions import get_message_recursive
 
 subcmd_list = [
     ConfigCmd(),
@@ -61,6 +66,27 @@ def _setup_primary_configuration(args: argparse.Namespace):
             level = args.log_stderr
             is_full = False
         apply_stderr_logging_config(level, is_full)
+    elif args.log_config_file:
+        try:
+            apply_logging_config_file(args.log_config_file)
+        except Exception as e:
+            logger.error(
+                "failed to apply the logging configure file; %s",
+                "; ".join(get_message_recursive(e)),
+                exc_info=e,
+            )
+            # If yaml is missed, warn about it, as that might cause Exception
+            try:
+                import yaml
+
+                assert yaml is not None
+            except ModuleNotFoundError:
+                logger.error(
+                    "Are you trying to use YAML format logging configuration? "
+                    "If you want to use YAML format configuration files, "
+                    "PyYAML must be installed."
+                )
+            exit(1)
     else:
         apply_default_logging_config()
 
@@ -98,6 +124,13 @@ def _build_main_parser() -> argparse.ArgumentParser:
             "If '*-full' is specified, "
             "traceback is also output when an exception occurs, etc."
         ),
+    )
+    group_logging.add_argument(
+        "--log",
+        metavar="LOGGING_CONFIG_PATH",
+        default=None,
+        dest="log_config_file",
+        help="logging configuration file (JSON or YAML)",
     )
     return parser
 

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "formatters": {
+    "fmt_default": {
+      "format": "TEST %(levelname)s %(name)s %(message)s"
+    }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "formatter": "fmt_default",
+      "level": "ERROR"
+    }
+  },
+  "loggers": {
+    "massgit": {
+      "level": "ERROR",
+      "propagate": false,
+      "handlers": ["console"]
+    }
+  }
+}

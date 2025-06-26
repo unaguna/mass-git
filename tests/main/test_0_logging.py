@@ -88,3 +88,43 @@ def test__log__traceback(
     assert "Exception: exception for test" in err
     assert "error: dummy error message" in err
     assert mocked_subproc.assert_call_count()
+
+
+@pytest.mark.parametrize(
+    ("log_conf_file",),
+    [
+        ("log_conf/logging_conf.json",),
+        ("log_conf/logging_conf.yaml",),
+    ],
+)
+def test__log__yaml(
+    mock_subprocess,
+    mock_sep,
+    tmp_cwd,
+    tmp_config_dir,
+    resources,
+    output_detail,
+    log_conf_file,
+):
+    mock_def = "0_cmn_logging/log_file"
+    def_mock_subproc = resources.load_mock_subproc(mock_def)
+    output_detail.mock(def_mock_subproc)
+    create_massgit_dir(
+        tmp_cwd,
+        repos=def_mock_subproc.repos(),
+    )
+    log_conf_path = resources.use_file(log_conf_file)
+    input_args = ["--log", str(log_conf_path), "branch"]
+    dummy_logger = logging.getLogger("dummy")
+
+    mocked_subproc = mock_subprocess(def_mock_subproc)
+
+    with captured_stdouterr() as capout:
+        actual_exit_code = main(input_args, install_config_dir=tmp_config_dir)
+        dummy_logger.error("dummy error message")
+    out, err = capout.readouterr()
+    output_detail.res(out=out, err=err)
+    assert actual_exit_code == def_mock_subproc.expected_result_code
+    assert out == def_mock_subproc.expected_stdout
+    assert err.startswith(def_mock_subproc.expected_stderr)
+    assert mocked_subproc.assert_call_count()

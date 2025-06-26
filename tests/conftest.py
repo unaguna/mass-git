@@ -48,9 +48,11 @@ def tmp_config_dir(monkeypatch, tmp_path) -> Path:
 
 
 @pytest.fixture
-def resources() -> TestResources:
+def resources(tmp_path) -> TestResources:
     """Accessor to test resources"""
-    return TestResources(Path(os.path.dirname(__file__), "resources"))
+    return TestResources(
+        Path(os.path.dirname(__file__), "resources"), tmp_path=tmp_path
+    )
 
 
 @pytest.fixture(scope="session")
