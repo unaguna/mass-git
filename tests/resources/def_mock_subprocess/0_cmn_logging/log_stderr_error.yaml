@@ -12,3 +12,4 @@ expected_stdout: ""
 expected_stderr: |+
   some error
   massgit: error: failed to run 'git branch ...' for repo 'repo1'
+  error: dummy error message

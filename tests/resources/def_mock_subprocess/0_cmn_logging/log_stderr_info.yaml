@@ -14,3 +14,4 @@ expected_stderr: |+
   massgit: info: run ['git', 'branch'] for repo 'repo1'
   some error
   massgit: error: failed to run 'git branch ...' for repo 'repo1'
+  error: dummy error message

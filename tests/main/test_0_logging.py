@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 
 from massgit import main
@@ -28,6 +30,7 @@ def test__log(
         tmp_cwd,
         repos=def_mock_subproc.repos(),
     )
+    dummy_logger = logging.getLogger("dummy")
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 
@@ -35,6 +38,7 @@ def test__log(
         actual_exit_code = main(
             def_mock_subproc.input_args, install_config_dir=tmp_config_dir
         )
+        dummy_logger.error("dummy error message")
     out, err = capout.readouterr()
     output_detail.res(out=out, err=err)
     assert actual_exit_code == def_mock_subproc.expected_result_code
@@ -65,6 +69,7 @@ def test__log__traceback(
         tmp_cwd,
         repos=def_mock_subproc.repos(),
     )
+    dummy_logger = logging.getLogger("dummy")
 
     mocked_subproc = mock_subprocess(def_mock_subproc)
 
@@ -72,6 +77,7 @@ def test__log__traceback(
         actual_exit_code = main(
             def_mock_subproc.input_args, install_config_dir=tmp_config_dir
         )
+        dummy_logger.error("dummy error message")
     out, err = capout.readouterr()
     output_detail.res(out=out, err=err)
     assert actual_exit_code == def_mock_subproc.expected_result_code
@@ -80,4 +86,5 @@ def test__log__traceback(
         def_mock_subproc.expected_stderr + "Traceback (most recent call last):" in err
     )
     assert "Exception: exception for test" in err
+    assert "error: dummy error message" in err
     assert mocked_subproc.assert_call_count()
