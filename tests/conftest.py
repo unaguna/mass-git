@@ -28,6 +28,7 @@ def reset_logging():
             logger.filters.clear()
             logger.setLevel(logging.NOTSET)
             logger.propagate = True
+            logger.disabled = False
 
 
 @pytest.fixture
