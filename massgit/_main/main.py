@@ -67,28 +67,32 @@ def _setup_primary_configuration(args: argparse.Namespace):
             is_full = False
         apply_stderr_logging_config(level, is_full)
     elif args.log_config_file:
-        try:
-            apply_logging_config_file(args.log_config_file)
-        except Exception as e:
-            logger.error(
-                "failed to apply the logging configure file; %s",
-                "; ".join(get_message_recursive(e)),
-                exc_info=e,
-            )
-            # If yaml is missed, warn about it, as that might cause Exception
-            try:
-                import yaml
-
-                assert yaml is not None
-            except ModuleNotFoundError:
-                logger.error(
-                    "Are you trying to use YAML format logging configuration? "
-                    "If you want to use YAML format configuration files, "
-                    "PyYAML must be installed."
-                )
-            exit(1)
+        _apply_logging_config_file(args.log_config_file)
     else:
         apply_default_logging_config()
+
+
+def _apply_logging_config_file(path: str):
+    try:
+        apply_logging_config_file(path)
+    except Exception as e:
+        logger.error(
+            "failed to apply the logging configure file; %s",
+            "; ".join(get_message_recursive(e)),
+            exc_info=e,
+        )
+        # If yaml is missed, warn about it, as that might cause Exception
+        try:
+            import yaml
+
+            assert yaml is not None
+        except ModuleNotFoundError:
+            logger.error(
+                "Are you trying to use YAML format logging configuration? "
+                "If you want to use YAML format configuration files, "
+                "PyYAML must be installed."
+            )
+        exit(1)
 
 
 def _build_main_parser() -> argparse.ArgumentParser:
