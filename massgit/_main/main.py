@@ -52,8 +52,12 @@ subcmd_list = [
 subcmds = {cmd.name(): cmd for cmd in subcmd_list}
 
 
-def _setup_primary_configuration(args: argparse.Namespace):
+def _setup_primary_configuration(args: argparse.Namespace, *, cwd_config_dir: str):
     """Setup primary python configuration"""
+    cwd_logging_conf_file_paths = [
+        os.path.join(cwd_config_dir, "logging_conf.json"),
+        os.path.join(cwd_config_dir, "logging_conf.yaml"),
+    ]
 
     # setup logging
     if args.log_stderr:
@@ -66,10 +70,15 @@ def _setup_primary_configuration(args: argparse.Namespace):
             level = args.log_stderr
             is_full = False
         apply_stderr_logging_config(level, is_full)
+        return
     elif args.log_config_file:
         _apply_logging_config_file(args.log_config_file)
-    else:
-        apply_default_logging_config()
+        return
+    for cwd_logging_conf_file_path in cwd_logging_conf_file_paths:
+        if os.path.exists(cwd_logging_conf_file_path):
+            _apply_logging_config_file(cwd_logging_conf_file_path)
+            return
+    apply_default_logging_config()
 
 
 def _apply_logging_config_file(path: str):
@@ -77,7 +86,8 @@ def _apply_logging_config_file(path: str):
         apply_logging_config_file(path)
     except Exception as e:
         logger.error(
-            "failed to apply the logging configure file; %s",
+            "failed to apply the logging configure file '%s'; %s",
+            path,
             "; ".join(get_message_recursive(e)),
             exc_info=e,
         )
@@ -168,7 +178,7 @@ def main(
     )
     env = {**os.environ, **dotenv_pub, **dotenv_cwd}
 
-    _setup_primary_configuration(main_args)
+    _setup_primary_configuration(main_args, cwd_config_dir=cwd_config_dir)
     logger.info("start massgit with args: %s", argv)
 
     subcmd = subcmds[main_args.subcmd]

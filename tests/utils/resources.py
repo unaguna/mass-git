@@ -126,10 +126,11 @@ class TestResources:
         if not self._basedir.is_dir():
             raise FileNotFoundError(self._basedir)
 
-    def use_file(self, relative_path: str) -> Path:
+    def use_file(self, relative_path: str, dest_path: t.Optional[str] = None) -> Path:
         src_path = self._basedir.joinpath(relative_path)
         use_file_dest = self._tmp_path.joinpath("use_file_dest")
-        dest_path = use_file_dest.joinpath(str(self._use_file_count))
+        if dest_path is None:
+            dest_path = use_file_dest.joinpath(str(self._use_file_count))
 
         if not use_file_dest.is_dir():
             use_file_dest.mkdir()

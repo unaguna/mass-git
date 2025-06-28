@@ -36,6 +36,9 @@ class MassgitDir:
     def repos_path(self) -> os.PathLike[str]:
         return self._repos_path
 
+    def log_conf_path(self, exp: t.Literal["yaml", "json"] = "yaml") -> str:
+        return os.path.join(self.massgit_dir_path, f"logging_conf.{exp}")
+
 
 def create_massgit_dir(
     cwd: os.PathLike,
