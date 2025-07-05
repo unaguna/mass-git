@@ -55,6 +55,31 @@ def test__marker_processor__contains_all(marker_condition, markers, result):
 
 
 @pytest.mark.parametrize(
+    ("marker_condition", "markers", "ignore_case", "result"),
+    [
+        ("mark1", ["mark1"], False, True),
+        ("mark1", ["mark1"], True, True),
+        ("mark1", ["MARK1"], False, False),
+        ("mark1", ["MARK1"], True, True),
+        ("MARK1", ["mark1"], False, False),
+        ("MARK1", ["mark1"], True, True),
+        ("MARK1", ["MARK1"], False, True),
+        ("MARK1", ["MARK1"], True, True),
+        ("mark1", ["mark2"], False, False),
+        ("mark1", ["mark2"], True, False),
+        ("any(mark1, mark2)", ["MARK1"], False, False),
+        ("any(mark1, mark2)", ["MARK1"], True, True),
+        # no error with same markers
+        ("mark1", ["mark1", "MARK1"], False, True),
+        ("mark1", ["mark1", "MARK1"], True, True),
+    ],
+)
+def test__marker_processor__ignore_case(marker_condition, markers, ignore_case, result):
+    processor = MarkerProcessor(marker_condition, ignore_case=ignore_case)
+    assert processor.accept(markers) is result
+
+
+@pytest.mark.parametrize(
     ("marker_condition",),
     [
         # named expr

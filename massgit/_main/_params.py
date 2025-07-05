@@ -23,7 +23,10 @@ class Params:
         self._cwd_config_dir = cwd_config_dir
 
         self._marker_processor = (
-            MarkerProcessor(self._args.marker_condition)
+            MarkerProcessor(
+                self._args.marker_condition,
+                ignore_case=not self._args.marker_case_sensitive,
+            )
             if self._args.marker_condition is not None
             else AcceptAnyMarkerProcessor()
         )
