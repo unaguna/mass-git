@@ -1,6 +1,6 @@
-import sys
 import typing as t
 
+from ._logging import logger
 from ._params import Params
 from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
 from .._repo import load_repos
@@ -43,12 +43,11 @@ def mgclone(
             exit_codes.append(1)
 
     if len(exit_codes) <= 0:
-        print(
-            "WARN: The operation was performed on NO repos. Please refer repos.json and markers.",
-            file=sys.stderr,
+        logger.warning(
+            "The operation was performed on NO repos. Please refer repos.json and markers."
         )
 
-    return max(exit_codes)
+    return max(exit_codes) if len(exit_codes) > 0 else 0
 
 
 def _mgclone_each_repo(

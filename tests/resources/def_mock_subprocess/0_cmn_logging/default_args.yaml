@@ -1,0 +1,14 @@
+input_args: ["branch"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "branch"]
+    result_code: 2
+    stdout: ""
+    stderr: "some error\n"
+    exception: {}
+expected_result_code:
+expected_stdout: ""
+expected_stderr: |+
+  some error
+  massgit: error: failed to run 'git branch ...' for repo 'repo1'

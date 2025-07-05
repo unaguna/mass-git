@@ -2,5 +2,5 @@ input_args: ["mg-init"]
 mock: []
 expected_result_code: 1
 expected_stdout: |+
-  massgit initialization failed: already initialized: .\.massgit
 expected_stderr: |+
+  massgit: error: massgit initialization failed: already initialized: .\.massgit

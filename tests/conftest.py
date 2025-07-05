@@ -1,3 +1,4 @@
+import logging
 import os
 import typing as t
 from pathlib import Path
@@ -8,6 +9,26 @@ from pytest_subprocess import FakeProcess
 from tests.utils.mock import mock_subproc
 from tests.utils.output_detail import OutputDetail
 from tests.utils.resources import TestResources
+
+
+@pytest.fixture(autouse=True)
+def reset_logging():
+    # logging.shutdown()
+
+    # ルートロガーのリセット
+    logging.root.handlers.clear()
+    logging.root.filters.clear()
+    logging.root.setLevel(logging.WARNING)
+
+    # 名前付きロガーのリセット
+    for name in list(logging.Logger.manager.loggerDict.keys()):
+        logger = logging.getLogger(name)
+        if isinstance(logger, logging.Logger):
+            logger.handlers.clear()
+            logger.filters.clear()
+            logger.setLevel(logging.NOTSET)
+            logger.propagate = True
+            logger.disabled = False
 
 
 @pytest.fixture
@@ -48,9 +69,11 @@ def tmp_config_dir(monkeypatch, tmp_path) -> Path:
 
 
 @pytest.fixture
-def resources() -> TestResources:
+def resources(tmp_path) -> TestResources:
     """Accessor to test resources"""
-    return TestResources(Path(os.path.dirname(__file__), "resources"))
+    return TestResources(
+        Path(os.path.dirname(__file__), "resources"), tmp_path=tmp_path
+    )
 
 
 @pytest.fixture(scope="session")

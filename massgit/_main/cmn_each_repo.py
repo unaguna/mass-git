@@ -1,6 +1,6 @@
-import sys
 import typing as t
 
+from ._logging import logger
 from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
 from .subcmd import WrapGitSubCmd
 from .._types import Repo
@@ -50,6 +50,18 @@ def cmn_each_repo(
                 git=git,
                 env=env,
             )
+        except Exception as e:
+            logger.error(
+                "failed to run '%s %s ...' for repo '%s'",
+                git,
+                subcmd.name(),
+                repo["dirname"],
+                exc_info=e,
+            )
+            exit_codes.append(129)
+            continue
+
+        try:
             exit_codes.append(res.returncode)
 
             if subcmd.exit_code_is_no_error(res.returncode):
@@ -65,14 +77,19 @@ def cmn_each_repo(
                     sep="",
                 )
         except Exception as e:
-            print(f"{e.__class__.__name__}: {e}", file=sys.stderr)
+            logger.error(
+                "failed to output result of '%s %s ...' for repo '%s'",
+                git,
+                subcmd.name(),
+                repo["dirname"],
+                exc_info=e,
+            )
             exit_codes.append(129)
             continue
 
     if len(exit_codes) <= 0:
-        print(
-            "WARN: The operation was performed on NO repos. Please refer repos.json and markers.",
-            file=sys.stderr,
+        logger.warning(
+            "The operation was performed on NO repos. Please refer repos.json and markers."
         )
 
     return subcmd.summarize_exit_code(exit_codes)

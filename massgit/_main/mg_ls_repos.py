@@ -1,6 +1,7 @@
 import sys
 import typing as t
 
+from ._logging import logger
 from ._params import Params
 from .marker import MarkerProcessor, AcceptAnyMarkerProcessor
 from .._repo import load_repos
@@ -36,7 +37,9 @@ def mg_ls_repos(
         if res.returncode == 0:
             print(repo["dirname"])
         else:
-            print(f"error since loading the repo '{repo['dirname']}'", file=sys.stderr)
+            logger.error(
+                "some error occurred since loading the repo '%s'", repo["dirname"]
+            )
         exit_codes.append(res.returncode)
 
     return max((0, *exit_codes))

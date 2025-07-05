@@ -1,0 +1,13 @@
+input_args: null
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "branch"]
+    result_code: 2
+    stdout: ""
+    stderr: "some error\n"
+    exception: {}
+expected_result_code:
+expected_stdout: ""
+expected_stderr: |+
+  some error

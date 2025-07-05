@@ -1,5 +1,6 @@
 import typing as t
 
+from ._logging import logger
 from ._params import Params
 from ..initialize import initialize, MassgitAlreadyInitialized
 
@@ -22,12 +23,16 @@ def mginit(
             massgit_dir_name=massgit_dir_name,
         )
     except MassgitAlreadyInitialized as e:
-        print(f"massgit initialization failed: already initialized: {e}")
+        logger.error(
+            "massgit initialization failed: already initialized: %s", e, exc_info=e
+        )
         return 1
 
     if len(result.no_url_dirs) > 0:
         for dirname in result.no_url_dirs:
-            print(f"WARN: cannot register url of '{dirname}' because get-url is failed")
+            logger.warning(
+                "cannot register url of '%s' because get-url is failed", dirname
+            )
 
     print("massgit is initialized:", result.massgit_dir)
     return 0
