@@ -115,6 +115,11 @@ def _build_main_parser() -> argparse.ArgumentParser:
         help="Specify target repositories by marker. You can specify boolean expression such as 'marker1 or marker2'.",
     )
     parser.add_argument(
+        "--marker-case-sensitive",
+        action="store_true",
+        help="Enable case sensitivity of the markers.",
+    )
+    parser.add_argument(
         "--rep-suffix",
         required=False,
         help='The suffix of repository name in output. Default is ": " in almost every subcommand.',
