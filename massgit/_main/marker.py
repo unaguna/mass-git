@@ -41,12 +41,19 @@ def _validate_marker_expression(value: ast.AST):
 
 class MarkerProcessor:
     _compiled_marker_condition: CodeType
+    _ignore_case: bool
 
-    def __init__(self, marker_condition: t.Union[str, ast.Expression]):
+    def __init__(
+        self,
+        marker_condition: t.Union[str, ast.Expression],
+        *,
+        ignore_case: bool = False,
+    ):
         if isinstance(marker_condition, str):
             marker_condition = marker_expression(marker_condition)
 
         self._compiled_marker_condition = compile(marker_condition, "<marker>", "eval")
+        self._ignore_case = ignore_case
 
     def accept(self, markers: t.Sequence[str]) -> bool:
         globals_d = {
@@ -57,6 +64,7 @@ class MarkerProcessor:
             {m: True for m in markers},
             default=False,
             excluding_keys={*VALID_BUILTINS.keys()},
+            ignore_case=self._ignore_case,
         )
         return eval(self._compiled_marker_condition, globals_d, locals_d)
 
@@ -83,22 +91,34 @@ class _DefaultDict(t.MutableMapping[str, t.Any]):
     _default: t.Any
     _base_dict: t.MutableMapping[str, t.Any]
     _excluding_keys: t.Set[str]
+    _ignore_case: bool
 
     def __init__(
         self,
         base_dict: t.MutableMapping[str, t.Any],
+        *,
         default: t.Any,
         excluding_keys: t.Set[str],
+        ignore_case: bool,
     ):
         self._default = default
         self._base_dict = base_dict
         self._excluding_keys = excluding_keys
+        self._ignore_case = ignore_case
 
+        if self._ignore_case:
+            self._base_dict = {k.casefold(): v for k, v in self._base_dict.items()}
+            self._excluding_keys = {k.casefold() for k in self._excluding_keys}
+
+        # remove excluded keys from base_dict
         for k in self._excluding_keys:
             if k in self._base_dict:
                 del self._base_dict[k]
 
     def __getitem__(self, key, /):
+        if self._ignore_case and isinstance(key, str):
+            key = key.casefold()
+
         if key in self._excluding_keys:
             raise KeyError(key)
         elif key in self._base_dict:
@@ -113,10 +133,16 @@ class _DefaultDict(t.MutableMapping[str, t.Any]):
         return self._base_dict.__iter__()
 
     def __setitem__(self, key, value, /):
+        if self._ignore_case and isinstance(key, str):
+            key = key.casefold()
+
         if key in self._excluding_keys:
             raise KeyError(key)
         else:
             self._base_dict.__setitem__(key, value)
 
     def __delitem__(self, key, /):
+        if self._ignore_case and isinstance(key, str):
+            key = key.casefold()
+
         self._base_dict.__delitem__(key)
