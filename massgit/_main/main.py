@@ -16,9 +16,11 @@ from .mg_ls_repos import mg_ls_repos_cmd
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .subcmd import (
+    RestoreCmd,
     BranchCmd,
     CheckoutCmd,
     ConfigCmd,
+    SwitchCmd,
     FetchCmd,
     GrepCmd,
     PullCmd,
@@ -33,8 +35,10 @@ from .subcmd import (
 )
 from .._utils.dotenv import load_dotenv
 from .._utils.exceptions import get_message_recursive
+import massgit
 
 subcmd_list = [
+    RestoreCmd(),
     ConfigCmd(),
     DiffCmd(),
     GrepCmd(),
@@ -42,6 +46,7 @@ subcmd_list = [
     StatusCmd(),
     CheckoutCmd(),
     BranchCmd(),
+    SwitchCmd(),
     FetchCmd(),
     PullCmd(),
     LsFillsCmd(),
@@ -107,6 +112,9 @@ def _apply_logging_config_file(path: str):
 
 def _build_main_parser() -> argparse.ArgumentParser:
     parser = ArgumentParser(prog="massgit")
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {massgit.__version__}"
+    )
     parser.add_argument(
         "--marker",
         "-m",

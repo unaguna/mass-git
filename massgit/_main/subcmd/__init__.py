@@ -10,5 +10,7 @@ from ._mg_init import MgInitCmd
 from ._mg_clone import MgCloneCmd
 from ._mg_ls_repos import MgLsReposCmd
 from ._pull import PullCmd
+from ._restore import RestoreCmd
 from ._show import ShowCmd
 from ._status import StatusCmd
+from ._switch import SwitchCmd

@@ -1,0 +1,21 @@
+input_args: ["--rep-suffix", "@", "restore", "--", "file1"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "restore", "--", "file1"]
+    result_code: 0
+    stdout: ""
+    stderr: |+
+      err
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "restore", "--", "file1"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1@done
+  repo2@done
+expected_stderr: |+
+  err
