@@ -33,6 +33,7 @@ from .subcmd import (
 )
 from .._utils.dotenv import load_dotenv
 from .._utils.exceptions import get_message_recursive
+import massgit
 
 subcmd_list = [
     ConfigCmd(),
@@ -107,6 +108,9 @@ def _apply_logging_config_file(path: str):
 
 def _build_main_parser() -> argparse.ArgumentParser:
     parser = ArgumentParser(prog="massgit")
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {massgit.__version__}"
+    )
     parser.add_argument(
         "--marker",
         "-m",
