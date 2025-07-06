@@ -12,3 +12,4 @@ from ._mg_ls_repos import MgLsReposCmd
 from ._pull import PullCmd
 from ._show import ShowCmd
 from ._status import StatusCmd
+from ._switch import SwitchCmd
