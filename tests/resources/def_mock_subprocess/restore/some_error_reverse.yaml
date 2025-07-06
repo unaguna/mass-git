@@ -1,0 +1,21 @@
+input_args: ["restore", "--", "file1"]
+mock:
+  - repo:
+      dirname: repo2
+    expected_cmd: ["git", "restore", "--", "file1"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "restore", "--", "file1"]
+    result_code: 1
+    stdout: ""
+    stderr: |+
+      error: pathspec 'file1' did not match any file(s) known to git
+expected_result_code: 1
+expected_stdout: |+
+  repo2: done
+  repo1: failed (1)
+expected_stderr: |+
+  error: pathspec 'file1' did not match any file(s) known to git

@@ -1,0 +1,12 @@
+input_args: ["restore", "--", "file1"]
+mock:
+  - repo:
+      dirname: repo1
+    expected_cmd: ["git", "restore", "--", "file1"]
+    result_code: 0
+    stdout: ""
+    stderr: ""
+expected_result_code: 0
+expected_stdout: |+
+  repo1: done
+expected_stderr: |+

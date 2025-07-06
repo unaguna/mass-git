@@ -16,6 +16,7 @@ from .mg_ls_repos import mg_ls_repos_cmd
 from .mgclone import mgclone_cmd
 from .mginit import mginit_cmd
 from .subcmd import (
+    RestoreCmd,
     BranchCmd,
     CheckoutCmd,
     ConfigCmd,
@@ -37,6 +38,7 @@ from .._utils.exceptions import get_message_recursive
 import massgit
 
 subcmd_list = [
+    RestoreCmd(),
     ConfigCmd(),
     DiffCmd(),
     GrepCmd(),
