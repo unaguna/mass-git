@@ -54,19 +54,25 @@ def test__grep(
         ("ＡＢＣ".encode("utf_8"),),
     ],
 )
-@pytest.mark.skip
-# TODO: 現状、gitの出力をエンコードできない場合はあきらめて次のリポジトリへ進む暫定措置をとっている。
-# そのため、このテストはスキップする。
 def test__grep__contamination_binary(fp, tmp_cwd, tmp_config_dir, output_detail, cont):
     create_massgit_dir(tmp_cwd)
-    fp.register(["git", "grep", "abc"], stdout=b"file1:abc\nfile2:abc" + cont + b"\n")
+    stdout_bytes = b"file1:abc\nfile2:abc" + cont + b"\n"
+    expected_stdout = (
+        "repo1\\file1:abc\nrepo1\\file2:abc"
+        + cont.decode(errors="backslashreplace")
+        + "\n"
+    )
+    fp.register(["git", "grep", "abc"], stdout=stdout_bytes)
 
     with captured_stdouterr() as capout:
-        actual_exit_code = main(["grep", "abc"], install_config_dir=tmp_config_dir)
-    out, err = capout.readouterr()
+        actual_exit_code = main(
+            ["--log-stderr=WARNING-full", "grep", "abc"],
+            install_config_dir=tmp_config_dir,
+        )
+    out, err = capout.readouterr(errors="backslashreplace")
     output_detail.res(out=out, err=err)
     assert actual_exit_code == 0
-    # assert out == def_mock_subproc.expected_stdout
+    assert out == expected_stdout
     assert err == ""
     assert fp.call_count(["git", "grep", "abc"]) == 1
     assert len(fp.calls) == 1
