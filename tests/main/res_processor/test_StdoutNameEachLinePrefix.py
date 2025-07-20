@@ -22,7 +22,7 @@ def test__prop_separator():
 def test__arg_trim_empty_line__true(output_detail, trim_empty_line, expected_output):
     from massgit._main.res_processor import StdoutNameEachLinePrefix
 
-    origin_stdout = "line1\nline2\n\nline4\n"
+    origin_stdout = b"line1\nline2\n\nline4\n"
 
     subproc_result_processor = StdoutNameEachLinePrefix(
         sep=": ", trim_empty_line=trim_empty_line
