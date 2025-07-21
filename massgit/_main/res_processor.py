@@ -1,10 +1,11 @@
 import abc
+import sys
 import typing as t
 
 
 class SubprocessResultProcessor(abc.ABC):
     @abc.abstractmethod
-    def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str): ...
+    def print_stdout(self, exit_code: int, origin_stdout: bytes, dirname: str): ...
 
 
 class StdoutDefault(SubprocessResultProcessor):
@@ -21,24 +22,30 @@ class StdoutDefault(SubprocessResultProcessor):
     def separator(self) -> str:
         return self._sep
 
-    def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str):
+    def print_stdout(self, exit_code: int, origin_stdout: bytes, dirname: str):
         stdout_trimmed = origin_stdout.strip()
-        if stdout_trimmed.count("\n") <= 0:
+        if stdout_trimmed.count(b"\n") <= 0:
             print(
                 dirname,
                 self._sep,
-                stdout_trimmed or self._output_with_empty_stdout,
                 sep="",
+                end="",
             )
+            if stdout_trimmed:
+                sys.stdout.buffer.write(stdout_trimmed)
+                print()
+            else:
+                print(self._output_with_empty_stdout)
         else:
             print(dirname + self._sep.rstrip())
-            print(origin_stdout)
+            sys.stdout.buffer.write(origin_stdout)
+            print()
 
 
 class StdoutNameEachLinePrefix(SubprocessResultProcessor):
     _sep: str
     _trim_empty_line: bool
-    _result_line_sep: str
+    _result_line_sep: bytes
     _output_line_sep: str
 
     def __init__(
@@ -46,11 +53,14 @@ class StdoutNameEachLinePrefix(SubprocessResultProcessor):
         *,
         sep: t.Optional[str],
         trim_empty_line: bool = False,
-        result_line_sep: str = "\n",
-        output_line_sep: str = "\n"
+        result_line_sep: t.Union[bytes, str] = b"\n",
+        output_line_sep: str = "\n",
+        output_encoding: str = sys.getdefaultencoding(),
     ):
         self._sep = sep if sep is not None else ": "
         self._trim_empty_line = trim_empty_line
+        if isinstance(result_line_sep, str):
+            result_line_sep = result_line_sep.encode(encoding=output_encoding)
         self._result_line_sep = result_line_sep
         self._output_line_sep = output_line_sep
 
@@ -58,7 +68,7 @@ class StdoutNameEachLinePrefix(SubprocessResultProcessor):
     def separator(self) -> str:
         return self._sep
 
-    def _line_iter(self, text: str) -> t.Iterator[str]:
+    def _line_iter(self, text: bytes) -> t.Iterator[bytes]:
         if self._trim_empty_line:
             for line in text.split(self._result_line_sep):
                 if len(line) > 0:
@@ -67,6 +77,8 @@ class StdoutNameEachLinePrefix(SubprocessResultProcessor):
             for line in text.split(self._result_line_sep):
                 yield line
 
-    def print_stdout(self, exit_code: int, origin_stdout: str, dirname: str):
+    def print_stdout(self, exit_code: int, origin_stdout: bytes, dirname: str):
         for line in self._line_iter(origin_stdout):
-            print(dirname, self._sep, line, sep="", end=self._output_line_sep)
+            print(dirname, self._sep, sep="", end="")
+            sys.stdout.buffer.write(line)
+            print(self._output_line_sep, end="")

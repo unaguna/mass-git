@@ -15,9 +15,9 @@ def test__prop_separator():
 @pytest.mark.parametrize(
     ("output_with_empty_stdout", "origin_stdout", "expected_output"),
     [
-        ("success", "line1\nline2\n\nline4\n", "repo1:\nline1\nline2\n\nline4\n\n"),
-        ("success", "line1\n", "repo1: line1\n"),
-        ("success", "", "repo1: success\n"),
+        ("success", b"line1\nline2\n\nline4\n", "repo1:\nline1\nline2\n\nline4\n\n"),
+        ("success", b"line1\n", "repo1: line1\n"),
+        ("success", b"", "repo1: success\n"),
     ],
 )
 def test__arg_output_with_empty_stdout(

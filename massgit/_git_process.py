@@ -20,15 +20,14 @@ def trap_stdout(
     basedir: t.Optional[str] = None,
     encoding: str = sys.getdefaultencoding(),
     env: t.Optional[t.Mapping[str, str]] = None,
-) -> subprocess.CompletedProcess[str]:
+) -> subprocess.CompletedProcess[bytes]:
     cmd = [git, subcmd, *args]
     cwd = os.path.join(basedir or "", repo["dirname"])
     logger.info("run %s for repo '%s'", cmd, cwd)
-    # TODO: grep等でエンコードできないバイト列が出てくるケースを想定し、この段階ではstrへのエンコードを実施しないほうがよい
+
     res = subprocess.run(
         cmd,
         stdout=subprocess.PIPE,
-        encoding=encoding,
         cwd=cwd,
         env=env,
     )
